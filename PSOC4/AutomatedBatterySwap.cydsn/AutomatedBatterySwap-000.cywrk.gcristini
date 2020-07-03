@@ -38,6 +38,7 @@
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Source Files\main.c</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4</v>
+<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>AutomatedBatterySwap-000</v>
@@ -63,6 +64,10 @@
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cy_lfclk</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Em_EEPROM_Dynamic</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1</v>
+<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1\Pin_1.c</v>
+<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1\Pin_1.h</v>
+<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1\Pin_1_aliases.h</v>
+<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_1\Pin_1_PM.c</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_2</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_3</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\Pin_4</v>
@@ -72,10 +77,6 @@
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\UartPC_SCBCLK</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\UartPC_tx</v>
 <v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cycodeshareexport.ld</v>
-<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cycodeshareimport.ld</v>
-<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cycodeshareimport.scat</v>
-<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cydevice_trm.h</v>
-<v>AutomatedBatterySwap-000\AutomatedBatterySwap\Generated_Source\PSoC4\cydevicegnu_trm.inc</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -219,14 +220,19 @@
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
-<OpenDocs />
+<OpenDocs>
+<name v=".\Generated_Source\PSoC4\Pin_1.c" />
+<name v=".\AutomatedBatterySwap.cydwr" />
+<name v=".\TopDesign\TopDesign.cysch" />
+<name v=".\main.c" />
+</OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
   Actipro Docking/MDI for WinForms
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1123, 466" SelectedTabbedMdiWindow="a4be3b52-add2-446a-a245-2682f00e75c8"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="a4be3b52-add2-446a-a245-2682f00e75c8" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1123, 466" SelectedTabbedMdiWindow="ebe38650-262f-4c1c-8343-1a5e5ac6c355"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="a4be3b52-add2-446a-a245-2682f00e75c8" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\Generated_Source\PSoC4\Pin_1.c" Guid="e0914597-afba-46d1-a1ec-672f252b0ae8" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\AutomatedBatterySwap.cydwr" Guid="0c75690b-4bd9-45f3-9744-412848d00559" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\TopDesign\TopDesign.cysch" Guid="e23ba89c-d446-4183-837d-0f96545c2734" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\main.c" Guid="ebe38650-262f-4c1c-8343-1a5e5ac6c355" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
