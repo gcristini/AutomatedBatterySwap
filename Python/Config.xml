@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Body -->
+<GlobalParams>
+
+    <Serial>
+        <com>COM14</com>
+        <baudarate>115200</baudarate>
+    </Serial>
+
+    <Loop>
+        <time_s>5</time_s>
+    </Loop>
+
+</GlobalParams>
