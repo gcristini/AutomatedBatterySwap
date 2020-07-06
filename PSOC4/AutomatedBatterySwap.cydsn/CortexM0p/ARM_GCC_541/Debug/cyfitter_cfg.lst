@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
   29:Generated_Source\PSoC4/cyfitter_cfg.c **** #if defined(__GNUC__) || defined(__ARMCC_VERSION)
   30:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYPACKED 
   31:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYPACKED_ATTR __attribute__ ((packed))
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 2
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 2
 
 
   32:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYALIGNED __attribute__ ((aligned))
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
   86:Generated_Source\PSoC4/cyfitter_cfg.c **** }
   87:Generated_Source\PSoC4/cyfitter_cfg.c **** CY_CFG_UNUSED
   88:Generated_Source\PSoC4/cyfitter_cfg.c **** static void CYCONFIGCPYCODE(void *dest, const void *src, size_t n);
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 3
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 3
 
 
   89:Generated_Source\PSoC4/cyfitter_cfg.c **** CY_CFG_UNUSED
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  143:Generated_Source\PSoC4/cyfitter_cfg.c ****     /* `#END` */
  144:Generated_Source\PSoC4/cyfitter_cfg.c **** 
  145:Generated_Source\PSoC4/cyfitter_cfg.c ****     while(1) {}
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 4
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 4
 
 
  146:Generated_Source\PSoC4/cyfitter_cfg.c **** #endif /* CY_CFG_CLOCK_STARTUP_ERROR_CALLBACK */
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  200:Generated_Source\PSoC4/cyfitter_cfg.c **** /*******************************************************************************
  201:Generated_Source\PSoC4/cyfitter_cfg.c **** * Function Name: AnalogSetDefault
  202:Generated_Source\PSoC4/cyfitter_cfg.c **** ********************************************************************************
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 5
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 5
 
 
  203:Generated_Source\PSoC4/cyfitter_cfg.c **** *
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
   62 0000 70B5     		push	{r4, r5, r6, lr}
   63              		.cfi_def_cfa_offset 16
   64              		.cfi_offset 4, -16
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 6
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 6
 
 
   65              		.cfi_offset 5, -12
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  109              	.LVL3:
  193:Generated_Source\PSoC4/cyfitter_cfg.c **** }
  110              		.loc 1 193 0
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 7
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 7
 
 
  111 0042 1123     		movs	r3, #17
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  141              		.cfi_def_cfa_offset 8
  142              		.cfi_offset 4, -8
  143              		.cfi_offset 14, -4
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 8
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 8
 
 
  244:Generated_Source\PSoC4/cyfitter_cfg.c **** 	/* Disable interrupts by default. Let user enable if/when they want. */
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  174              		.loc 1 267 0
  175 008a FFF7B9FF 		bl	ClockSetup
  176              	.LVL4:
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 9
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 9
 
 
  268:Generated_Source\PSoC4/cyfitter_cfg.c **** 
@@ -519,10 +519,10 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  207 0006 00000000 		.4byte	.Ldebug_abbrev0
  208 000a 04       		.byte	0x4
  209 000b 01       		.uleb128 0x1
- 210 000c CA010000 		.4byte	.LASF20
+ 210 000c BE010000 		.4byte	.LASF20
  211 0010 0C       		.byte	0xc
  212 0011 15000000 		.4byte	.LASF21
- 213 0015 56000000 		.4byte	.LASF22
+ 213 0015 A7000000 		.4byte	.LASF22
  214 0019 00000000 		.4byte	.Ldebug_ranges0+0
  215 001d 00000000 		.4byte	0
  216 0021 00000000 		.4byte	.Ldebug_line0
@@ -538,17 +538,17 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  226 0034 08       		.byte	0x8
  227 0035 05       		.byte	0x5
  228 0036 00000000 		.4byte	.LASF1
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 10
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 10
 
 
  229 003a 03       		.uleb128 0x3
  230 003b 08       		.byte	0x8
  231 003c 04       		.byte	0x4
- 232 003d B4010000 		.4byte	.LASF2
+ 232 003d A8010000 		.4byte	.LASF2
  233 0041 03       		.uleb128 0x3
  234 0042 01       		.byte	0x1
  235 0043 06       		.byte	0x6
- 236 0044 9C010000 		.4byte	.LASF3
+ 236 0044 90010000 		.4byte	.LASF3
  237 0048 03       		.uleb128 0x3
  238 0049 01       		.byte	0x1
  239 004a 08       		.byte	0x8
@@ -556,31 +556,31 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  241 004f 03       		.uleb128 0x3
  242 0050 02       		.byte	0x2
  243 0051 05       		.byte	0x5
- 244 0052 C0010000 		.4byte	.LASF5
+ 244 0052 B4010000 		.4byte	.LASF5
  245 0056 03       		.uleb128 0x3
  246 0057 02       		.byte	0x2
  247 0058 07       		.byte	0x7
- 248 0059 89010000 		.4byte	.LASF6
+ 248 0059 7D010000 		.4byte	.LASF6
  249 005d 03       		.uleb128 0x3
  250 005e 04       		.byte	0x4
  251 005f 05       		.byte	0x5
- 252 0060 40010000 		.4byte	.LASF7
+ 252 0060 34010000 		.4byte	.LASF7
  253 0064 03       		.uleb128 0x3
  254 0065 04       		.byte	0x4
  255 0066 07       		.byte	0x7
- 256 0067 DB000000 		.4byte	.LASF8
+ 256 0067 6B000000 		.4byte	.LASF8
  257 006b 03       		.uleb128 0x3
  258 006c 08       		.byte	0x8
  259 006d 07       		.byte	0x7
- 260 006e FA000000 		.4byte	.LASF9
+ 260 006e 8A000000 		.4byte	.LASF9
  261 0072 03       		.uleb128 0x3
  262 0073 04       		.byte	0x4
  263 0074 07       		.byte	0x7
- 264 0075 5C020000 		.4byte	.LASF10
+ 264 0075 50020000 		.4byte	.LASF10
  265 0079 03       		.uleb128 0x3
  266 007a 01       		.byte	0x1
  267 007b 08       		.byte	0x8
- 268 007c 3B010000 		.4byte	.LASF11
+ 268 007c 2F010000 		.4byte	.LASF11
  269 0080 04       		.uleb128 0x4
  270 0081 0E000000 		.4byte	.LASF14
  271 0085 02       		.byte	0x2
@@ -589,23 +589,23 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  274 008c 03       		.uleb128 0x3
  275 008d 04       		.byte	0x4
  276 008e 04       		.byte	0x4
- 277 008f 11010000 		.4byte	.LASF12
+ 277 008f A1000000 		.4byte	.LASF12
  278 0093 03       		.uleb128 0x3
  279 0094 08       		.byte	0x8
  280 0095 04       		.byte	0x4
- 281 0096 7C010000 		.4byte	.LASF13
+ 281 0096 70010000 		.4byte	.LASF13
  282 009a 04       		.uleb128 0x4
- 283 009b 83010000 		.4byte	.LASF15
+ 283 009b 77010000 		.4byte	.LASF15
  284 009f 02       		.byte	0x2
  285 00a0 A302     		.2byte	0x2a3
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 11
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 11
 
 
  286 00a2 A6000000 		.4byte	0xa6
  287 00a6 05       		.uleb128 0x5
  288 00a7 80000000 		.4byte	0x80
  289 00ab 06       		.uleb128 0x6
- 290 00ac 49010000 		.4byte	.LASF23
+ 290 00ac 3D010000 		.4byte	.LASF23
  291 00b0 01       		.byte	0x1
  292 00b1 D8       		.byte	0xd8
  293 00b2 00000000 		.4byte	.LFB5
@@ -613,7 +613,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  295 00ba 01       		.uleb128 0x1
  296 00bb 9C       		.byte	0x9c
  297 00bc 07       		.uleb128 0x7
- 298 00bd 5A010000 		.4byte	.LASF24
+ 298 00bd 4E010000 		.4byte	.LASF24
  299 00c1 01       		.byte	0x1
  300 00c2 AA       		.byte	0xaa
  301 00c3 00000000 		.4byte	.LFB4
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  340 0114 01       		.uleb128 0x1
  341 0115 50       		.byte	0x50
  342 0116 02       		.uleb128 0x2
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 12
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 12
 
 
  343 0117 75       		.byte	0x75
@@ -666,7 +666,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  345 0119 00       		.byte	0
  346 011a 00       		.byte	0
  347 011b 0B       		.uleb128 0xb
- 348 011c ED000000 		.4byte	.LASF25
+ 348 011c 7D000000 		.4byte	.LASF25
  349 0120 01       		.byte	0x1
  350 0121 F2       		.byte	0xf2
  351 0122 64000000 		.4byte	.LFB6
@@ -682,23 +682,23 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  361 013e AB000000 		.4byte	0xab
  362 0142 00       		.byte	0
  363 0143 0D       		.uleb128 0xd
- 364 0144 17010000 		.4byte	.LASF16
- 365 0148 17010000 		.4byte	.LASF16
+ 364 0144 56000000 		.4byte	.LASF16
+ 365 0148 56000000 		.4byte	.LASF16
  366 014c 03       		.byte	0x3
  367 014d 6C       		.byte	0x6c
  368 014e 0D       		.uleb128 0xd
- 369 014f 2C010000 		.4byte	.LASF17
- 370 0153 2C010000 		.4byte	.LASF17
+ 369 014f 20010000 		.4byte	.LASF17
+ 370 0153 20010000 		.4byte	.LASF17
  371 0157 03       		.byte	0x3
  372 0158 D0       		.byte	0xd0
  373 0159 0D       		.uleb128 0xd
- 374 015a A8010000 		.4byte	.LASF18
- 375 015e A8010000 		.4byte	.LASF18
+ 374 015a 9C010000 		.4byte	.LASF18
+ 375 015e 9C010000 		.4byte	.LASF18
  376 0162 03       		.byte	0x3
  377 0163 D6       		.byte	0xd6
  378 0164 0D       		.uleb128 0xd
- 379 0165 65010000 		.4byte	.LASF19
- 380 0169 65010000 		.4byte	.LASF19
+ 379 0165 59010000 		.4byte	.LASF19
+ 380 0169 59010000 		.4byte	.LASF19
  381 016d 04       		.byte	0x4
  382 016e 9F       		.byte	0x9f
  383 016f 00       		.byte	0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  397 000b 55       		.uleb128 0x55
  398 000c 17       		.uleb128 0x17
  399 000d 11       		.uleb128 0x11
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 13
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 13
 
 
  400 000e 01       		.uleb128 0x1
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  454 0044 3B       		.uleb128 0x3b
  455 0045 0B       		.uleb128 0xb
  456 0046 27       		.uleb128 0x27
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 14
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 14
 
 
  457 0047 19       		.uleb128 0x19
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  511 0084 0A       		.uleb128 0xa
  512 0085 898201   		.uleb128 0x4109
  513 0088 01       		.byte	0x1
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 15
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 15
 
 
  514 0089 11       		.uleb128 0x11
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  568 00c2 0B       		.uleb128 0xb
  569 00c3 00       		.byte	0
  570 00c4 00       		.byte	0
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 16
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 16
 
 
  571 00c5 00       		.byte	0
@@ -958,67 +958,67 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  610 0048 756E7369 		.ascii	"unsigned char\000"
  610      676E6564 
  610      20636861 
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 17
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 17
 
 
  610      7200
- 611              	.LASF22:
- 612 0056 433A5C55 		.ascii	"C:\\Users\\gcristini\\OneDrive - Datalogic S.p.a\\D"
- 612      73657273 
- 612      5C676372 
- 612      69737469 
- 612      6E695C4F 
- 613 0085 6174615C 		.ascii	"ata\\PhytonWorkspace\\AutomatedBatterySwap\\PSOC4\\"
- 613      50687974 
- 613      6F6E576F 
- 613      726B7370 
- 613      6163655C 
- 614 00b4 576F726B 		.ascii	"Workspace01\\AutomatedBatterySwap.cydsn\000"
- 614      73706163 
- 614      6530315C 
- 614      4175746F 
- 614      6D617465 
- 615              	.LASF8:
- 616 00db 6C6F6E67 		.ascii	"long unsigned int\000"
- 616      20756E73 
- 616      69676E65 
- 616      6420696E 
- 616      7400
- 617              	.LASF25:
- 618 00ed 63796669 		.ascii	"cyfitter_cfg\000"
- 618      74746572 
- 618      5F636667 
- 618      00
- 619              	.LASF9:
- 620 00fa 6C6F6E67 		.ascii	"long long unsigned int\000"
- 620      206C6F6E 
- 620      6720756E 
- 620      7369676E 
- 620      65642069 
- 621              	.LASF12:
- 622 0111 666C6F61 		.ascii	"float\000"
- 622      7400
- 623              	.LASF16:
- 624 0117 43795379 		.ascii	"CySysClkWriteImoFreq\000"
- 624      73436C6B 
- 624      57726974 
- 624      65496D6F 
- 624      46726571 
+ 611              	.LASF16:
+ 612 0056 43795379 		.ascii	"CySysClkWriteImoFreq\000"
+ 612      73436C6B 
+ 612      57726974 
+ 612      65496D6F 
+ 612      46726571 
+ 613              	.LASF8:
+ 614 006b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 614      20756E73 
+ 614      69676E65 
+ 614      6420696E 
+ 614      7400
+ 615              	.LASF25:
+ 616 007d 63796669 		.ascii	"cyfitter_cfg\000"
+ 616      74746572 
+ 616      5F636667 
+ 616      00
+ 617              	.LASF9:
+ 618 008a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 618      206C6F6E 
+ 618      6720756E 
+ 618      7369676E 
+ 618      65642069 
+ 619              	.LASF12:
+ 620 00a1 666C6F61 		.ascii	"float\000"
+ 620      7400
+ 621              	.LASF22:
+ 622 00a7 433A5C55 		.ascii	"C:\\Users\\gcristini\\OneDrive - Datalogic S.p.a\\D"
+ 622      73657273 
+ 622      5C676372 
+ 622      69737469 
+ 622      6E695C4F 
+ 623 00d6 6174615C 		.ascii	"ata\\PhytonWorkspace\\AutomatedBatterySwap\\PSOC4\\"
+ 623      50687974 
+ 623      6F6E576F 
+ 623      726B7370 
+ 623      6163655C 
+ 624 0105 4175746F 		.ascii	"AutomatedBatterySwap.cydsn\000"
+ 624      6D617465 
+ 624      64426174 
+ 624      74657279 
+ 624      53776170 
  625              	.LASF17:
- 626 012c 4379496E 		.ascii	"CyIntSetVector\000"
+ 626 0120 4379496E 		.ascii	"CyIntSetVector\000"
  626      74536574 
  626      56656374 
  626      6F7200
  627              	.LASF11:
- 628 013b 63686172 		.ascii	"char\000"
+ 628 012f 63686172 		.ascii	"char\000"
  628      00
  629              	.LASF7:
- 630 0140 6C6F6E67 		.ascii	"long int\000"
+ 630 0134 6C6F6E67 		.ascii	"long int\000"
  630      20696E74 
  630      00
  631              	.LASF23:
- 632 0149 416E616C 		.ascii	"AnalogSetDefault\000"
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 18
+ 632 013d 416E616C 		.ascii	"AnalogSetDefault\000"
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 18
 
 
  632      6F675365 
@@ -1026,64 +1026,64 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 1
  632      61756C74 
  632      00
  633              	.LASF24:
- 634 015a 436C6F63 		.ascii	"ClockSetup\000"
+ 634 014e 436C6F63 		.ascii	"ClockSetup\000"
  634      6B536574 
  634      757000
  635              	.LASF19:
- 636 0165 43795379 		.ascii	"CySysClkSetTimerSource\000"
+ 636 0159 43795379 		.ascii	"CySysClkSetTimerSource\000"
  636      73436C6B 
  636      53657454 
  636      696D6572 
  636      536F7572 
  637              	.LASF13:
- 638 017c 646F7562 		.ascii	"double\000"
+ 638 0170 646F7562 		.ascii	"double\000"
  638      6C6500
  639              	.LASF15:
- 640 0183 72656733 		.ascii	"reg32\000"
+ 640 0177 72656733 		.ascii	"reg32\000"
  640      3200
  641              	.LASF6:
- 642 0189 73686F72 		.ascii	"short unsigned int\000"
+ 642 017d 73686F72 		.ascii	"short unsigned int\000"
  642      7420756E 
  642      7369676E 
  642      65642069 
  642      6E7400
  643              	.LASF3:
- 644 019c 7369676E 		.ascii	"signed char\000"
+ 644 0190 7369676E 		.ascii	"signed char\000"
  644      65642063 
  644      68617200 
  645              	.LASF18:
- 646 01a8 4379496E 		.ascii	"CyIntEnable\000"
+ 646 019c 4379496E 		.ascii	"CyIntEnable\000"
  646      74456E61 
  646      626C6500 
  647              	.LASF2:
- 648 01b4 6C6F6E67 		.ascii	"long double\000"
+ 648 01a8 6C6F6E67 		.ascii	"long double\000"
  648      20646F75 
  648      626C6500 
  649              	.LASF5:
- 650 01c0 73686F72 		.ascii	"short int\000"
+ 650 01b4 73686F72 		.ascii	"short int\000"
  650      7420696E 
  650      7400
  651              	.LASF20:
- 652 01ca 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 652 01be 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
  652      43313120 
  652      352E342E 
  652      31203230 
  652      31363036 
- 653 01fd 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 653 01f1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
  653      20726576 
  653      6973696F 
  653      6E203233 
  653      37373135 
- 654 0230 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 654 0224 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
  654      67202D66 
  654      66756E63 
  654      74696F6E 
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\cc72edP7.s 			page 19
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn2LLzR.s 			page 19
 
 
  654      2D736563 
  655              	.LASF10:
- 656 025c 73697A65 		.ascii	"sizetype\000"
+ 656 0250 73697A65 		.ascii	"sizetype\000"
  656      74797065 
  656      00
  657              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

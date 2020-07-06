@@ -54,26 +54,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cyfitteriar.inc</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cyfitter.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cydisabledsheets.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_1.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_1.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_1_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_1_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_2.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_2.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_2_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_2_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_3.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_3.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_3_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_3_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_4.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_4.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_4_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_4_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_5.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_5.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_5_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\Pin_5_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UartPC.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UartPC.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UartPC_SPI_UART.h</File>
@@ -130,6 +110,26 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cycodeshareimport.ld</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cycodeshareexport.ld</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\cycodeshareimport.scat</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_PackP.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_PackP.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_PackP_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_PackP_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SCL.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SCL.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SCL_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SCL_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SDA.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SDA.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SDA_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_SDA_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_Detect.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_Detect.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_Detect_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_Detect_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_NTC.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_NTC.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_NTC_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\pin_NTC_PM.c</File>
         </Files>
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\codegentemp">

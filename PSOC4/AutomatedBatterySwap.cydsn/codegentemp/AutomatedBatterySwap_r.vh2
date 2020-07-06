@@ -1,14 +1,14 @@
 -- Project:   AutomatedBatterySwap
--- Generated: 07/03/2020 18:38:40
+-- Generated: 07/06/2020 10:18:51
 -- PSoC Creator  4.3
 
 ENTITY AutomatedBatterySwap IS
     PORT(
-        Pin_1(0)_PAD : OUT std_ulogic;
-        Pin_2(0)_PAD : OUT std_ulogic;
-        Pin_3(0)_PAD : OUT std_ulogic;
-        Pin_4(0)_PAD : OUT std_ulogic;
-        Pin_5(0)_PAD : OUT std_ulogic;
+        pin_PackP(0)_PAD : OUT std_ulogic;
+        pin_SCL(0)_PAD : OUT std_ulogic;
+        pin_SDA(0)_PAD : OUT std_ulogic;
+        pin_Detect(0)_PAD : OUT std_ulogic;
+        pin_NTC(0)_PAD : OUT std_ulogic;
         \UartPC:tx(0)_PAD\ : INOUT std_ulogic;
         \UartPC:rx(0)_PAD\ : IN std_ulogic);
     ATTRIBUTE voltage_VDDIO_A OF __DEFAULT__ : ENTITY IS 3.3e0;
@@ -35,11 +35,6 @@ ARCHITECTURE __DEFAULT__ OF AutomatedBatterySwap IS
     SIGNAL Net_10 : bit;
     SIGNAL Net_11 : bit;
     SIGNAL Net_8 : bit;
-    SIGNAL Pin_1(0)__PA : bit;
-    SIGNAL Pin_2(0)__PA : bit;
-    SIGNAL Pin_3(0)__PA : bit;
-    SIGNAL Pin_4(0)__PA : bit;
-    SIGNAL Pin_5(0)__PA : bit;
     SIGNAL \UartPC:Net_847_ff0\ : bit;
     ATTRIBUTE global_signal OF \UartPC:Net_847_ff0\ : SIGNAL IS true;
     SIGNAL \UartPC:miso_s_wire\ : bit;
@@ -58,17 +53,22 @@ ARCHITECTURE __DEFAULT__ OF AutomatedBatterySwap IS
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
-    SIGNAL tmpOE__Pin_1_net_0 : bit;
-    ATTRIBUTE POWER OF tmpOE__Pin_1_net_0 : SIGNAL IS true;
+    SIGNAL pin_Detect(0)__PA : bit;
+    SIGNAL pin_NTC(0)__PA : bit;
+    SIGNAL pin_PackP(0)__PA : bit;
+    SIGNAL pin_SCL(0)__PA : bit;
+    SIGNAL pin_SDA(0)__PA : bit;
+    SIGNAL tmpOE__pin_PackP_net_0 : bit;
+    ATTRIBUTE POWER OF tmpOE__pin_PackP_net_0 : SIGNAL IS true;
     SIGNAL zero : bit;
     ATTRIBUTE GROUND OF zero : SIGNAL IS true;
     ATTRIBUTE Location OF ClockGenBlock : LABEL IS "F(CLK_GEN,0)";
     ATTRIBUTE Location OF ClockBlock : LABEL IS "F(Clock,0)";
-    ATTRIBUTE Location OF Pin_1(0) : LABEL IS "P1[0]";
-    ATTRIBUTE Location OF Pin_2(0) : LABEL IS "P1[1]";
-    ATTRIBUTE Location OF Pin_3(0) : LABEL IS "P1[2]";
-    ATTRIBUTE Location OF Pin_4(0) : LABEL IS "P1[3]";
-    ATTRIBUTE Location OF Pin_5(0) : LABEL IS "P1[4]";
+    ATTRIBUTE Location OF pin_PackP(0) : LABEL IS "P1[0]";
+    ATTRIBUTE Location OF pin_SCL(0) : LABEL IS "P1[1]";
+    ATTRIBUTE Location OF pin_SDA(0) : LABEL IS "P1[2]";
+    ATTRIBUTE Location OF pin_Detect(0) : LABEL IS "P1[3]";
+    ATTRIBUTE Location OF pin_NTC(0) : LABEL IS "P1[4]";
     ATTRIBUTE Location OF \UartPC:tx(0)\ : LABEL IS "P0[5]";
     ATTRIBUTE Location OF \UartPC:rx(0)\ : LABEL IS "P0[4]";
     ATTRIBUTE Location OF \UartPC:SCB\ : LABEL IS "F(SCB,1)";
@@ -266,7 +266,7 @@ BEGIN
             ff_div_0 => open,
             ff_div_1 => \UartPC:Net_847_ff0\);
 
-    Pin_1:logicalport
+    pin_PackP:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -337,18 +337,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_1(0):iocell
+    pin_PackP(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_1",
+            logicalport => "pin_PackP",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_1(0)__PA,
+            pa_out => pin_PackP(0)__PA,
             oe => open,
-            pad_in => Pin_1(0)_PAD,
+            pad_in => pin_PackP(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -356,7 +356,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Pin_2:logicalport
+    pin_SCL:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -427,18 +427,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_2(0):iocell
+    pin_SCL(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_2",
+            logicalport => "pin_SCL",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_2(0)__PA,
+            pa_out => pin_SCL(0)__PA,
             oe => open,
-            pad_in => Pin_2(0)_PAD,
+            pad_in => pin_SCL(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -446,7 +446,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Pin_3:logicalport
+    pin_SDA:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -517,18 +517,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_3(0):iocell
+    pin_SDA(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_3",
+            logicalport => "pin_SDA",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_3(0)__PA,
+            pa_out => pin_SDA(0)__PA,
             oe => open,
-            pad_in => Pin_3(0)_PAD,
+            pad_in => pin_SDA(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -536,7 +536,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Pin_4:logicalport
+    pin_Detect:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -607,18 +607,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_4(0):iocell
+    pin_Detect(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_4",
+            logicalport => "pin_Detect",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_4(0)__PA,
+            pa_out => pin_Detect(0)__PA,
             oe => open,
-            pad_in => Pin_4(0)_PAD,
+            pad_in => pin_Detect(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -626,7 +626,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Pin_5:logicalport
+    pin_NTC:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -697,18 +697,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_5(0):iocell
+    pin_NTC(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_5",
+            logicalport => "pin_NTC",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_5(0)__PA,
+            pa_out => pin_NTC(0)__PA,
             oe => open,
-            pad_in => Pin_5(0)_PAD,
+            pad_in => pin_NTC(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',

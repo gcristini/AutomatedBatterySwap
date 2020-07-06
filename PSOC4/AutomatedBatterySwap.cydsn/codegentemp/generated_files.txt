@@ -13,26 +13,26 @@
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\cyfitteriar.inc" value="HEADER;;;;;" />
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\cyfitter.h" value="HEADER;;;;;" />
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\cydisabledsheets.h" value="HEADER;;;;;" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_1.c" value="SOURCE_C;CortexM0p;;;;Pin_1" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_1.h" value="HEADER;;;;;Pin_1" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_1_aliases.h" value="HEADER;;;;;Pin_1" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_1_PM.c" value="SOURCE_C;CortexM0p;;;;Pin_1" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_2.c" value="SOURCE_C;CortexM0p;;;;Pin_2" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_2.h" value="HEADER;;;;;Pin_2" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_2_aliases.h" value="HEADER;;;;;Pin_2" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_2_PM.c" value="SOURCE_C;CortexM0p;;;;Pin_2" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_3.c" value="SOURCE_C;CortexM0p;;;;Pin_3" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_3.h" value="HEADER;;;;;Pin_3" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_3_aliases.h" value="HEADER;;;;;Pin_3" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_3_PM.c" value="SOURCE_C;CortexM0p;;;;Pin_3" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_4.c" value="SOURCE_C;CortexM0p;;;;Pin_4" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_4.h" value="HEADER;;;;;Pin_4" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_4_aliases.h" value="HEADER;;;;;Pin_4" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_4_PM.c" value="SOURCE_C;CortexM0p;;;;Pin_4" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_5.c" value="SOURCE_C;CortexM0p;;;;Pin_5" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_5.h" value="HEADER;;;;;Pin_5" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_5_aliases.h" value="HEADER;;;;;Pin_5" />
-  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\Pin_5_PM.c" value="SOURCE_C;CortexM0p;;;;Pin_5" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_PackP.c" value="SOURCE_C;CortexM0p;;;;pin_PackP" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_PackP.h" value="HEADER;;;;;pin_PackP" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_PackP_aliases.h" value="HEADER;;;;;pin_PackP" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_PackP_PM.c" value="SOURCE_C;CortexM0p;;;;pin_PackP" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SCL.c" value="SOURCE_C;CortexM0p;;;;pin_SCL" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SCL.h" value="HEADER;;;;;pin_SCL" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SCL_aliases.h" value="HEADER;;;;;pin_SCL" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SCL_PM.c" value="SOURCE_C;CortexM0p;;;;pin_SCL" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SDA.c" value="SOURCE_C;CortexM0p;;;;pin_SDA" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SDA.h" value="HEADER;;;;;pin_SDA" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SDA_aliases.h" value="HEADER;;;;;pin_SDA" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_SDA_PM.c" value="SOURCE_C;CortexM0p;;;;pin_SDA" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_Detect.c" value="SOURCE_C;CortexM0p;;;;pin_Detect" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_Detect.h" value="HEADER;;;;;pin_Detect" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_Detect_aliases.h" value="HEADER;;;;;pin_Detect" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_Detect_PM.c" value="SOURCE_C;CortexM0p;;;;pin_Detect" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_NTC.c" value="SOURCE_C;CortexM0p;;;;pin_NTC" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_NTC.h" value="HEADER;;;;;pin_NTC" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_NTC_aliases.h" value="HEADER;;;;;pin_NTC" />
+  <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\pin_NTC_PM.c" value="SOURCE_C;CortexM0p;;;;pin_NTC" />
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\UartPC.c" value="SOURCE_C;CortexM0p;;;;UartPC" />
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\UartPC.h" value="HEADER;;;;;UartPC" />
   <file name="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\codegentemp\UartPC_SPI_UART.h" value="HEADER;;;;;UartPC" />

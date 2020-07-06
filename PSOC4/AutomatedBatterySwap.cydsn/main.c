@@ -10,6 +10,7 @@
  * ========================================
 */
 #include "project.h"
+#include <string.h>
 
 #define BUFFER_SIZE 100
 #define forever for (;;)
@@ -19,14 +20,16 @@
 
 void pollUart(void);
 void init(void);
-void parseCommand(const char *command);
-void clearBuffer(uint8* buffer, uint8 bufferSize);
+void parseCommand(char *command);
+void clearBuffer(uint8 *buffer, uint8 bufferSize);
 
 int main(void)
 {
 
     /* Initializtion */
     init();
+
+    UartPC_UartPutString("Welcome\n");
 
     /* Main Loop */
     forever
@@ -40,82 +43,115 @@ void init(void)
     UartPC_Start();
 }
 
-void parseCommand(const char *command)
+void parseCommand(char *command)
 {
-    if (!strcmp (command, "on"))
+    /* PINS ON */
+    if (!strcmp(command, "pack_p_on"))
     {
-        UartPC_UartPutString("Relay_On");
-        
-        Pin_1_Write(RELAY_ON);
-        Pin_2_Write(RELAY_ON);
-        Pin_3_Write(RELAY_ON);
-        Pin_4_Write(RELAY_ON);
-        Pin_5_Write(RELAY_ON);
+        pin_PackP_Write(RELAY_ON);
     }
-    else if (!strcmp (command, "off"))
+    else if (!strcmp(command, "sda_on"))
     {
-        UartPC_UartPutString("Relay_Off");
-
-        Pin_1_Write(RELAY_OFF);
-        Pin_2_Write(RELAY_OFF);
-        Pin_3_Write(RELAY_OFF);
-        Pin_4_Write(RELAY_OFF);
-        Pin_5_Write(RELAY_OFF); 
+        pin_SDA_Write(RELAY_ON);
+    }
+    else if (!strcmp(command, "scl_on"))
+    {
+        pin_SCL_Write(RELAY_ON);
+    }
+    else if (!strcmp(command, "detect_on"))
+    {
+        pin_Detect_Write(RELAY_ON);
+    }
+    else if (!strcmp(command, "ntc_on"))
+    {
+        pin_NTC_Write(RELAY_ON);
+    }
+    else if (!strcmp (command, "all_on"))
+    {
+        pin_PackP_Write(RELAY_ON);
+        pin_SDA_Write(RELAY_ON);
+        pin_SCL_Write(RELAY_ON);
+        pin_Detect_Write(RELAY_ON);
+        pin_NTC_Write(RELAY_ON);
+    }
+    /* PINS OFF */
+    else if (!strcmp(command, "pack_p_off"))
+    {
+        pin_PackP_Write(RELAY_OFF);
+    }
+    else if (!strcmp(command, "sda_off"))
+    {
+        pin_SDA_Write(RELAY_OFF);
+    }
+    else if (!strcmp(command, "scl_off"))
+    {
+        pin_SCL_Write(RELAY_OFF);
+    }
+    else if (!strcmp(command, "detect_off"))
+    {
+        pin_Detect_Write(RELAY_OFF);
+    }
+    else if (!strcmp(command, "ntc_off"))
+    {
+        pin_NTC_Write(RELAY_OFF);
+    }
+    else if (!strcmp (command, "all_off"))
+    {
+        pin_PackP_Write(RELAY_OFF);
+        pin_SDA_Write(RELAY_OFF);
+        pin_SCL_Write(RELAY_OFF);
+        pin_Detect_Write(RELAY_OFF);
+        pin_NTC_Write(RELAY_OFF);
     }
     else    
     {
-        /* code */
+        /* MISRA */
     }
+    
     return;
 }
 
-void pollUart()
-{
-    static uint8 ch;
-    static uint16 rxDataIndex = 0u;
-    static uint8 rxData[BUFFER_SIZE];
-    static uint8 *rxCommand;
-
-
-    /* Get received character or zero if nothing has been received yet */
-    ch = UartPC_UartGetChar();
-    if (0u != ch)
+    void pollUart()
     {
-        /* Store the last received char */
-        rxData[rxDataIndex] = ch;
+        static uint8 ch;
+        static uint16 rxDataIndex = 0u;
+        static uint8 rxData[BUFFER_SIZE];
+        static uint8 *rxCommand;
 
-        if (ch == '\r')
+        /* Get received character or zero if nothing has been received yet */
+        ch = UartPC_UartGetChar();
+        if (0u != ch)
         {
-            /* Insert the string terminator character */
-            rxData[rxDataIndex] = '\0';
+            /* Store the last received char */
+            rxData[rxDataIndex] = ch;
 
-            /* Point to buffer */
-            rxCommand = rxData;
-            UartPC_UartPutString((const char *)rxCommand);
-            parseCommand((const char*) rxCommand);
-
-            /* Clear buffer and index */
-            /*for (rxDataIndex = 0; rxDataIndex < BUFFER_SIZE; rxDataIndex++)
+            if (ch == '\r')
             {
-                rxData[rxDataIndex] = 0u;
-            }*/
+                /* Insert the string terminator character */
+                rxData[rxDataIndex] = '\0';
 
-            clearBuffer(rxData, BUFFER_SIZE);
+                /* Point to buffer */
+                rxCommand = rxData;
+                //UartPC_UartPutString((const char *)rxCommand);
+                parseCommand((char *)rxCommand);
 
-            rxDataIndex = -1;
-        }
+                /* Clear buffer and index */
+                clearBuffer(rxData, BUFFER_SIZE);
 
-        rxDataIndex++;
-    }
-}
-
-void clearBuffer(uint8* buffer, uint8 bufferSize)
-{
-    uint8 i;
-    for (i = 0; i < bufferSize; i++)
-            {
-                buffer[i] = 0u;
+                rxDataIndex = -1;
             }
-}
 
-/* [] END OF FILE */
+            rxDataIndex++;
+        }
+    }
+
+    void clearBuffer(uint8 *buffer, uint8 bufferSize)
+    {
+        uint8 i;
+        for (i = 0; i < bufferSize; i++)
+        {
+            buffer[i] = 0u;
+        }
+    }
+
+    /* [] END OF FILE */

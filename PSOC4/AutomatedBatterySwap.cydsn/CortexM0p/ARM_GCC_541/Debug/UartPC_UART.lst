@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
   28:Generated_Source\PSoC4/UartPC_UART.c ****     /** This global variable determines whether to enable Skip Start
   29:Generated_Source\PSoC4/UartPC_UART.c ****     * functionality when UartPC_Sleep() function is called:
   30:Generated_Source\PSoC4/UartPC_UART.c ****     * 0 – disable, other values – enable. Default value is 1.
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 2
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 2
 
 
   31:Generated_Source\PSoC4/UartPC_UART.c ****     * It is only available when Enable wakeup from Deep Sleep Mode is enabled.
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
   85:Generated_Source\PSoC4/UartPC_UART.c ****     *
   86:Generated_Source\PSoC4/UartPC_UART.c ****     *  This function is intended specifically to be used when the UartPC
   87:Generated_Source\PSoC4/UartPC_UART.c ****     *  configuration is set to “Unconfigured UartPC” in the customizer.
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 3
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 3
 
 
   88:Generated_Source\PSoC4/UartPC_UART.c ****     *  After initializing the UartPC in UART mode using this function,
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  142:Generated_Source\PSoC4/UartPC_UART.c ****                                                 (UartPC_UART_GET_CTRL_OVS_IRDA_LP(config->oversampl
  143:Generated_Source\PSoC4/UartPC_UART.c ****                                                 (UartPC_CTRL_OVS_IRDA_OVS16));
  144:Generated_Source\PSoC4/UartPC_UART.c ****             }
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 4
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 4
 
 
  145:Generated_Source\PSoC4/UartPC_UART.c ****             else
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  199:Generated_Source\PSoC4/UartPC_UART.c ****                                             UartPC_GET_UART_FLOW_CTRL_CTS_POLARITY (config->ctsPola
  200:Generated_Source\PSoC4/UartPC_UART.c ****                                             UartPC_GET_UART_FLOW_CTRL_RTS_POLARITY (config->rtsPola
  201:Generated_Source\PSoC4/UartPC_UART.c ****                                             UartPC_GET_UART_FLOW_CTRL_TRIGGER_LEVEL(config->rtsRxFi
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 5
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 5
 
 
  202:Generated_Source\PSoC4/UartPC_UART.c ****         #endif /* !(UartPC_CY_SCBIP_V0 || UartPC_CY_SCBIP_V1) */
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
   33              		.loc 1 250 0
   34 0000 154A     		ldr	r2, .L2
   35 0002 164B     		ldr	r3, .L2+4
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 6
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 6
 
 
   36 0004 1A60     		str	r2, [r3]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  271:Generated_Source\PSoC4/UartPC_UART.c ****     #if(UartPC_SCB_IRQ_INTERNAL)
  272:Generated_Source\PSoC4/UartPC_UART.c ****         CyIntDisable    (UartPC_ISR_NUMBER);
  273:Generated_Source\PSoC4/UartPC_UART.c ****         CyIntSetPriority(UartPC_ISR_NUMBER, UartPC_ISR_PRIORITY);
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 7
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 7
 
 
  274:Generated_Source\PSoC4/UartPC_UART.c ****         (void) CyIntSetVector(UartPC_ISR_NUMBER, &UartPC_SPI_UART_ISR);
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
   92              		.loc 1 305 0
   93              		@ sp needed
   94 0054 7047     		bx	lr
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 8
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 8
 
 
   95              	.L3:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  321:Generated_Source\PSoC4/UartPC_UART.c ****         if (UartPC_CHECK_TX_SDA_MISO_PIN_USED)
  322:Generated_Source\PSoC4/UartPC_UART.c ****         {
  323:Generated_Source\PSoC4/UartPC_UART.c ****             /* Set SCB UART to drive the output pin */
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 9
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 9
 
 
  324:Generated_Source\PSoC4/UartPC_UART.c ****             UartPC_SET_HSIOM_SEL(UartPC_TX_SDA_MISO_HSIOM_REG, UartPC_TX_SDA_MISO_HSIOM_MASK,
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  155 0020 FFFF0FFF 		.word	-15728641
  156 0024 00000000 		.word	UartPC_IntrTxMask
  157 0028 880F0840 		.word	1074270088
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 10
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 10
 
 
  158              		.cfi_endproc
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  395:Generated_Source\PSoC4/UartPC_UART.c **** #else
  396:Generated_Source\PSoC4/UartPC_UART.c ****     #if (UartPC_UART_TX_PIN)
  397:Generated_Source\PSoC4/UartPC_UART.c ****         /* Set GPIO to drive output pin */
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 11
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 11
 
 
  398:Generated_Source\PSoC4/UartPC_UART.c ****         UartPC_SET_HSIOM_SEL(UartPC_TX_HSIOM_REG, UartPC_TX_HSIOM_MASK,
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  205              		.thumb_func
  206              		.type	UartPC_UartSetRxAddress, %function
  207              	UartPC_UartSetRxAddress:
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 12
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 12
 
 
  208              	.LFB4:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  239              		.size	UartPC_UartSetRxAddress, .-UartPC_UartSetRxAddress
  240              		.section	.text.UartPC_UartSetRxAddressMask,"ax",%progbits
  241              		.align	2
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 13
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 13
 
 
  242              		.global	UartPC_UartSetRxAddressMask
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  271 000e 7047     		bx	lr
  272              	.L15:
  273              		.align	2
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 14
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 14
 
 
  274              	.L14:
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  500:Generated_Source\PSoC4/UartPC_UART.c ****         uint32 rxData = 0u;
  501:Generated_Source\PSoC4/UartPC_UART.c **** 
  502:Generated_Source\PSoC4/UartPC_UART.c ****         /* Reads data only if there is data to read */
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 15
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 15
 
 
  503:Generated_Source\PSoC4/UartPC_UART.c ****         if (0u != UartPC_SpiUartGetRxBufferSize())
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  336              	.LFE6:
  337              		.size	UartPC_UartGetChar, .-UartPC_UartGetChar
  338              		.section	.text.UartPC_UartGetByte,"ax",%progbits
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 16
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 16
 
 
  339              		.align	2
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  555:Generated_Source\PSoC4/UartPC_UART.c ****             UartPC_DisableInt();
  556:Generated_Source\PSoC4/UartPC_UART.c ****         }
  557:Generated_Source\PSoC4/UartPC_UART.c ****         #endif
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 17
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 17
 
 
  558:Generated_Source\PSoC4/UartPC_UART.c **** 
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  596:Generated_Source\PSoC4/UartPC_UART.c ****         tmpStatus = (UartPC_GetRxInterruptSource() & UartPC_INTR_RX_ERR);
  370              		.loc 1 596 0
  371 0014 064A     		ldr	r2, .L25+4
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 18
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 18
 
 
  372 0016 1368     		ldr	r3, [r2]
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  618:Generated_Source\PSoC4/UartPC_UART.c ****         *   - UartPC_UART_RTS_ACTIVE_LOW  - RTS signal is active low.
  619:Generated_Source\PSoC4/UartPC_UART.c ****         *   - UartPC_UART_RTS_ACTIVE_HIGH - RTS signal is active high.
  620:Generated_Source\PSoC4/UartPC_UART.c ****         *
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 19
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 19
 
 
  621:Generated_Source\PSoC4/UartPC_UART.c ****         *******************************************************************************/
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  447              	UartPC_UartSetRtsFifoLevel:
  448              	.LFB9:
  633:Generated_Source\PSoC4/UartPC_UART.c **** 
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 20
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 20
 
 
  634:Generated_Source\PSoC4/UartPC_UART.c **** 
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  476 0010 50000840 		.word	1074266192
  477              		.cfi_endproc
  478              	.LFE9:
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 21
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 21
 
 
  479              		.size	UartPC_UartSetRtsFifoLevel, .-UartPC_UartSetRtsFifoLevel
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  506              	.L37:
  688:Generated_Source\PSoC4/UartPC_UART.c ****         {
  689:Generated_Source\PSoC4/UartPC_UART.c ****             UartPC_UartPutChar((uint32) string[bufIndex]);
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 22
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 22
 
 
  507              		.loc 1 689 0
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  541              		.cfi_offset 4, -8
  542              		.cfi_offset 14, -4
  709:Generated_Source\PSoC4/UartPC_UART.c ****         UartPC_UartPutChar(txDataByte);  /* Blocks control flow until all data has been sent */
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 23
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 23
 
 
  543              		.loc 1 709 0
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  579 000a 1360     		str	r3, [r2]
  728:Generated_Source\PSoC4/UartPC_UART.c ****         }
  580              		.loc 1 728 0
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 24
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 24
 
 
  581              		@ sp needed
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  620              		.section	.text.UartPC_UartSetCtsPolarity,"ax",%progbits
  621              		.align	2
  622              		.global	UartPC_UartSetCtsPolarity
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 25
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 25
 
 
  623              		.code	16
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  652              	.L45:
  769:Generated_Source\PSoC4/UartPC_UART.c ****             }
  770:Generated_Source\PSoC4/UartPC_UART.c ****         }
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 26
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 26
 
 
  653              		.loc 1 770 0
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  682              		.cfi_offset 14, -4
  683 0002 0300     		movs	r3, r0
  796:Generated_Source\PSoC4/UartPC_UART.c ****         uint32 txCtrlReg;
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 27
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 27
 
 
  797:Generated_Source\PSoC4/UartPC_UART.c ****         uint32 txIntrReg;
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  718 002a 074B     		ldr	r3, .L52+4
  719 002c 1B68     		ldr	r3, [r3]
  720 002e 9B05     		lsls	r3, r3, #22
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 28
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 28
 
 
  721 0030 FBD5     		bpl	.L51
@@ -1670,20 +1670,20 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  757 0006 00000000 		.4byte	.Ldebug_abbrev0
  758 000a 04       		.byte	0x4
  759 000b 01       		.uleb128 0x1
- 760 000c 59030000 		.4byte	.LASF50
+ 760 000c 4D030000 		.4byte	.LASF50
  761 0010 0C       		.byte	0xc
  762 0011 71000000 		.4byte	.LASF51
- 763 0015 BA010000 		.4byte	.LASF52
+ 763 0015 81010000 		.4byte	.LASF52
  764 0019 00000000 		.4byte	.Ldebug_ranges0+0
  765 001d 00000000 		.4byte	0
  766 0021 00000000 		.4byte	.Ldebug_line0
  767 0025 02       		.uleb128 0x2
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 29
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 29
 
 
  768 0026 01       		.byte	0x1
  769 0027 06       		.byte	0x6
- 770 0028 EB030000 		.4byte	.LASF0
+ 770 0028 DF030000 		.4byte	.LASF0
  771 002c 02       		.uleb128 0x2
  772 002d 01       		.byte	0x1
  773 002e 08       		.byte	0x8
@@ -1691,7 +1691,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  775 0033 02       		.uleb128 0x2
  776 0034 02       		.byte	0x2
  777 0035 05       		.byte	0x5
- 778 0036 F0020000 		.4byte	.LASF2
+ 778 0036 E4020000 		.4byte	.LASF2
  779 003a 02       		.uleb128 0x2
  780 003b 02       		.byte	0x2
  781 003c 07       		.byte	0x7
@@ -1699,7 +1699,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  783 0041 02       		.uleb128 0x2
  784 0042 04       		.byte	0x4
  785 0043 05       		.byte	0x5
- 786 0044 31030000 		.4byte	.LASF4
+ 786 0044 25030000 		.4byte	.LASF4
  787 0048 02       		.uleb128 0x2
  788 0049 04       		.byte	0x4
  789 004a 07       		.byte	0x7
@@ -1711,7 +1711,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  795 0056 02       		.uleb128 0x2
  796 0057 08       		.byte	0x8
  797 0058 07       		.byte	0x7
- 798 0059 54020000 		.4byte	.LASF7
+ 798 0059 48020000 		.4byte	.LASF7
  799 005d 03       		.uleb128 0x3
  800 005e 04       		.byte	0x4
  801 005f 05       		.byte	0x5
@@ -1719,14 +1719,14 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  803 0064 02       		.uleb128 0x2
  804 0065 04       		.byte	0x4
  805 0066 07       		.byte	0x7
- 806 0067 3F020000 		.4byte	.LASF8
+ 806 0067 33020000 		.4byte	.LASF8
  807 006b 04       		.uleb128 0x4
- 808 006c AC010000 		.4byte	.LASF9
+ 808 006c 25020000 		.4byte	.LASF9
  809 0070 02       		.byte	0x2
  810 0071 F801     		.2byte	0x1f8
  811 0073 3A000000 		.4byte	0x3a
  812 0077 04       		.uleb128 0x4
- 813 0078 B3010000 		.4byte	.LASF10
+ 813 0078 2C020000 		.4byte	.LASF10
  814 007c 02       		.byte	0x2
  815 007d F901     		.2byte	0x1f9
  816 007f 48000000 		.4byte	0x48
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  822 008b 08       		.byte	0x8
  823 008c 04       		.byte	0x4
  824 008d 5F010000 		.4byte	.LASF12
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 30
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 30
 
 
  825 0091 04       		.uleb128 0x4
@@ -1749,7 +1749,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  830 009d 02       		.uleb128 0x2
  831 009e 01       		.byte	0x1
  832 009f 08       		.byte	0x8
- 833 00a0 D6020000 		.4byte	.LASF14
+ 833 00a0 CA020000 		.4byte	.LASF14
  834 00a4 04       		.uleb128 0x4
  835 00a5 26000000 		.4byte	.LASF15
  836 00a9 02       		.byte	0x2
@@ -1760,11 +1760,11 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  841 00b5 02       		.uleb128 0x2
  842 00b6 08       		.byte	0x8
  843 00b7 04       		.byte	0x4
- 844 00b8 4D030000 		.4byte	.LASF16
+ 844 00b8 41030000 		.4byte	.LASF16
  845 00bc 02       		.uleb128 0x2
  846 00bd 04       		.byte	0x4
  847 00be 07       		.byte	0x7
- 848 00bf A9020000 		.4byte	.LASF17
+ 848 00bf 9D020000 		.4byte	.LASF17
  849 00c3 06       		.uleb128 0x6
  850 00c4 61000000 		.4byte	.LASF18
  851 00c8 01       		.byte	0x1
@@ -1774,7 +1774,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  855 00d2 01       		.uleb128 0x1
  856 00d3 9C       		.byte	0x9c
  857 00d4 07       		.uleb128 0x7
- 858 00d5 21040000 		.4byte	.LASF19
+ 858 00d5 15040000 		.4byte	.LASF19
  859 00d9 01       		.byte	0x1
  860 00da 3D01     		.2byte	0x13d
  861 00dc 00000000 		.4byte	.LFB2
@@ -1798,17 +1798,17 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  879 0108 01       		.uleb128 0x1
  880 0109 9C       		.byte	0x9c
  881 010a 2F010000 		.4byte	0x12f
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 31
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 31
 
 
  882 010e 09       		.uleb128 0x9
- 883 010f 4C020000 		.4byte	.LASF23
+ 883 010f 40020000 		.4byte	.LASF23
  884 0113 01       		.byte	0x1
  885 0114 B101     		.2byte	0x1b1
  886 0116 77000000 		.4byte	0x77
  887 011a 00000000 		.4byte	.LLST0
  888 011e 0A       		.uleb128 0xa
- 889 011f 44030000 		.4byte	.LASF25
+ 889 011f 38030000 		.4byte	.LASF25
  890 0123 01       		.byte	0x1
  891 0124 B301     		.2byte	0x1b3
  892 0126 77000000 		.4byte	0x77
@@ -1830,7 +1830,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  908 014d 77000000 		.4byte	0x77
  909 0151 3F000000 		.4byte	.LLST2
  910 0155 0A       		.uleb128 0xa
- 911 0156 44030000 		.4byte	.LASF25
+ 911 0156 38030000 		.4byte	.LASF25
  912 015a 01       		.byte	0x1
  913 015b CC01     		.2byte	0x1cc
  914 015d 77000000 		.4byte	0x77
@@ -1858,12 +1858,12 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  936 0199 0C       		.uleb128 0xc
  937 019a 0E000000 		.4byte	.LVL12
  938 019e 9C030000 		.4byte	0x39c
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 32
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 32
 
 
  939 01a2 00       		.byte	0
  940 01a3 0B       		.uleb128 0xb
- 941 01a4 F7030000 		.4byte	.LASF28
+ 941 01a4 EB030000 		.4byte	.LASF28
  942 01a8 01       		.byte	0x1
  943 01a9 2402     		.2byte	0x224
  944 01ab 77000000 		.4byte	0x77
@@ -1879,7 +1879,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  954 01c5 77000000 		.4byte	0x77
  955 01c9 D6000000 		.4byte	.LLST5
  956 01cd 0A       		.uleb128 0xa
- 957 01ce 3A030000 		.4byte	.LASF29
+ 957 01ce 2E030000 		.4byte	.LASF29
  958 01d2 01       		.byte	0x1
  959 01d3 2702     		.2byte	0x227
  960 01d5 77000000 		.4byte	0x77
@@ -1901,7 +1901,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  976 0201 9C       		.byte	0x9c
  977 0202 15020000 		.4byte	0x215
  978 0206 0D       		.uleb128 0xd
- 979 0207 6B020000 		.4byte	.LASF31
+ 979 0207 5F020000 		.4byte	.LASF31
  980 020b 01       		.byte	0x1
  981 020c 6E02     		.2byte	0x26e
  982 020e 77000000 		.4byte	0x77
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  993 0226 9C       		.byte	0x9c
  994 0227 4C020000 		.4byte	0x24c
  995 022b 09       		.uleb128 0x9
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 33
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 33
 
 
  996 022c 5B000000 		.4byte	.LASF33
@@ -1927,14 +1927,14 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  999 0233 77000000 		.4byte	0x77
  1000 0237 0D010000 		.4byte	.LLST7
  1001 023b 0A       		.uleb128 0xa
- 1002 023c 14040000 		.4byte	.LASF34
+ 1002 023c 08040000 		.4byte	.LASF34
  1003 0240 01       		.byte	0x1
  1004 0241 8C02     		.2byte	0x28c
  1005 0243 77000000 		.4byte	0x77
  1006 0247 2E010000 		.4byte	.LLST8
  1007 024b 00       		.byte	0
  1008 024c 08       		.uleb128 0x8
- 1009 024d 97010000 		.4byte	.LASF35
+ 1009 024d 10020000 		.4byte	.LASF35
  1010 0251 01       		.byte	0x1
  1011 0252 A802     		.2byte	0x2a8
  1012 0254 00000000 		.4byte	.LFB10
@@ -1949,7 +1949,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1021 026a 8C020000 		.4byte	0x28c
  1022 026e 4C010000 		.4byte	.LLST9
  1023 0272 0A       		.uleb128 0xa
- 1024 0273 74020000 		.4byte	.LASF37
+ 1024 0273 68020000 		.4byte	.LASF37
  1025 0277 01       		.byte	0x1
  1026 0278 AA02     		.2byte	0x2aa
  1027 027a 77000000 		.4byte	0x77
@@ -1973,12 +1973,12 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1045 02a8 9C       		.byte	0x9c
  1046 02a9 F5020000 		.4byte	0x2f5
  1047 02ad 09       		.uleb128 0x9
- 1048 02ae B2020000 		.4byte	.LASF39
+ 1048 02ae A6020000 		.4byte	.LASF39
  1049 02b2 01       		.byte	0x1
  1050 02b3 C302     		.2byte	0x2c3
  1051 02b5 77000000 		.4byte	0x77
  1052 02b9 97010000 		.4byte	.LLST11
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 34
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 34
 
 
  1053 02bd 10       		.uleb128 0x10
@@ -2014,7 +2014,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1083 02f3 00       		.byte	0
  1084 02f4 00       		.byte	0
  1085 02f5 07       		.uleb128 0x7
- 1086 02f6 DB020000 		.4byte	.LASF40
+ 1086 02f6 CF020000 		.4byte	.LASF40
  1087 02fa 01       		.byte	0x1
  1088 02fb D502     		.2byte	0x2d5
  1089 02fd 00000000 		.4byte	.LFB12
@@ -2022,7 +2022,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1091 0305 01       		.uleb128 0x1
  1092 0306 9C       		.byte	0x9c
  1093 0307 07       		.uleb128 0x7
- 1094 0308 81010000 		.4byte	.LASF41
+ 1094 0308 FA010000 		.4byte	.LASF41
  1095 030c 01       		.byte	0x1
  1096 030d E402     		.2byte	0x2e4
  1097 030f 00000000 		.4byte	.LFB13
@@ -2030,7 +2030,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1099 0317 01       		.uleb128 0x1
  1100 0318 9C       		.byte	0x9c
  1101 0319 08       		.uleb128 0x8
- 1102 031a 8F020000 		.4byte	.LASF42
+ 1102 031a 83020000 		.4byte	.LASF42
  1103 031e 01       		.byte	0x1
  1104 031f F802     		.2byte	0x2f8
  1105 0321 00000000 		.4byte	.LFB14
@@ -2038,11 +2038,11 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1107 0329 01       		.uleb128 0x1
  1108 032a 9C       		.byte	0x9c
  1109 032b 3E030000 		.4byte	0x33e
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 35
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 35
 
 
  1110 032f 0D       		.uleb128 0xd
- 1111 0330 6B020000 		.4byte	.LASF31
+ 1111 0330 5F020000 		.4byte	.LASF31
  1112 0334 01       		.byte	0x1
  1113 0335 F802     		.2byte	0x2f8
  1114 0337 77000000 		.4byte	0x77
@@ -2050,7 +2050,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1116 033c 50       		.byte	0x50
  1117 033d 00       		.byte	0
  1118 033e 08       		.uleb128 0x8
- 1119 033f 14030000 		.4byte	.LASF43
+ 1119 033f 08030000 		.4byte	.LASF43
  1120 0343 01       		.byte	0x1
  1121 0344 1A03     		.2byte	0x31a
  1122 0346 00000000 		.4byte	.LFB15
@@ -2065,7 +2065,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1131 035c 77000000 		.4byte	0x77
  1132 0360 B8010000 		.4byte	.LLST12
  1133 0364 0A       		.uleb128 0xa
- 1134 0365 0A040000 		.4byte	.LASF45
+ 1134 0365 FE030000 		.4byte	.LASF45
  1135 0369 01       		.byte	0x1
  1136 036a 1C03     		.2byte	0x31c
  1137 036c 77000000 		.4byte	0x77
@@ -2078,7 +2078,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1144 0380 04020000 		.4byte	.LLST14
  1145 0384 00       		.byte	0
  1146 0385 13       		.uleb128 0x13
- 1147 0386 7D020000 		.4byte	.LASF53
+ 1147 0386 71020000 		.4byte	.LASF53
  1148 038a 04       		.byte	0x4
  1149 038b 5B       		.byte	0x5b
  1150 038c 6B000000 		.4byte	0x6b
@@ -2088,17 +2088,17 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1154 0399 03       		.byte	0x3
  1155 039a 3E03     		.2byte	0x33e
  1156 039c 14       		.uleb128 0x14
- 1157 039d BD020000 		.4byte	.LASF48
- 1158 03a1 BD020000 		.4byte	.LASF48
+ 1157 039d B1020000 		.4byte	.LASF48
+ 1158 03a1 B1020000 		.4byte	.LASF48
  1159 03a5 03       		.byte	0x3
  1160 03a6 3D03     		.2byte	0x33d
  1161 03a8 14       		.uleb128 0x14
- 1162 03a9 FA020000 		.4byte	.LASF49
- 1163 03ad FA020000 		.4byte	.LASF49
+ 1162 03a9 EE020000 		.4byte	.LASF49
+ 1163 03ad EE020000 		.4byte	.LASF49
  1164 03b1 03       		.byte	0x3
  1165 03b2 4403     		.2byte	0x344
  1166 03b4 00       		.byte	0
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 36
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 36
 
 
  1167              		.section	.debug_abbrev,"",%progbits
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1221 0034 00       		.byte	0
  1222 0035 00       		.byte	0
  1223 0036 05       		.uleb128 0x5
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 37
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 37
 
 
  1224 0037 35       		.uleb128 0x35
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1278 006f 01       		.byte	0x1
  1279 0070 3F       		.uleb128 0x3f
  1280 0071 19       		.uleb128 0x19
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 38
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 38
 
 
  1281 0072 03       		.uleb128 0x3
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1335 00a9 19       		.uleb128 0x19
  1336 00aa 03       		.uleb128 0x3
  1337 00ab 0E       		.uleb128 0xe
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 39
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 39
 
 
  1338 00ac 3A       		.uleb128 0x3a
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1392 00e5 26       		.uleb128 0x26
  1393 00e6 00       		.byte	0
  1394 00e7 49       		.uleb128 0x49
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 40
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 40
 
 
  1395 00e8 13       		.uleb128 0x13
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1449 0125 3C       		.uleb128 0x3c
  1450 0126 19       		.uleb128 0x19
  1451 0127 6E       		.uleb128 0x6e
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 41
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 41
 
 
  1452 0128 0E       		.uleb128 0xe
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1506 0068 0100     		.2byte	0x1
  1507 006a 51       		.byte	0x51
  1508 006b 08000000 		.4byte	.LVL7
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 42
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 42
 
 
  1509 006f 0C000000 		.4byte	.LVL9
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1563 00fe 73       		.byte	0x73
  1564 00ff 00       		.sleb128 0
  1565 0100 0A       		.byte	0xa
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 43
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 43
 
 
  1566 0101 6003     		.2byte	0x360
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1620 0184 08000000 		.4byte	.LVL32
  1621 0188 14000000 		.4byte	.LVL35
  1622 018c 0100     		.2byte	0x1
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 44
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 44
 
 
  1623 018e 54       		.byte	0x54
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1677 0213 58000000 		.4byte	.LFE15
  1678 0217 0200     		.2byte	0x2
  1679 0219 73       		.byte	0x73
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 45
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 45
 
 
  1680 021a 00       		.sleb128 0
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1734 0024 18000000 		.4byte	.LFE5
  1735 0028 00000000 		.4byte	.LFB6
  1736 002c 2C000000 		.4byte	.LFE6
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 46
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 46
 
 
  1737 0030 00000000 		.4byte	.LFB7
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1771 005b 6C657665 		.ascii	"level\000"
  1771      6C00
  1772              	.LASF18:
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 47
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 47
 
 
  1773 0061 55617274 		.ascii	"UartPC_UartInit\000"
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1795      65642069 
  1795      6E7400
  1796              	.LASF26:
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 48
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 48
 
 
  1797 011e 72784461 		.ascii	"rxData\000"
@@ -2847,158 +2847,158 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1807      61727453 
  1807      65745274 
  1807      73466966 
- 1808              	.LASF41:
- 1809 0181 55617274 		.ascii	"UartPC_UartDisableCts\000"
- 1809      50435F55 
- 1809      61727444 
- 1809      69736162 
- 1809      6C654374 
- 1810              	.LASF35:
- 1811 0197 55617274 		.ascii	"UartPC_UartPutString\000"
- 1811      50435F55 
- 1811      61727450 
- 1811      75745374 
- 1811      72696E67 
- 1812              	.LASF9:
- 1813 01ac 75696E74 		.ascii	"uint16\000"
- 1813      313600
- 1814              	.LASF10:
- 1815 01b3 75696E74 		.ascii	"uint32\000"
- 1815      333200
- 1816              	.LASF52:
- 1817 01ba 433A5C55 		.ascii	"C:\\Users\\gcristini\\OneDrive - Datalogic S.p.a\\D"
- 1817      73657273 
- 1817      5C676372 
- 1817      69737469 
- 1817      6E695C4F 
- 1818 01e9 6174615C 		.ascii	"ata\\PhytonWorkspace\\AutomatedBatterySwap\\PSOC4\\"
- 1818      50687974 
- 1818      6F6E576F 
- 1818      726B7370 
- 1818      6163655C 
- 1819 0218 576F726B 		.ascii	"Workspace01\\AutomatedBatterySwap.cydsn\000"
- 1819      73706163 
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 49
+ 1808              	.LASF52:
+ 1809 0181 433A5C55 		.ascii	"C:\\Users\\gcristini\\OneDrive - Datalogic S.p.a\\D"
+ 1809      73657273 
+ 1809      5C676372 
+ 1809      69737469 
+ 1809      6E695C4F 
+ 1810 01b0 6174615C 		.ascii	"ata\\PhytonWorkspace\\AutomatedBatterySwap\\PSOC4\\"
+ 1810      50687974 
+ 1810      6F6E576F 
+ 1810      726B7370 
+ 1810      6163655C 
+ 1811 01df 4175746F 		.ascii	"AutomatedBatterySwap.cydsn\000"
+ 1811      6D617465 
+ 1811      64426174 
+ 1811      74657279 
+ 1811      53776170 
+ 1812              	.LASF41:
+ 1813 01fa 55617274 		.ascii	"UartPC_UartDisableCts\000"
+ 1813      50435F55 
+ 1813      61727444 
+ 1813      69736162 
+ 1813      6C654374 
+ 1814              	.LASF35:
+ 1815 0210 55617274 		.ascii	"UartPC_UartPutString\000"
+ 1815      50435F55 
+ 1815      61727450 
+ 1815      75745374 
+ 1815      72696E67 
+ 1816              	.LASF9:
+ 1817 0225 75696E74 		.ascii	"uint16\000"
+ 1817      313600
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 49
 
 
- 1819      6530315C 
- 1819      4175746F 
- 1819      6D617465 
+ 1818              	.LASF10:
+ 1819 022c 75696E74 		.ascii	"uint32\000"
+ 1819      333200
  1820              	.LASF8:
- 1821 023f 756E7369 		.ascii	"unsigned int\000"
+ 1821 0233 756E7369 		.ascii	"unsigned int\000"
  1821      676E6564 
  1821      20696E74 
  1821      00
  1822              	.LASF23:
- 1823 024c 61646472 		.ascii	"address\000"
+ 1823 0240 61646472 		.ascii	"address\000"
  1823      65737300 
  1824              	.LASF7:
- 1825 0254 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1825 0248 6C6F6E67 		.ascii	"long long unsigned int\000"
  1825      206C6F6E 
  1825      6720756E 
  1825      7369676E 
  1825      65642069 
  1826              	.LASF31:
- 1827 026b 706F6C61 		.ascii	"polarity\000"
+ 1827 025f 706F6C61 		.ascii	"polarity\000"
  1827      72697479 
  1827      00
  1828              	.LASF37:
- 1829 0274 62756649 		.ascii	"bufIndex\000"
+ 1829 0268 62756649 		.ascii	"bufIndex\000"
  1829      6E646578 
  1829      00
  1830              	.LASF53:
- 1831 027d 55617274 		.ascii	"UartPC_IntrTxMask\000"
+ 1831 0271 55617274 		.ascii	"UartPC_IntrTxMask\000"
  1831      50435F49 
  1831      6E747254 
  1831      784D6173 
  1831      6B00
  1832              	.LASF42:
- 1833 028f 55617274 		.ascii	"UartPC_UartSetCtsPolarity\000"
+ 1833 0283 55617274 		.ascii	"UartPC_UartSetCtsPolarity\000"
  1833      50435F55 
  1833      61727453 
  1833      65744374 
  1833      73506F6C 
  1834              	.LASF17:
- 1835 02a9 73697A65 		.ascii	"sizetype\000"
+ 1835 029d 73697A65 		.ascii	"sizetype\000"
  1835      74797065 
  1835      00
  1836              	.LASF39:
- 1837 02b2 74784461 		.ascii	"txDataByte\000"
+ 1837 02a6 74784461 		.ascii	"txDataByte\000"
  1837      74614279 
  1837      746500
  1838              	.LASF48:
- 1839 02bd 55617274 		.ascii	"UartPC_SpiUartReadRxData\000"
+ 1839 02b1 55617274 		.ascii	"UartPC_SpiUartReadRxData\000"
  1839      50435F53 
  1839      70695561 
  1839      72745265 
  1839      61645278 
  1840              	.LASF14:
- 1841 02d6 63686172 		.ascii	"char\000"
+ 1841 02ca 63686172 		.ascii	"char\000"
  1841      00
  1842              	.LASF40:
- 1843 02db 55617274 		.ascii	"UartPC_UartEnableCts\000"
+ 1843 02cf 55617274 		.ascii	"UartPC_UartEnableCts\000"
  1843      50435F55 
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 50
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 50
 
 
  1843      61727445 
  1843      6E61626C 
  1843      65437473 
  1844              	.LASF2:
- 1845 02f0 73686F72 		.ascii	"short int\000"
+ 1845 02e4 73686F72 		.ascii	"short int\000"
  1845      7420696E 
  1845      7400
  1846              	.LASF49:
- 1847 02fa 55617274 		.ascii	"UartPC_SpiUartWriteTxData\000"
+ 1847 02ee 55617274 		.ascii	"UartPC_SpiUartWriteTxData\000"
  1847      50435F53 
  1847      70695561 
  1847      72745772 
  1847      69746554 
  1848              	.LASF43:
- 1849 0314 55617274 		.ascii	"UartPC_UartSendBreakBlocking\000"
+ 1849 0308 55617274 		.ascii	"UartPC_UartSendBreakBlocking\000"
  1849      50435F55 
  1849      61727453 
  1849      656E6442 
  1849      7265616B 
  1850              	.LASF4:
- 1851 0331 6C6F6E67 		.ascii	"long int\000"
+ 1851 0325 6C6F6E67 		.ascii	"long int\000"
  1851      20696E74 
  1851      00
  1852              	.LASF29:
- 1853 033a 746D7053 		.ascii	"tmpStatus\000"
+ 1853 032e 746D7053 		.ascii	"tmpStatus\000"
  1853      74617475 
  1853      7300
  1854              	.LASF25:
- 1855 0344 6D617463 		.ascii	"matchReg\000"
+ 1855 0338 6D617463 		.ascii	"matchReg\000"
  1855      68526567 
  1855      00
  1856              	.LASF16:
- 1857 034d 6C6F6E67 		.ascii	"long double\000"
+ 1857 0341 6C6F6E67 		.ascii	"long double\000"
  1857      20646F75 
  1857      626C6500 
  1858              	.LASF50:
- 1859 0359 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1859 034d 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
  1859      43313120 
  1859      352E342E 
  1859      31203230 
  1859      31363036 
- 1860 038c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 1860 0380 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
  1860      20726576 
  1860      6973696F 
  1860      6E203233 
  1860      37373135 
- 1861 03bf 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 1861 03b3 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
  1861      67202D66 
  1861      66756E63 
  1861      74696F6E 
  1861      2D736563 
  1862              	.LASF0:
- 1863 03eb 7369676E 		.ascii	"signed char\000"
+ 1863 03df 7369676E 		.ascii	"signed char\000"
  1863      65642063 
  1863      68617200 
  1864              	.LASF28:
- 1865 03f7 55617274 		.ascii	"UartPC_UartGetByte\000"
-ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 51
+ 1865 03eb 55617274 		.ascii	"UartPC_UartGetByte\000"
+ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccKZMu2g.s 			page 51
 
 
  1865      50435F55 
@@ -3006,16 +3006,16 @@ ARM GAS  C:\Users\GCRIST~1\AppData\Local\Temp\ccn6gWIf.s 			page 1
  1865      65744279 
  1865      746500
  1866              	.LASF45:
- 1867 040a 74784374 		.ascii	"txCtrlReg\000"
+ 1867 03fe 74784374 		.ascii	"txCtrlReg\000"
  1867      726C5265 
  1867      6700
  1868              	.LASF34:
- 1869 0414 75617274 		.ascii	"uartFlowCtrl\000"
+ 1869 0408 75617274 		.ascii	"uartFlowCtrl\000"
  1869      466C6F77 
  1869      4374726C 
  1869      00
  1870              	.LASF19:
- 1871 0421 55617274 		.ascii	"UartPC_UartPostEnable\000"
+ 1871 0415 55617274 		.ascii	"UartPC_UartPostEnable\000"
  1871      50435F55 
  1871      61727450 
  1871      6F737445 

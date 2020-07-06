@@ -2,10 +2,7 @@ from CustomSerial import CustomSerial
 from Timer import Timer
 from ParseXml import XmlDictConfig
 from xml.etree import ElementTree
-
-class RelayStatusEnum:
-    RS_ON = "on"
-    RS_OFF = "off"
+from Enums import Enums as en
 
 
 class AutomatedBatterySwap(object):
@@ -15,12 +12,34 @@ class AutomatedBatterySwap(object):
     # ****************************** #
     def __init__(self):
         """"""
+        # Global Variables
         self._config_dict = None
         self._serial_relay = None
         self._global_timer = None
+        self._wait_timer = None
+        self._wait_time = None
 
-        self._relay_status = RelayStatusEnum.RS_OFF
-        pass
+        self._toggle_status = en.RelayStatusEnum.RS_OFF
+
+        self._abs_state_machine_fun_dict = {
+            en.BatterySwapStateEnum.ABS_STATE_INIT: self._init_state_manager,
+            en.BatterySwapStateEnum.ABS_STATE_ON: self._on_state_manager,
+            en.BatterySwapStateEnum.ABS_STATE_OFF: self._off_state_manager,
+            en.BatterySwapStateEnum.ABS_STATE_WAIT: self._wait_state_manager,
+            en.BatterySwapStateEnum.ABS_STATE_STOP: self._stop_state_manager,
+        }
+
+        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+        self._last_abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+
+        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_INIT
+        self._last_abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_INIT
+
+        self._current_loop = None
+        self._exit_condition = False
+
+    pass
+
 
     def _parse_config_file(self):
         """"""
@@ -38,54 +57,189 @@ class AutomatedBatterySwap(object):
     def _global_timer_init(self):
         """"""
         self._global_timer = Timer()
+        self._global_timer.start()
         pass
 
-    def relay_on(self):
+    def _init_state_manager(self):
+        # Initialize global timer
+        self._global_timer_init()
+
+        # Initialize and wait timer
+        self._wait_timer = Timer()
+
+        # Start from iteration 0
+        self._current_loop = 0
+
+        # Go to "On" state manager
+        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_ON
+        pass
+
+    def _on_state_manager(self):
+        """ Relay On state manager """
+        if not self._exit_condition:
+            print ("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
+
+            # Put all relay at ON state
+            self.relay_on("all")
+
+            # Relay are in on state
+            self._toggle_status = en.RelayStatusEnum.RS_ON
+
+            # Save last state
+            self._last_abs_state = self._abs_state
+
+            # Go to wait state manager
+            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_WAIT
+
+        else:
+            # Save last state
+            self._last_abs_state = self._abs_state
+            # Go to stop state
+            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
+
+        pass
+
+    def _off_state_manager(self):
+        """ Relay On state manager """
+        if not self._exit_condition:
+
+            # Put all relay at OFF state
+            self.relay_off("all")
+
+            # Relay are in off state
+            self._toggle_status = en.RelayStatusEnum.RS_OFF
+
+            # Increase current loop
+            self._current_loop += 1
+
+            # Save last state
+            self._last_abs_state = self._abs_state
+
+            # Go to wait state manager
+            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_WAIT
+        else:
+            # Save last state
+            self._last_abs_state = self._abs_state
+            # Go to stop state
+            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
+
+        pass
+
+    def _wait_state_manager(self):
         """"""
-        print("Relay On")
-        self._serial_relay.serial_write("on\r")
-        self._relay_status = RelayStatusEnum.RS_ON
+        if not self._exit_condition:
+            if (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_WAIT and
+                (self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_ON or
+                 self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_OFF)):
+                #print("\n--WAIT STATE: reset timer")
+
+                # Restart timer or started if not possible
+                try:
+                    self._wait_timer.reset()
+                except:
+                    self._wait_timer.start()
+                # Store the last state
+                self._last_abs_state = self._abs_state
+
+            elif self._toggle_status == en.RelayStatusEnum.RS_ON:
+                if self._wait_timer.elapsed_time_s >= float(self._config_dict["Loop"]["time_on_s"]):
+
+                    # Store the last state
+                    self._last_abs_state = self._abs_state
+                    # Go to "relay off" state manager
+                    self._abs_state = en.BatterySwapStateEnum.ABS_STATE_OFF
+                else:
+                    pass
+
+            elif self._toggle_status == en.RelayStatusEnum.RS_OFF:
+                if self._wait_timer.elapsed_time_s >= float(self._config_dict["Loop"]["time_off_s"]):
+
+                    # Store the last state
+                    self._last_abs_state = self._abs_state
+                    # Go to "relay off" state manager
+                    self._abs_state = en.BatterySwapStateEnum.ABS_STATE_ON
+                else:
+                    pass
+            else:
+                pass
+        else:
+            # Save last state
+            self._last_abs_state = self._abs_state
+            # Go to stop state
+            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
 
         pass
 
-    def relay_off(self):
+    def _stop_state_manager(self):
         """"""
-        print("Relay Off")
-        self._serial_relay.serial_write("off\r")
-        self._relay_status = RelayStatusEnum.RS_OFF
+        print ("\n--- Stop... ---")
+        self.relay_off("all")
+
+        # Store last state
+        self._last_abs_state=self._abs_state
+
+        # Stop Timers
+        self._global_timer.stop()
+        self._wait_timer.stop()
         pass
 
-    def _toggle_relay(self):
-        if self._relay_status == RelayStatusEnum.RS_ON:
-            self.relay_off()
-        elif self._relay_status == RelayStatusEnum.RS_OFF:
-            self.relay_on()
+    def _abs_state_machine_manager(self):
+        # Get function from dictionary
+        fun = self._abs_state_machine_fun_dict.get(self._abs_state)
+
+        # Execute function
+        fun()
+        return
 
     # ****************************** #
     # ******* Public Methods ******* #
     # ****************************** #
-
     def init(self):
-
         # Parse config file
         self._parse_config_file()
 
         # Initialize serial relay
         self._serial_relay_init()
-
-        # Initialize global timer
-        self._global_timer_init()
         pass
 
-    def run(self):
-        #self.relay_on()
-        self._global_timer.start()
+    def relay_on(self, relay):
+        """ Put on the selected relay """
+        cmd = "{relay}_on\r".format(relay=relay)
+        #print("Command " + cmd)
+        self._serial_relay.serial_write(cmd)
 
-        while True:
-            if (self._global_timer.elapsed_time_s >= int(self._config_dict["Loop"]["time_s"])):
-                self._toggle_relay()
-                self._global_timer.reset()
+        pass
 
+    def relay_off(self, relay):
+        """ Put off the selected relay """
+        cmd = "{relay}_off\r".format(relay=relay)
+        #print("\nCommand" + cmd)
+        self._serial_relay.serial_write(cmd)
+
+        pass
+
+    def start_loop(self):
+        """ """
+        #self._abs_state = en.BatterySwapCommandsEnum.ABS_CMD_START
+
+        while not (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP and
+                    self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP):
+
+            # Run state machine at the current state
+            self._abs_state_machine_manager()
+
+            # Evaluate exit condition
+            self._exit_condition = (self._global_timer.elapsed_time_hour >= float(self._config_dict["Loop"]["time_test_hour"]) or
+                                    (self._current_loop > int(self._config_dict["Loop"]["n_loop"])-1) or
+                                    self._abs_cmd == en.BatterySwapCommandsEnum.ABS_CMD_STOP)
+
+        print ("\n--- Finished ----")
+        print ("-Tot. loops: {loop}".format(loop=self._current_loop))
+        print ("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_hour))
+
+    def stop_loop(self):
+        """ """
+        self._abs_state = en.BatterySwapCommandsEnum.ABS_CMD_STOP
         pass
 
 
@@ -97,5 +251,5 @@ if __name__ == '__main__':
     test.init()
 
     print("--- Run ---")
-    test.run()
+    test.start_loop()
 
