@@ -20,6 +20,7 @@
 void pollUart(void);
 void init(void);
 void parseCommand(const char *command);
+void clearBuffer(uint8* buffer, uint8 bufferSize);
 
 int main(void)
 {
@@ -94,16 +95,27 @@ void pollUart()
             parseCommand((const char*) rxCommand);
 
             /* Clear buffer and index */
-            for (rxDataIndex = 0; rxDataIndex < BUFFER_SIZE; rxDataIndex++)
+            /*for (rxDataIndex = 0; rxDataIndex < BUFFER_SIZE; rxDataIndex++)
             {
                 rxData[rxDataIndex] = 0u;
-            }
+            }*/
+
+            clearBuffer(rxData, BUFFER_SIZE);
 
             rxDataIndex = -1;
         }
 
         rxDataIndex++;
     }
+}
+
+void clearBuffer(uint8* buffer, uint8 bufferSize)
+{
+    uint8 i;
+    for (i = 0; i < bufferSize; i++)
+            {
+                buffer[i] = 0u;
+            }
 }
 
 /* [] END OF FILE */
