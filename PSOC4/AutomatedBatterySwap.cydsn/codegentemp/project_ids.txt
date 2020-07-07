@@ -1,6 +1,0 @@
-C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\AutomatedBatterySwap.cyprj|7ae03ace-3649-43ca-9965-dc81030edc34
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|91d0adc8-d098-481f-ac6a-998c9b0a3d63
-C:\Users\gcristini\OneDrive - Datalogic S.p.a\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\Downloads ( 4.3).cyprj|b5b050f1-25e5-4c07-93a5-7c78e71c2f2e
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|ca90aadb-0522-4ca3-ac65-7a0409652319
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|26eca4cf-6347-4de2-bba3-34726a1ac475
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|d505f321-0284-41c8-8d61-0eb3df1e6a81
