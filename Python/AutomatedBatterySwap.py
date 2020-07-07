@@ -170,17 +170,20 @@ class AutomatedBatterySwap(object):
 
     def _stop_state_manager(self):
         """"""
-        print ("\n--- Stop... ---")
+        #print ("\n--- Stop ---")
 
         # Put off al relays
         self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
-        # Store last state
-        self._last_abs_state = self._abs_state
-
         # Stop Timers
         self._global_timer.stop()
-        self._wait_timer.stop()
+        try:
+            self._wait_timer.stop()
+        except TimerError:
+            pass
+
+        # Store last state
+        self._last_abs_state = self._abs_state
 
         pass
 
@@ -233,7 +236,8 @@ class AutomatedBatterySwap(object):
 
     def start_loop(self):
         """ """
-        #self._abs_state = en.BatterySwapCommandsEnum.ABS_CMD_START
+        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
+        self._last_abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
 
         while not (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP and
                     self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP):

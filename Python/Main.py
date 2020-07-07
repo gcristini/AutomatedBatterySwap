@@ -1,7 +1,7 @@
 from AutomatedBatterySwap import AutomatedBatterySwap
 from Enums import Enums as en
 import colorama as cm
-
+from CustomThread import CustomThread
 
 class Main(object):
 
@@ -19,6 +19,8 @@ class Main(object):
 
         self._main_app_state = None
         self._last_main_app_state = None
+
+        self._abs_thread = None
 
     pass
 
@@ -64,7 +66,10 @@ class Main(object):
         # Initialize AutomatedBatterySwap
         self._abs.init()
 
-        print(cm.Fore.MAGENTA  + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
+        # Create thread that run loop test function
+        self._abs_thread = CustomThread(runnable=self._abs.start_loop)
+
+        print(cm.Fore.MAGENTA + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
 
         # Store last state
         self._store_last_state()
@@ -111,8 +116,27 @@ class Main(object):
         """"""
         print(cm.Fore.CYAN + cm.Style.DIM + "\n---------------------")
         print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Loop Test ***")
-        # Start loop test
-        self._abs.start_loop()
+
+        # Run thread
+        try:
+            # Start loop test thread
+            self._abs_thread.start()
+        except RuntimeError:
+            self._abs_thread = CustomThread(runnable=self._abs.start_loop)
+            self._abs_thread.start()
+
+        # You can stop the loop with a stop command
+        while self._abs_thread.is_alive():
+            stop_cmd = input()
+            if stop_cmd == en.MainAppCommandsEnum.MA_CMD_STOP:
+                self._abs.stop_loop()
+                break
+            else:
+                pass
+
+            pass
+
+        self._abs_thread.join()
 
         # Store last state
         self._store_last_state()
@@ -135,6 +159,7 @@ class Main(object):
             # Store last state
             self._store_last_state()
         else:
+            # Wait for command
             cmd = input(cm.Fore.RED + cm.Style.DIM + "- Please enter a command: ")
 
             # Check if command is valid and relative to main app
@@ -164,7 +189,7 @@ class Main(object):
 
     def _exit_state_manager(self):
         """"""
-        print("goodbye!")
+        print(cm.Fore.MAGENTA + " \n---------- GOODBYE!!! ---------- ")
 
         # Store last state
         self._store_last_state()

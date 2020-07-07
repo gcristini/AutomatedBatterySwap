@@ -31,6 +31,7 @@ class Enums:
         # State machine Commands
         MA_CMD_RUN_LOOP = "loop"
         MA_CMD_RUN_DEBUG = "debug"
+        MA_CMD_STOP = "stop"
         MA_CMD_EXIT = "exit"
         MA_CMD_HELP = "help"
 
