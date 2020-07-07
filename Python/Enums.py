@@ -42,7 +42,6 @@ class Enums:
         def values(cls):
             return [value for name, value in vars(cls).items() if name.isupper()]
 
-
     class RelayCommandsEnum:
         # Relay commands
         RC_PACK_P_ON = "packp_on"
@@ -65,6 +64,7 @@ class Enums:
         @classmethod
         def values(cls):
             return [value for name, value in vars(cls).items() if name.isupper()]
+
 
 if __name__ == "__main__":
     test=Enums.MainAppCommandsEnum

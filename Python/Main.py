@@ -22,6 +22,35 @@ class Main(object):
 
     pass
 
+    # ---------------------------------------------------------------- #
+    # ----------------------- Private Methods ------------------------ #
+    # ---------------------------------------------------------------- #
+    @staticmethod
+    def _print_help(mode):
+        """"""
+        if mode == "main":
+            print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "--- Show Usage ---")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-loop: run loop test")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-debug: enter in debug mode")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from script")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------\n")
+        elif mode == "debug":
+            print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "--- Show Usage ---")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-{relay}_{state}")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "\trelay: [packp, sda, scl, detect, ntc, all]")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "\tstate: [on, off]")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from debug mode")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
+            print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------\n")
+
+        else:
+            pass
+        pass
+
+    # ------ STATE MACHINE ------ #
     def _store_last_state(self):
         """"""
         self._last_main_app_state = self._main_app_state
@@ -35,7 +64,7 @@ class Main(object):
         # Initialize AutomatedBatterySwap
         self._abs.init()
 
-        print(cm.Fore.GREEN + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
+        print(cm.Fore.MAGENTA  + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
 
         # Store last state
         self._store_last_state()
@@ -47,7 +76,6 @@ class Main(object):
     def _wait_cmd_state_manager(self):
         """"""
         cmd = input("- Please enter a command: ")
-        print('\n')
 
         if cmd == en.MainAppCommandsEnum.MA_CMD_RUN_LOOP:
             # Store last state
@@ -64,7 +92,7 @@ class Main(object):
             self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_DEBUG
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
-            print("HELP\n")  # TODO Show usage
+            self._print_help("main")
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:
             # Store last state
@@ -74,13 +102,14 @@ class Main(object):
             self._main_app_state = en.MainAppStateEnum.MA_STATE_EXIT
 
         else:
-            print("enter a valid command: show usage")  # TODO
+            print("--- Wrong command: use a valid command!")
+            self._print_help("main")
 
     pass
 
     def _run_loop_state_manager(self):
         """"""
-        print(cm.Fore.CYAN + cm.Style.DIM + "---------------------")
+        print(cm.Fore.CYAN + cm.Style.DIM + "\n---------------------")
         print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Loop Test ***")
         # Start loop test
         self._abs.start_loop()
@@ -88,6 +117,7 @@ class Main(object):
         # Store last state
         self._store_last_state()
 
+        print(cm.Fore.CYAN + cm.Style.DIM + "*** Exit Loop Test ***")
         print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
 
         # Go to "Wait Command" state
@@ -117,16 +147,18 @@ class Main(object):
                     # Go to "Wait command" state
                     self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
                 elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
-                    print("HELP USAGE TODO")  # TODO
+                    # Print Debug Help
+                    self._print_help("debug")  # TODO
                 else:
-                    print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command\n")
+                    print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command!\n")
+                    self._print_help("debug")
 
             # Check if command is valid and is a relay command
             elif cmd in en.RelayCommandsEnum.values():
                 # Drive relay
                 self._abs.drive_relay(cmd)
             else:
-                print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command\n")
+                print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command!\n")
 
         pass
 
@@ -148,6 +180,9 @@ class Main(object):
 
         return
 
+    # ---------------------------------------------------------------- #
+    # ------------------------ Public Methods ------------------------ #
+    # ---------------------------------------------------------------- #
     def init(self):
         """"""
         # Initialize Colorama library
