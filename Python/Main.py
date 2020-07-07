@@ -2,13 +2,14 @@ from AutomatedBatterySwap import AutomatedBatterySwap
 from Enums import Enums as en
 import colorama as cm
 
+
 class Main(object):
 
     def __init__(self):
         """"""
         self._abs = None
 
-        self._main_app_fun_dict= {
+        self._main_app_fun_dict = {
             en.MainAppStateEnum.MA_STATE_INIT: self._init_state_manager,
             en.MainAppStateEnum.MA_STATE_WAIT_CMD: self._wait_cmd_state_manager,
             en.MainAppStateEnum.MA_STATE_RUN_LOOP: self._run_loop_state_manager,
@@ -21,6 +22,11 @@ class Main(object):
 
     pass
 
+    def _store_last_state(self):
+        """"""
+        self._last_main_app_state = self._main_app_state
+        pass
+
     def _init_state_manager(self):
         """"""
         # Instantiate AutomatedBatterySwap
@@ -32,7 +38,7 @@ class Main(object):
         print(cm.Fore.GREEN + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
 
         # Store last state
-        self._last_main_app_state = self._main_app_state
+        self._store_last_state()
 
         # Go to "Wait Command state"
         self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
@@ -40,33 +46,49 @@ class Main(object):
 
     def _wait_cmd_state_manager(self):
         """"""
-        cmd = input("Please enter a command: ")
+        cmd = input("- Please enter a command: ")
         print('\n')
 
         if cmd == en.MainAppCommandsEnum.MA_CMD_RUN_LOOP:
             # Store last state
-            self._last_main_app_state = self._main_app_state
+            self._store_last_state()
 
             # Go to "run loop" state
             self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_LOOP
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_RUN_DEBUG:
             # Store last state
-            self._last_main_app_state = self._main_app_state
+            self._store_last_state()
 
             # Go to "run loop" state
             self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_DEBUG
+
+        elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
+            print("HELP\n")  # TODO Show usage
+
+        elif cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:
+            # Store last state
+            self._store_last_state()
+
+            # Go to "exit" state
+            self._main_app_state = en.MainAppStateEnum.MA_STATE_EXIT
+
+        else:
+            print("enter a valid command: show usage")  # TODO
 
     pass
 
     def _run_loop_state_manager(self):
         """"""
-        print(cm.Fore.CYAN + cm.Style.DIM + "Run Loop Test\n")
+        print(cm.Fore.CYAN + cm.Style.DIM + "---------------------")
+        print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Loop Test ***")
         # Start loop test
         self._abs.start_loop()
 
         # Store last state
-        self._last_main_app_state = self._main_app_state
+        self._store_last_state()
+
+        print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
 
         # Go to "Wait Command" state
         self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
@@ -77,36 +99,44 @@ class Main(object):
         # Transition to the state...
         if (self._main_app_state == en.MainAppStateEnum.MA_STATE_RUN_DEBUG and
                 self._last_main_app_state != en.MainAppStateEnum.MA_STATE_RUN_DEBUG):
-            print(cm.Fore.CYAN + cm.Style.DIM + "Debug Mode\n")
+            print(cm.Fore.RED + cm.Style.DIM + "------------------")
+            print(cm.Fore.RED + cm.Style.DIM + "*** Debug Mode ***\n")
 
             # Store last state
-            self._last_main_app_state = self._main_app_state
+            self._store_last_state()
         else:
-            cmd = input("Debug: Please enter a command: ")
+            cmd = input(cm.Fore.RED + cm.Style.DIM + "- Please enter a command: ")
 
             # Check if command is valid and relative to main app
             if cmd in en.MainAppCommandsEnum.values():
                 if cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:
-                    print(cm.Fore.CYAN + cm.Style.DIM + "Exit Debug Mode\n")
+                    print(cm.Fore.RED + cm.Style.DIM + "\n*** Exit Debug Mode ***")
+                    print(cm.Fore.RED + cm.Style.DIM + "----------------------------------------\n")
 
+                    # self._store_last_state()
                     # Go to "Wait command" state
                     self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
                 elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
-                    print ("HELP USAGE TODO") #TODO
+                    print("HELP USAGE TODO")  # TODO
                 else:
-                    print("Wrong command: use a valid command")
+                    print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command\n")
 
             # Check if command is valid and is a relay command
             elif cmd in en.RelayCommandsEnum.values():
                 # Drive relay
                 self._abs.drive_relay(cmd)
             else:
-                print("Wrong command: use a valid command")
+                print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command\n")
 
         pass
 
     def _exit_state_manager(self):
         """"""
+        print("goodbye!")
+
+        # Store last state
+        self._store_last_state()
+
         pass
 
     def _main_app_state_machine_manager(self):
@@ -131,9 +161,9 @@ class Main(object):
 
     def run(self):
 
-        while True:
+        while not (self._main_app_state == en.MainAppStateEnum.MA_STATE_EXIT and
+                   self._last_main_app_state == en.MainAppStateEnum.MA_STATE_EXIT):
             self._main_app_state_machine_manager()
-
 
 
 if __name__ == "__main__":
