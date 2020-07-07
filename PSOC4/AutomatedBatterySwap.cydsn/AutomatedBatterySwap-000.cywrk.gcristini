@@ -220,7 +220,6 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\Generated_Source\PSoC4\Pin_1.c" />
 <name v=".\AutomatedBatterySwap.cydwr" />
 <name v=".\TopDesign\TopDesign.cysch" />
 <name v=".\main.c" />
@@ -231,7 +230,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1123, 466" SelectedTabbedMdiWindow="600350f2-1234-4eff-9588-3dbff04bace0"><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\Generated_Source\PSoC4\Pin_1.c" Guid="e0914597-afba-46d1-a1ec-672f252b0ae8" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\AutomatedBatterySwap.cydwr" Guid="0c75690b-4bd9-45f3-9744-412848d00559" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\TopDesign\TopDesign.cysch" Guid="e23ba89c-d446-4183-837d-0f96545c2734" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\main.c" Guid="600350f2-1234-4eff-9588-3dbff04bace0" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="a4be3b52-add2-446a-a245-2682f00e75c8" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1123, 466" SelectedTabbedMdiWindow="5a86ffc0-489c-4fb7-856c-4dc04f974386"><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\AutomatedBatterySwap.cydwr" Guid="0c75690b-4bd9-45f3-9744-412848d00559" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\TopDesign\TopDesign.cysch" Guid="e23ba89c-d446-4183-837d-0f96545c2734" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="a4be3b52-add2-446a-a245-2682f00e75c8" /><DocumentWindow Key="C:\Users\gcristini\OneDrive - Datalogic S.p.a\Data\PhytonWorkspace\AutomatedBatterySwap\PSOC4\AutomatedBatterySwap.cydsn\main.c" Guid="5a86ffc0-489c-4fb7-856c-4dc04f974386" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

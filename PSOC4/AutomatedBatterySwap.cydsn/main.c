@@ -13,7 +13,7 @@
 #include <string.h>
 
 #define BUFFER_SIZE 100
-#define forever for (;;)
+#define forever for (;;) /* Enjoy :) */
 
 #define RELAY_ON 1
 #define RELAY_OFF 0
@@ -25,11 +25,10 @@ void clearBuffer(uint8 *buffer, uint8 bufferSize);
 
 int main(void)
 {
-
-    /* Initializtion */
+    /* Initialization */
     init();
 
-    UartPC_UartPutString("Welcome\n");
+    //UartPC_UartPutString("Welcome\n");
 
     /* Main Loop */
     forever
@@ -46,25 +45,30 @@ void init(void)
 void parseCommand(char *command)
 {
     /* PINS ON */
-    if (!strcmp(command, "pack_p_on"))
+    if (!strcmp(command, "packp_on"))
     {
         pin_PackP_Write(RELAY_ON);
+        UartPC_UartPutString("Pack_P set on");
     }
     else if (!strcmp(command, "sda_on"))
     {
         pin_SDA_Write(RELAY_ON);
+        UartPC_UartPutString("SDA set on");
     }
     else if (!strcmp(command, "scl_on"))
     {
         pin_SCL_Write(RELAY_ON);
+        UartPC_UartPutString("SCL set on");
     }
     else if (!strcmp(command, "detect_on"))
     {
         pin_Detect_Write(RELAY_ON);
+        UartPC_UartPutString("Detect set on");
     }
     else if (!strcmp(command, "ntc_on"))
     {
         pin_NTC_Write(RELAY_ON);
+        UartPC_UartPutString("NTC set on");
     }
     else if (!strcmp (command, "all_on"))
     {
@@ -73,27 +77,33 @@ void parseCommand(char *command)
         pin_SCL_Write(RELAY_ON);
         pin_Detect_Write(RELAY_ON);
         pin_NTC_Write(RELAY_ON);
+        UartPC_UartPutString("All set on");
     }
     /* PINS OFF */
-    else if (!strcmp(command, "pack_p_off"))
+    else if (!strcmp(command, "packp_off"))
     {
         pin_PackP_Write(RELAY_OFF);
+        UartPC_UartPutString("Pack_P set off");
     }
     else if (!strcmp(command, "sda_off"))
     {
         pin_SDA_Write(RELAY_OFF);
+        UartPC_UartPutString("SDA set off");
     }
     else if (!strcmp(command, "scl_off"))
     {
         pin_SCL_Write(RELAY_OFF);
+        UartPC_UartPutString("SCL set off");
     }
     else if (!strcmp(command, "detect_off"))
     {
         pin_Detect_Write(RELAY_OFF);
+         UartPC_UartPutString("Detect set off");
     }
     else if (!strcmp(command, "ntc_off"))
     {
         pin_NTC_Write(RELAY_OFF);
+        UartPC_UartPutString("NTC set off");
     }
     else if (!strcmp (command, "all_off"))
     {
@@ -102,6 +112,7 @@ void parseCommand(char *command)
         pin_SCL_Write(RELAY_OFF);
         pin_Detect_Write(RELAY_OFF);
         pin_NTC_Write(RELAY_OFF);
+        UartPC_UartPutString("All set off");
     }
     else    
     {
