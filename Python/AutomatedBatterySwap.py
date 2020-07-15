@@ -1,4 +1,5 @@
-from CustomSerial import CustomSerial
+
+from SerialRelay import SerialRelay
 from Timer import *
 from ParseXml import XmlDictConfig
 from xml.etree import ElementTree
@@ -47,11 +48,11 @@ class AutomatedBatterySwap(object):
         pass
 
     def _serial_relay_init(self):
-        """"""
-        self._serial_relay = CustomSerial(port=self._config_dict["Serial"]["com"],
-                                          baudrate=self._config_dict["Serial"]["baudarate"])
-        self._serial_relay.serial_init()
-        pass
+          """"""
+          self._serial_relay = SerialRelay(port=self._config_dict["Serial"]["com"],
+                                           baudrate=self._config_dict["Serial"]["baudarate"])
+          self._serial_relay.init()
+          pass
 
     def _global_timer_init(self):
         """"""
@@ -79,7 +80,7 @@ class AutomatedBatterySwap(object):
             print("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
 
             # Put all relay at ON state
-            self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+            self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
 
             # Relay are in on state
             self._toggle_status = en.RelayStatusEnum.RS_ON
@@ -103,7 +104,7 @@ class AutomatedBatterySwap(object):
         if not self._exit_condition:
 
             # Put all relay at off state
-            self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
+            self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
             # Relay are in off state
             self._toggle_status = en.RelayStatusEnum.RS_OFF
@@ -173,7 +174,7 @@ class AutomatedBatterySwap(object):
         #print ("\n--- Stop ---")
 
         # Put off al relays
-        self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
+        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
         # Stop Timers
         self._global_timer.stop()
@@ -205,34 +206,6 @@ class AutomatedBatterySwap(object):
         # Initialize serial relay
         self._serial_relay_init()
         pass
-
-    def drive_relay(self, cmd):
-        """"""
-        # Concatenate command
-        fcmd = "{cmd}\r".format(cmd=cmd)
-
-        # Send command to relay
-        self._serial_relay.serial_write(fcmd)
-
-        pass
-
-    # def relay_on(self, relay):
-    #     """ Put on the selected relay """
-    #     cmd = "{relay}_on\r".format(relay=relay)
-    #     #print("Command " + cmd)
-    #     self._serial_relay.serial_write(cmd)
-    #
-    #     pass
-    #
-    # def relay_off(self, relay):
-    #     """ Put off the selected relay """
-    #     cmd = "{relay}_off\r".format(relay=relay)
-    #     #print("\nCommand" + cmd)
-    #     self._serial_relay.serial_write(cmd)
-    #
-    #     pass
-
-
 
     def start_loop(self):
         """ """
