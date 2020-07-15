@@ -4,10 +4,10 @@
 *.cyprj.*
 
 # Generated Assets and Resources
-*/Debug/
+Debug/
 Release/
 Export/
-*/codegentemp
+*/codegentemp/
 */Generated_Source
 *_datasheet.pdf
 *_timing.html
@@ -153,3 +153,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+PSOC4/AutomatedBatterySwap.cydsn/codegentemp/
