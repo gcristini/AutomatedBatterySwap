@@ -1,5 +1,5 @@
 from CustomSerial import CustomSerial
-from Timer import Timer
+from Timer import *
 from ParseXml import XmlDictConfig
 from xml.etree import ElementTree
 from Enums import Enums as en
@@ -40,7 +40,6 @@ class AutomatedBatterySwap(object):
 
     pass
 
-
     def _parse_config_file(self):
         """"""
         self._config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())
@@ -77,10 +76,10 @@ class AutomatedBatterySwap(object):
     def _on_state_manager(self):
         """ Relay On state manager """
         if not self._exit_condition:
-            print ("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
+            print("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
 
             # Put all relay at ON state
-            self.relay_on("all")
+            self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
 
             # Relay are in on state
             self._toggle_status = en.RelayStatusEnum.RS_ON
@@ -103,8 +102,8 @@ class AutomatedBatterySwap(object):
         """ Relay On state manager """
         if not self._exit_condition:
 
-            # Put all relay at OFF state
-            self.relay_off("all")
+            # Put all relay at off state
+            self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
             # Relay are in off state
             self._toggle_status = en.RelayStatusEnum.RS_OFF
@@ -131,12 +130,11 @@ class AutomatedBatterySwap(object):
             if (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_WAIT and
                 (self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_ON or
                  self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_OFF)):
-                #print("\n--WAIT STATE: reset timer")
 
                 # Restart timer or started if not possible
                 try:
                     self._wait_timer.reset()
-                except:
+                except TimerError:
                     self._wait_timer.start()
                 # Store the last state
                 self._last_abs_state = self._abs_state
@@ -172,15 +170,21 @@ class AutomatedBatterySwap(object):
 
     def _stop_state_manager(self):
         """"""
-        print ("\n--- Stop... ---")
-        self.relay_off("all")
+        #print ("\n--- Stop ---")
 
-        # Store last state
-        self._last_abs_state=self._abs_state
+        # Put off al relays
+        self.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
         # Stop Timers
         self._global_timer.stop()
-        self._wait_timer.stop()
+        try:
+            self._wait_timer.stop()
+        except TimerError:
+            pass
+
+        # Store last state
+        self._last_abs_state = self._abs_state
+
         pass
 
     def _abs_state_machine_manager(self):
@@ -202,25 +206,38 @@ class AutomatedBatterySwap(object):
         self._serial_relay_init()
         pass
 
-    def relay_on(self, relay):
-        """ Put on the selected relay """
-        cmd = "{relay}_on\r".format(relay=relay)
-        #print("Command " + cmd)
-        self._serial_relay.serial_write(cmd)
+    def drive_relay(self, cmd):
+        """"""
+        # Concatenate command
+        fcmd = "{cmd}\r".format(cmd=cmd)
+
+        # Send command to relay
+        self._serial_relay.serial_write(fcmd)
 
         pass
 
-    def relay_off(self, relay):
-        """ Put off the selected relay """
-        cmd = "{relay}_off\r".format(relay=relay)
-        #print("\nCommand" + cmd)
-        self._serial_relay.serial_write(cmd)
+    # def relay_on(self, relay):
+    #     """ Put on the selected relay """
+    #     cmd = "{relay}_on\r".format(relay=relay)
+    #     #print("Command " + cmd)
+    #     self._serial_relay.serial_write(cmd)
+    #
+    #     pass
+    #
+    # def relay_off(self, relay):
+    #     """ Put off the selected relay """
+    #     cmd = "{relay}_off\r".format(relay=relay)
+    #     #print("\nCommand" + cmd)
+    #     self._serial_relay.serial_write(cmd)
+    #
+    #     pass
 
-        pass
+
 
     def start_loop(self):
         """ """
-        #self._abs_state = en.BatterySwapCommandsEnum.ABS_CMD_START
+        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
+        self._last_abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
 
         while not (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP and
                     self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP):
@@ -233,13 +250,18 @@ class AutomatedBatterySwap(object):
                                     (self._current_loop > int(self._config_dict["Loop"]["n_loop"])-1) or
                                     self._abs_cmd == en.BatterySwapCommandsEnum.ABS_CMD_STOP)
 
-        print ("\n--- Finished ----")
-        print ("-Tot. loops: {loop}".format(loop=self._current_loop))
-        print ("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_hour))
+        # Reset state machine variables
+        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+        self._last_abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+
+        print("\n--- Finished ----")
+        print("-Tot. loops: {loop}".format(loop=self._current_loop))
+        print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_hour))
+        pass
 
     def stop_loop(self):
         """ """
-        self._abs_state = en.BatterySwapCommandsEnum.ABS_CMD_STOP
+        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_STOP
         pass
 
 
