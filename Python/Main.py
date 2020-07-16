@@ -1,26 +1,32 @@
-from AutomatedBatterySwap import AutomatedBatterySwap
+from DummyLoopTest import DummyLoopTest
+from DebugTest import DebugTest
+
 from Enums import Enums as en
 import colorama as cm
 from CustomThread import CustomThread
+
 
 class Main(object):
 
     def __init__(self):
         """"""
-        self._abs = None
-
+        # State Machine
         self._main_app_fun_dict = {
             en.MainAppStateEnum.MA_STATE_INIT: self._init_state_manager,
             en.MainAppStateEnum.MA_STATE_WAIT_CMD: self._wait_cmd_state_manager,
-            en.MainAppStateEnum.MA_STATE_RUN_LOOP: self._run_loop_state_manager,
+            en.MainAppStateEnum.MA_STATE_RUN_DUMMY_LOOP: self._run_dummy_loop_state_manager,
             en.MainAppStateEnum.MA_STATE_RUN_DEBUG: self._run_debug_state_manager,
             en.MainAppStateEnum.MA_STATE_EXIT: self._exit_state_manager
         }
-
         self._main_app_state = None
         self._last_main_app_state = None
 
-        self._abs_thread = None
+        # Dummy Loop Test
+        self._dlt = None
+        self._dlt_thread = None
+
+        # Debug Test
+        self._dbgt = None
 
     pass
 
@@ -28,28 +34,40 @@ class Main(object):
     # ----------------------- Private Methods ------------------------ #
     # ---------------------------------------------------------------- #
     @staticmethod
-    def _print_help(mode):
-        """"""
-        if mode == "main":
-            print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "--- Show Usage ---")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-loop: run loop test")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-debug: enter in debug mode")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from script")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------\n")
-        elif mode == "debug":
-            print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "--- Show Usage ---")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-{relay}_{state}")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "\trelay: [packp, sda, scl, detect, ntc, all]")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "\tstate: [on, off]")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from debug mode")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
-            print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------\n")
+    def _print_help():
+        """"""       
+        print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------------------")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "--- Main: Show Usage ---")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "-dummy_loop: run dummy_loop test")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "-debug: enter in debug mode")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from script")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
+        print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------------------\n")
+       
+        pass
 
-        else:
-            pass
+    def _init_dummy_loop_test(self):
+        """"""
+        # Instantiate DummyLoopTest
+        self._dlt = DummyLoopTest()
+
+        # Initialize DummyLoopTest
+        self._dlt.init()
+
+        # Create thread that run loop test function
+        self._dlt_thread = CustomThread(runnable=self._dlt.start_loop)
+
+        pass
+
+    def _init_debug_test(self):
+        # Instantiate DebugTest
+        self._dbgt = DebugTest()
+
+        # Initialize DebugTest
+        self._dbgt.init()
+        pass
+
+    def _init_nonlosotest(self):
         pass
 
     # ------ STATE MACHINE ------ #
@@ -60,16 +78,10 @@ class Main(object):
 
     def _init_state_manager(self):
         """"""
-        # Instantiate AutomatedBatterySwap
-        self._abs = AutomatedBatterySwap()
 
-        # Initialize AutomatedBatterySwap
-        self._abs.init()
-
-        # Create thread that run loop test function
-        self._abs_thread = CustomThread(runnable=self._abs.start_loop)
-
+        print(cm.Fore.MAGENTA + " ------------------------------------------------------------ ")
         print(cm.Fore.MAGENTA + " ---------- WELCOME TO AUTOMATED BATTERY SWAP APP! ---------- ")
+        print(cm.Fore.MAGENTA + " ------------------------------------------------------------ ")
 
         # Store last state
         self._store_last_state()
@@ -82,14 +94,20 @@ class Main(object):
         """"""
         cmd = input("- Please enter a command: ")
 
-        if cmd == en.MainAppCommandsEnum.MA_CMD_RUN_LOOP:
+        if cmd == en.MainAppCommandsEnum.MA_CMD_RUN_DUMMY_LOOP:
+            # Initialize Dummy Loop test
+            self._init_dummy_loop_test()
+
             # Store last state
             self._store_last_state()
 
             # Go to "run loop" state
-            self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_LOOP
+            self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_DUMMY_LOOP
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_RUN_DEBUG:
+            # Initialize Debug test
+            self._init_debug_test()
+
             # Store last state
             self._store_last_state()
 
@@ -97,7 +115,7 @@ class Main(object):
             self._main_app_state = en.MainAppStateEnum.MA_STATE_RUN_DEBUG
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
-            self._print_help("main")
+            self._print_help()
 
         elif cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:
             # Store last state
@@ -108,41 +126,37 @@ class Main(object):
 
         else:
             print("--- Wrong command: use a valid command!")
-            self._print_help("main")
+            self._print_help()
 
     pass
 
-    def _run_loop_state_manager(self):
+    def _run_dummy_loop_state_manager(self):
         """"""
-        print(cm.Fore.CYAN + cm.Style.DIM + "\n---------------------")
-        print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Loop Test ***")
 
         # Run thread
         try:
             # Start loop test thread
-            self._abs_thread.start()
+            self._dlt_thread.start()
         except RuntimeError:
-            self._abs_thread = CustomThread(runnable=self._abs.start_loop)
-            self._abs_thread.start()
+            self._dlt_thread = CustomThread(runnable=self._dlt.start_loop)
+            self._dlt_thread.start()
 
         # You can stop the loop with a stop command
-        while self._abs_thread.is_alive():
+        while self._dlt_thread.is_alive():
             stop_cmd = input()
             if stop_cmd == en.MainAppCommandsEnum.MA_CMD_STOP:
-                self._abs.stop_loop()
+                self._dlt.stop_loop()
                 break
             else:
                 pass
 
             pass
 
-        self._abs_thread.join()
+        # Waiting for thread end
+        self._dlt_thread.join()
 
         # Store last state
         self._store_last_state()
-
-        print(cm.Fore.CYAN + cm.Style.DIM + "*** Exit Loop Test ***")
-        print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
 
         # Go to "Wait Command" state
         self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
@@ -150,46 +164,21 @@ class Main(object):
 
     def _run_debug_state_manager(self):
         """"""
-        # Transition to the state...
-        if (self._main_app_state == en.MainAppStateEnum.MA_STATE_RUN_DEBUG and
-                self._last_main_app_state != en.MainAppStateEnum.MA_STATE_RUN_DEBUG):
-            print(cm.Fore.RED + cm.Style.DIM + "------------------")
-            print(cm.Fore.RED + cm.Style.DIM + "*** Debug Mode ***\n")
+        self._dbgt.run()
 
-            # Store last state
-            self._store_last_state()
-        else:
-            # Wait for command
-            cmd = input(cm.Fore.RED + cm.Style.DIM + "- Please enter a command: ")
+        # Store last state
+        self._store_last_state()
 
-            # Check if command is valid and relative to main app
-            if cmd in en.MainAppCommandsEnum.values():
-                if cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:
-                    print(cm.Fore.RED + cm.Style.DIM + "\n*** Exit Debug Mode ***")
-                    print(cm.Fore.RED + cm.Style.DIM + "----------------------------------------\n")
-
-                    # self._store_last_state()
-                    # Go to "Wait command" state
-                    self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
-                elif cmd == en.MainAppCommandsEnum.MA_CMD_HELP:
-                    # Print Debug Help
-                    self._print_help("debug")  # TODO
-                else:
-                    print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command!\n")
-                    self._print_help("debug")
-
-            # Check if command is valid and is a relay command
-            elif cmd in en.RelayCommandsEnum.values():
-                # Drive relay
-                self._abs.drive_relay(cmd)
-            else:
-                print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command!\n")
+        # Go to "Wait Command" state
+        self._main_app_state = en.MainAppStateEnum.MA_STATE_WAIT_CMD
 
         pass
 
     def _exit_state_manager(self):
         """"""
-        print(cm.Fore.MAGENTA + " \n---------- GOODBYE!!! ---------- ")
+        print(cm.Fore.MAGENTA + " \n-------------------------------- ")
+        print(cm.Fore.MAGENTA + " ---------- GOODBYE!!! ---------- ")
+        print(cm.Fore.MAGENTA + " -------------------------------- ")
 
         # Store last state
         self._store_last_state()

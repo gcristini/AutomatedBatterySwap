@@ -30,6 +30,10 @@ class CustomSerial(serial.Serial):
         self._dataRX = self.read(self._bytes_available_rx).decode('utf-8')
         return self._dataRX
 
+    def serial_close(self):
+        self.close()
+        return
+
     @property
     def bytes_available_rx(self):
         """ Check available bytes of data """

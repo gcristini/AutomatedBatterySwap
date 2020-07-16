@@ -4,24 +4,48 @@ class Enums:
         RS_ON = "on"
         RS_OFF = "off"
 
-    class BatterySwapStateEnum:
-        ABS_STATE_INIT = "init"
-        ABS_STATE_ON = "on"
-        ABS_STATE_OFF = "off"
-        ABS_STATE_WAIT = "wait"
-        ABS_STATE_STOP = "stop"
-        ABS_STATE_MAX_ENUM = ""
+    # ------------------------------ #
+    # ------ DummyLoopTest.py ------ #
+    # ------------------------------ #
+    class DummyLoopTestStateEnum:
+        DLT_STATE_INIT = "init"
+        DLT_STATE_ON = "on"
+        DLT_STATE_OFF = "off"
+        DLT_STATE_WAIT = "wait"
+        DLT_STATE_STOP = "stop"
 
-    class BatterySwapCommandsEnum:
-        ABS_CMD_INIT = "init"
-        ABS_CMD_START = "start"
-        ABS_CMD_STOP = "stop"
-        ABS_CMD_MAX_ENUM = ""
+    class DummyLoopTestCommandsEnum:
+        DLT_CMD_INIT = "init"
+        DLT_CMD_START = "start"
+        DLT_CMD_STOP = "stop"
 
+    # ------------------------------ #
+    # -------- DebugTest.py -------- #
+    # ------------------------------ #
+    class DebugTestStateEnum:
+        DT_STATE_INIT = "init"
+        DT_STATE_WAIT_CMD = "wait_cmd"
+        DT_STATE_EXIT = "exit"
+
+    class DebugTestCommandsEnum:
+        DT_CMD_EXIT = "exit"
+        DT_CMD_HELP = "help"
+
+        @classmethod
+        def vars(cls):
+            return [name for name, value in vars(cls).items() if name.isupper()]
+
+        @classmethod
+        def values(cls):
+            return [value for name, value in vars(cls).items() if name.isupper()]
+
+    # ------------------------------ #
+    # ---------- Main.py ----------- #
+    # ------------------------------ #
     class MainAppStateEnum:
         MA_STATE_INIT = "init"
         MA_STATE_WAIT_CMD = "wait_cmd"
-        MA_STATE_RUN_LOOP = "run_loop"
+        MA_STATE_RUN_DUMMY_LOOP = "run_loop"
         MA_STATE_RUN_DEBUG = "run_debug"
         MA_STATE_STOP = "stop"
         MA_STATE_HELP = "help"
@@ -29,7 +53,7 @@ class Enums:
 
     class MainAppCommandsEnum:
         # State machine Commands
-        MA_CMD_RUN_LOOP = "loop"
+        MA_CMD_RUN_DUMMY_LOOP = "dummy_loop"
         MA_CMD_RUN_DEBUG = "debug"
         MA_CMD_STOP = "stop"
         MA_CMD_EXIT = "exit"

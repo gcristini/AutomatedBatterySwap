@@ -1,12 +1,11 @@
-
 from SerialRelay import SerialRelay
 from Timer import *
 from ParseXml import XmlDictConfig
 from xml.etree import ElementTree
 from Enums import Enums as en
+import colorama as cm
 
-
-class AutomatedBatterySwap(object):
+class DummyLoopTest(object):
 
     # ****************************** #
     # ****** Private Methods ******* #
@@ -14,7 +13,7 @@ class AutomatedBatterySwap(object):
     def __init__(self):
         """"""
         # Global Variables
-        self._config_dict = None
+        self._dlt_config_dict = None
         self._serial_relay = None
         self._global_timer = None
         self._wait_timer = None
@@ -23,18 +22,18 @@ class AutomatedBatterySwap(object):
         self._toggle_status = en.RelayStatusEnum.RS_OFF
 
         self._abs_state_machine_fun_dict = {
-            en.BatterySwapStateEnum.ABS_STATE_INIT: self._init_state_manager,
-            en.BatterySwapStateEnum.ABS_STATE_ON: self._on_state_manager,
-            en.BatterySwapStateEnum.ABS_STATE_OFF: self._off_state_manager,
-            en.BatterySwapStateEnum.ABS_STATE_WAIT: self._wait_state_manager,
-            en.BatterySwapStateEnum.ABS_STATE_STOP: self._stop_state_manager,
+            en.DummyLoopTestStateEnum.DLT_STATE_INIT: self._init_state_manager,
+            en.DummyLoopTestStateEnum.DLT_STATE_ON: self._on_state_manager,
+            en.DummyLoopTestStateEnum.DLT_STATE_OFF: self._off_state_manager,
+            en.DummyLoopTestStateEnum.DLT_STATE_WAIT: self._wait_state_manager,
+            en.DummyLoopTestStateEnum.DLT_STATE_STOP: self._stop_state_manager,
         }
 
-        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
-        self._last_abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+        self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
+        self._last_abs_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
 
-        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_INIT
-        self._last_abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_INIT
+        self._abs_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_INIT
+        self._last_abs_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_INIT
 
         self._current_loop = None
         self._exit_condition = False
@@ -43,14 +42,14 @@ class AutomatedBatterySwap(object):
 
     def _parse_config_file(self):
         """"""
-        self._config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())
+        self._dlt_config_dict = XmlDictConfig(ElementTree.parse('DLT_Config.xml').getroot())
 
         pass
 
     def _serial_relay_init(self):
           """"""
-          self._serial_relay = SerialRelay(port=self._config_dict["Serial"]["com"],
-                                           baudrate=self._config_dict["Serial"]["baudarate"])
+          self._serial_relay = SerialRelay(port=self._dlt_config_dict["Serial"]["com"],
+                                           baudrate=self._dlt_config_dict["Serial"]["baudarate"])
           self._serial_relay.init()
           pass
 
@@ -61,6 +60,9 @@ class AutomatedBatterySwap(object):
         pass
 
     def _init_state_manager(self):
+        # Initialize Colorama library
+        cm.init(autoreset=True)
+
         # Initialize global timer
         self._global_timer_init()
 
@@ -71,7 +73,7 @@ class AutomatedBatterySwap(object):
         self._current_loop = 0
 
         # Go to "On" state manager
-        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_ON
+        self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_ON
         pass
 
     def _on_state_manager(self):
@@ -89,13 +91,13 @@ class AutomatedBatterySwap(object):
             self._last_abs_state = self._abs_state
 
             # Go to wait state manager
-            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_WAIT
+            self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_WAIT
 
         else:
             # Save last state
             self._last_abs_state = self._abs_state
             # Go to stop state
-            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
+            self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_STOP
 
         pass
 
@@ -116,21 +118,21 @@ class AutomatedBatterySwap(object):
             self._last_abs_state = self._abs_state
 
             # Go to wait state manager
-            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_WAIT
+            self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_WAIT
         else:
             # Save last state
             self._last_abs_state = self._abs_state
             # Go to stop state
-            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
+            self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_STOP
 
         pass
 
     def _wait_state_manager(self):
         """"""
         if not self._exit_condition:
-            if (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_WAIT and
-                (self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_ON or
-                 self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_OFF)):
+            if (self._abs_state == en.DummyLoopTestStateEnum.DLT_STATE_WAIT and
+                (self._last_abs_state == en.DummyLoopTestStateEnum.DLT_STATE_ON or
+                 self._last_abs_state == en.DummyLoopTestStateEnum.DLT_STATE_OFF)):
 
                 # Restart timer or started if not possible
                 try:
@@ -141,22 +143,22 @@ class AutomatedBatterySwap(object):
                 self._last_abs_state = self._abs_state
 
             elif self._toggle_status == en.RelayStatusEnum.RS_ON:
-                if self._wait_timer.elapsed_time_s >= float(self._config_dict["Loop"]["time_on_s"]):
+                if self._wait_timer.elapsed_time_s >= float(self._dlt_config_dict["Loop"]["time_on_s"]):
 
                     # Store the last state
                     self._last_abs_state = self._abs_state
                     # Go to "relay off" state manager
-                    self._abs_state = en.BatterySwapStateEnum.ABS_STATE_OFF
+                    self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_OFF
                 else:
                     pass
 
             elif self._toggle_status == en.RelayStatusEnum.RS_OFF:
-                if self._wait_timer.elapsed_time_s >= float(self._config_dict["Loop"]["time_off_s"]):
+                if self._wait_timer.elapsed_time_s >= float(self._dlt_config_dict["Loop"]["time_off_s"]):
 
                     # Store the last state
                     self._last_abs_state = self._abs_state
                     # Go to "relay off" state manager
-                    self._abs_state = en.BatterySwapStateEnum.ABS_STATE_ON
+                    self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_ON
                 else:
                     pass
             else:
@@ -165,13 +167,12 @@ class AutomatedBatterySwap(object):
             # Save last state
             self._last_abs_state = self._abs_state
             # Go to stop state
-            self._abs_state = en.BatterySwapStateEnum.ABS_STATE_STOP
+            self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_STOP
 
         pass
 
     def _stop_state_manager(self):
         """"""
-        #print ("\n--- Stop ---")
 
         # Put off al relays
         self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
@@ -182,6 +183,9 @@ class AutomatedBatterySwap(object):
             self._wait_timer.stop()
         except TimerError:
             pass
+
+        # Close serial relay port
+        self._serial_relay.close()
 
         # Store last state
         self._last_abs_state = self._abs_state
@@ -209,38 +213,44 @@ class AutomatedBatterySwap(object):
 
     def start_loop(self):
         """ """
-        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
-        self._last_abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_START
+        self._abs_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_START
+        self._last_abs_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_START
 
-        while not (self._abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP and
-                    self._last_abs_state == en.BatterySwapStateEnum.ABS_STATE_STOP):
+        print(cm.Fore.CYAN + cm.Style.DIM + "\n----------------------------------------")
+        print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Dummy Loop Test ***")
+
+        while not (self._abs_state == en.DummyLoopTestStateEnum.DLT_STATE_STOP and
+                   self._last_abs_state == en.DummyLoopTestStateEnum.DLT_STATE_STOP):
 
             # Run state machine at the current state
             self._abs_state_machine_manager()
 
             # Evaluate exit condition
-            self._exit_condition = (self._global_timer.elapsed_time_hour >= float(self._config_dict["Loop"]["time_test_hour"]) or
-                                    (self._current_loop > int(self._config_dict["Loop"]["n_loop"])-1) or
-                                    self._abs_cmd == en.BatterySwapCommandsEnum.ABS_CMD_STOP)
+            self._exit_condition = (self._global_timer.elapsed_time_hour >= float(self._dlt_config_dict["Loop"]["time_test_hour"]) or
+                                    (self._current_loop > int(self._dlt_config_dict["Loop"]["n_loop"]) - 1) or
+                                    self._abs_cmd == en.DummyLoopTestCommandsEnum.DLT_CMD_STOP)
 
         # Reset state machine variables
-        self._abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
-        self._last_abs_state = en.BatterySwapStateEnum.ABS_STATE_INIT
+        self._abs_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
+        self._last_abs_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
 
         print("\n--- Finished ----")
         print("-Tot. loops: {loop}".format(loop=self._current_loop))
         print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_hour))
+
+        print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Dummy Loop Test ***")
+        print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
         pass
 
     def stop_loop(self):
         """ """
-        self._abs_cmd = en.BatterySwapCommandsEnum.ABS_CMD_STOP
+        self._abs_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_STOP
         pass
 
 
 if __name__ == '__main__':
     print("--- Create Class ---")
-    test = AutomatedBatterySwap()
+    test = DummyLoopTest()
 
     print("--- Init ---")
     test.init()

@@ -26,3 +26,8 @@ class SerialRelay(object):
         self._serial.serial_write(fcmd)
 
         pass
+
+    def close(self):
+        """"""
+        self._serial.serial_close()
+        pass
