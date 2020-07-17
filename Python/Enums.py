@@ -5,6 +5,21 @@ class Enums:
         RS_OFF = "off"
 
     # ------------------------------ #
+    # -------- LoopTest.py --------- #
+    # ------------------------------ #
+    class LoopTestStateEnum:
+        LT_STATE_INIT = "init"
+        LT_STATE_ON = "on"
+        LT_STATE_OFF = "off"
+        LT_STATE_SUPERCAP_MONITOR = "supercap_monitor"
+        LT_STATE_STOP = "stop"
+
+    class LoopTestCommandsEnum:
+        LT_CMD_INIT = "init"
+        LT_CMD_START = "start"
+        LT_CMD_STOP = "stop"
+
+    # ------------------------------ #
     # ------ DummyLoopTest.py ------ #
     # ------------------------------ #
     class DummyLoopTestStateEnum:

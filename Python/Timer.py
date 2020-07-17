@@ -8,6 +8,10 @@ class TimerError(Exception):
 pass
 
 
+class TimeUtils(object):
+    """TODO"""
+pass
+
 class TimerStatusEnum:
     TS_START = "start"
     TS_STOP = "stop"
@@ -40,39 +44,58 @@ class Timer(object):
 
         pass
 
-
     def reset(self):
         if self._start_time is None:
             raise TimerError(f"Timer is not running. Use .start() to start it")
         self._timer_status = TimerStatusEnum.TS_START
         self._start_time = time.perf_counter()
 
-    @property
-    def elapsed_time_hour(self):
-        return self.elapsed_time_min/60
+    def elapsed_time_hour(self, digits=None):
+        """"""
+        if digits:
+            elapsed_time_hour = round(self.elapsed_time_min()/60, digits)
+        else:
+            elapsed_time_hour = self.elapsed_time_min()/ 60
+        return elapsed_time_hour
 
-    @property
-    def elapsed_time_min(self):
-        return self.elapsed_time_s/60
+    def elapsed_time_min(self, digits=None):
+        """"""
+        if digits:
+            elapsed_time_min = round(self.elapsed_time_s()/60, digits)
+        else:
+            elapsed_time_min = self.elapsed_time_s()/60
+        return elapsed_time_min
 
-    @property
-    def elapsed_time_s(self):
+    def elapsed_time_s(self, digits=None):
+        """"""
         if self._timer_status == TimerStatusEnum.TS_START:
             self._elapsed_time_s = time.perf_counter() - self._start_time
         else:
             pass
-        return self._elapsed_time_s
 
-    @property
-    def elapsed_time_ms(self):
-        return self.elapsed_time_s*1000
+        if digits:
+            elapsed_time_s = round(self._elapsed_time_s, digits)
+        else:
+            elapsed_time_s = self._elapsed_time_s
+        return elapsed_time_s
 
-    @property
-    def elapsed_time_us(self):
-        return self.elapsed_time_ms*1000
+    def elapsed_time_ms(self, digits=None):
+        """"""
+        if digits:
+            elapsed_time_ms = round((self.elapsed_time_s())*1000, digits)
+        else:
+            elapsed_time_ms = (self.elapsed_time_s())*1000
+        return elapsed_time_ms
 
-    @property
-    def timer_status(self):
+    def elapsed_time_us(self, digits=None):
+        """"""
+        if digits:
+            elapsed_time_us = round(self.elapsed_time_ms()*1000, digits)
+        else:
+            elapsed_time_us = self.elapsed_time_ms()*1000
+        return elapsed_time_us
+
+    def timer_status(self, digits=None):
         return self._timer_status
 
 
@@ -83,7 +106,7 @@ if __name__ == '__main__':
 
     # Pause 2 seconds
     time.sleep(2)
-    print("1) Timer elapsed: {time}".format(time=test_timer.elapsed_time_s))
+    print("1) Timer elapsed: {time}".format(time=test_timer.elapsed_time_ms()))
 
     print("--- Reset Timer...")
 
@@ -91,11 +114,12 @@ if __name__ == '__main__':
     test_timer.reset()
     time.sleep(2)
 
-    print("2) Timer elapsed: {time}".format(time=test_timer.elapsed_time_s))
+    print("2) Timer elapsed: {time}".format(time=test_timer.elapsed_time_min(2)))
 
     test_timer.stop()
-    time.sleep (5)
-    print("3) Timer elapsed: {time}".format(time=test_timer.elapsed_time_s))
+    time.sleep (1)
+    print (test_timer.elapsed_time_s(2))
+    print("3) Timer elapsed: {time}".format(time=test_timer.elapsed_time_s(digits=2)))
 
 
     print ("Finished")

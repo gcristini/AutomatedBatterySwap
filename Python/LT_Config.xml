@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Body -->
+<GlobalParams>
+    <Serial>
+        <com>COM14</com>
+        <baudarate>115200</baudarate>
+    </Serial>
+
+    <SX5>
+        <port>5555</port>
+        <ip>192.168.1.7</ip>
+        <supercap_sample_time_ms>10</supercap_sample_time_ms>
+        <supercap_th_high_mv>2500</supercap_th_high_mv>
+        <supercap_th_low_mv>2400</supercap_th_low_mv>
+    </SX5>
+
+    <Loop>
+        <n_loop>2</n_loop>
+        <time_test_min>100</time_test_min>
+    </Loop>
+
+</GlobalParams>

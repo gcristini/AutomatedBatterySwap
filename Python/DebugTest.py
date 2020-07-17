@@ -51,7 +51,7 @@ class DebugTest(object):
         self._serial_relay.init()
         pass
 
-    # ------ STATE MACHINE ------ #
+    # ------------------ STATE MACHINE ------------------ #
     def _store_last_state(self):
         """"""
         self._last_debug_test_state = self._debug_test_state

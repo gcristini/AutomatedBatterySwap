@@ -55,7 +55,7 @@ class Main(object):
         self._dlt.init()
 
         # Create thread that run loop test function
-        self._dlt_thread = CustomThread(runnable=self._dlt.start_loop)
+        self._dlt_thread = CustomThread(runnable=self._dlt.run)
 
         pass
 
@@ -138,14 +138,14 @@ class Main(object):
             # Start loop test thread
             self._dlt_thread.start()
         except RuntimeError:
-            self._dlt_thread = CustomThread(runnable=self._dlt.start_loop)
+            self._dlt_thread = CustomThread(runnable=self._dlt.run)
             self._dlt_thread.start()
 
         # You can stop the loop with a stop command
         while self._dlt_thread.is_alive():
             stop_cmd = input()
             if stop_cmd == en.MainAppCommandsEnum.MA_CMD_STOP:
-                self._dlt.stop_loop()
+                self._dlt.stop()
                 break
             else:
                 pass

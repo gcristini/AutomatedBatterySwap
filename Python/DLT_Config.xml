@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Body -->
 <GlobalParams>
-
     <Serial>
         <com>COM14</com>
         <baudarate>115200</baudarate>
