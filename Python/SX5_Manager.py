@@ -58,7 +58,7 @@ class SX5_Manager(object):
         # Parse config file
         self._parse_config_file()
 
-        # Initialize adb conection
+        # Initialize adb connection
         try:
             self._adb_init()
             self._adb_tcp_connect()
@@ -68,7 +68,7 @@ class SX5_Manager(object):
             self._adb_init()
             self._adb_tcp_connect()
 
-        print("SX5 Connected over TCPIP")
+        print("- SX5 Connected")
 
         pass
 

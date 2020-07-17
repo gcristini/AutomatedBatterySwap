@@ -20,6 +20,7 @@ class LoopTest(object):
         self._supercap_sample_timer: Timer
         self._sx5: SX5_Manager
 
+        # State Machine
         self._lt_state_machine_fun_dict = {
             en.LoopTestStateEnum.LT_STATE_INIT: self._init_state_manager,
             en.LoopTestStateEnum.LT_STATE_ON: self._on_state_manager,
@@ -28,15 +29,21 @@ class LoopTest(object):
             en.LoopTestStateEnum.LT_STATE_STOP: self._stop_state_manager,
         }
 
-        self._lt_state: en.LoopTestStateEnum
-        self._last_lt_state: en.LoopTestStateEnum
-        self._lt_cmd: en.LoopTestCommandsEnum
-        self._last_lt_cmd: en.LoopTestCommandsEnum
-        self._exit_condition: bool
+        self._lt_state = None  # en.LoopTestStateEnum
+        self._last_lt_state = None  # en.LoopTestStateEnum
+        self._lt_cmd = None  # en.LoopTestCommandsEnum
 
-        self._relays_toggle_status: en.RelayStatusEnum
+        self._exit_condition = None  # bool
+        self._relays_toggle_status = None  # en.RelayStatusEnum
         self._current_loop: int
         self._supercap_voltage_mV: int
+
+        self._lt_exit_cause_dict = {
+            'Elapsed Time': False,
+            'Max Num of Loops Reached': False,
+            'Stop Command': False,
+            'Device Disconnected': False
+        }
 
         pass
 
@@ -50,7 +57,7 @@ class LoopTest(object):
         pass
 
     def _serial_relay_init(self):
-        """ Initialize all relay to ON state """
+        """ Initialize all relays to ON state """
         self._serial_relay = SerialRelay(port=self._lt_config_dict["Serial"]["com"],
                                          baudrate=self._lt_config_dict["Serial"]["baudarate"])
         self._serial_relay.init()
@@ -77,26 +84,37 @@ class LoopTest(object):
         pass
 
     # ------------------ STATE MACHINE ------------------ #
-    def _store_last_state(self):
+    def _go_to_next_state(self, state):
         """"""
+        # Store last state
         self._last_lt_state = self._lt_state
+
+        # Go to next state
+        self._lt_state = state
+        pass
+
+    def _update_exit_condition(self, cause, flag):
+        """"""
+        # Update the selected cause
+        self._lt_exit_cause_dict[cause] = flag
+
+        # Update the exit condition flag doing the or of all flags
+        self._exit_condition = sum(self._lt_exit_cause_dict.values())
+
         pass
 
     def _init_state_manager(self):
         """ Init State Manager """
 
-        # Start from iteration 0
-        self._current_loop = 0
+        # Start from iteration -1
+        self._current_loop = -1
 
         # Start timers
         self._global_timer.start()
         self._supercap_sample_timer.start()
 
-        # Store last state
-        self._store_last_state()
-
         # Go to supercap monitor state
-        self._lt_state = en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR
+        self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR)
         pass
 
     def _on_state_manager(self):
@@ -107,26 +125,19 @@ class LoopTest(object):
             self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
             self._relays_toggle_status = en.RelayStatusEnum.RS_ON
 
-            # Increase current loop
-            self._current_loop += 1
-
-            # Store last state
-            self._last_lt_state = self._lt_state
             # Go to on state manager
-            self._lt_state = en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR)
 
         else:
-            # Save last state
-            self._last_lt_state = self._lt_state
             # Go to stop state
-            self.lt_state = en.LoopTestStateEnum.LT_STATE_STOP
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
         return
 
     def _off_state_manager(self):
         """ Relay Off State Manager """
         if not self._exit_condition:
-            print("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
+            print("--- Iteration n°{iter} ---".format(iter=self._current_loop))
 
             # Put all relay at off state
             self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
@@ -134,17 +145,11 @@ class LoopTest(object):
             # Relay are in off state
             self._relays_toggle_status = en.RelayStatusEnum.RS_OFF
 
-            # Save last state
-            self._last_lt_state = self._lt_state
-
             # Go to supercap monitor state
-            self._lt_state = en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_SUPERCAP_MONITOR)
         else:
-            # Save last state
-            self._last_lt_state = self._lt_state
-
             # Go to stop state
-            self._lt_state = en.LoopTestStateEnum.LT_STATE_STOP
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
         return
 
@@ -157,43 +162,42 @@ class LoopTest(object):
                     self._sx5.read_supercap_voltage_mV()
                     self._supercap_voltage_mV = self._sx5.supercap_voltage_mV
 
-                    sys.stdout.write("\033[K")  # Clear to the end of line
-                    print("Supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV), end="\r")
+                    if self._last_lt_state != en.LoopTestStateEnum.LT_STATE_INIT:
+                        sys.stdout.write("\033[K")  # Clear to the end of line
+                        print("Supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV), end="\r")
 
                     # Check if one of threshold as been reached
                     if (self._supercap_voltage_mV >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"]) and
                             self._relays_toggle_status == en.RelayStatusEnum.RS_ON):
 
-                        # Save last state
-                        self._last_lt_state = self._lt_state
+                        # Increase current loop
+                        self._current_loop += 1
+
+                        print("\n")
 
                         # Go to relay off state
-                        self._lt_state = en.LoopTestStateEnum.LT_STATE_OFF
+                        self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
 
                     elif (self._supercap_voltage_mV <= int(self._lt_config_dict["SX5"]["supercap_th_low_mv"]) and
                             self._relays_toggle_status == en.RelayStatusEnum.RS_OFF):
 
-                        # Save last state
-                        self._last_lt_state = self._lt_state
-
                         # Go to relay on state
-                        self._lt_state = en.LoopTestStateEnum.LT_STATE_ON
+                        self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_ON)
 
                     else:
                         pass
+
                     # Reset timer
                     self._supercap_sample_timer.reset()
 
                 # Device not respond
                 except adb_shell.exceptions.TcpTimeoutException:
-                    self._lt_cmd = en.LoopTestCommandsEnum.LT_CMD_STOP
+                    self._update_exit_condition('Device Disconnected', True)
 
         else:
-            # Save last state
-            self._last_lt_state = self._lt_state
 
             # Go to stop state
-            self._lt_state = en.LoopTestStateEnum.LT_STATE_STOP
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
         return
 
@@ -261,10 +265,10 @@ class LoopTest(object):
             # Run state machine at the current state
             self._lt_state_machine_manager()
 
-            # Evaluate exit condition
-            self._exit_condition = (self._global_timer.elapsed_time_min() >= float(self._lt_config_dict["Loop"]["time_test_min"]) or
-                                    (self._current_loop > int(self._lt_config_dict["Loop"]["n_loop"]) - 1) or
-                                     (self._lt_cmd == en.LoopTestCommandsEnum.LT_CMD_STOP))
+            # Update exit condition
+            self._update_exit_condition('Elapsed Time', (self._global_timer.elapsed_time_min() >= float(self._lt_config_dict["Loop"]["time_test_min"])))
+            self._update_exit_condition('Max Num of Loops Reached', (self._current_loop > int(self._lt_config_dict["Loop"]["n_loop"]) - 1))
+            self._update_exit_condition('Stop Command', (self._lt_cmd == en.LoopTestCommandsEnum.LT_CMD_STOP))
 
         # Reset state machine variables
         self._lt_state = en.LoopTestStateEnum.LT_STATE_INIT
@@ -273,7 +277,7 @@ class LoopTest(object):
         print("\n--- Finished ----")
         print("-Tot. loops: {loop}".format(loop=self._current_loop))
         print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_min()))
-
+        print ("\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]))
         print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Loop Test ***")
         print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
         pass
@@ -286,6 +290,5 @@ class LoopTest(object):
 
 if __name__ == '__main__':
     test=LoopTest()
-
     test.init()
     test.run()

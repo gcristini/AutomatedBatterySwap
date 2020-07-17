@@ -17,9 +17,8 @@ class DummyLoopTest(object):
         self._serial_relay = None
         self._global_timer = None
         self._wait_timer = None
-        #self._wait_time = None
 
-        self._toggle_status = None
+        self._relays_toggle_status = None
 
         self._abs_state_machine_fun_dict = {
             en.DummyLoopTestStateEnum.DLT_STATE_INIT: self._init_state_manager,
@@ -31,12 +30,15 @@ class DummyLoopTest(object):
 
         self._dlt_state = None
         self._last_dlt_state = None
-
         self._dlt_cmd = None
-        self._last_dlt_cmd = None #TODO: TOGLIERE?
-
         self._current_loop = None
         self._exit_condition = None
+
+        self._dlt_exit_cause_dict = {
+            'Elapsed Time': False,
+            'Max Num of Loops Reached': False,
+            'Stop Command': False,
+        }
 
     pass
 
@@ -54,20 +56,48 @@ class DummyLoopTest(object):
         self._serial_relay = SerialRelay(port=self._dlt_config_dict["Serial"]["com"],
                                          baudrate=self._dlt_config_dict["Serial"]["baudarate"])
         self._serial_relay.init()
+        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+
+        self._relays_toggle_status = en.RelayStatusEnum.RS_ON
+
         pass
 
-    def _global_timer_init(self):
+    def _timers_init(self):
         """"""
-        self._global_timer = Timer()
-        self._global_timer.start()
-        pass
-
-    def _init_state_manager(self):
         # Initialize global timer
-        self._global_timer_init()
+        self._global_timer = Timer()
 
         # Initialize wait timer
         self._wait_timer = Timer()
+
+        pass
+
+    # ------------------ STATE MACHINE ------------------ #
+    def _go_to_next_state(self, state):
+        """"""
+        # Store last state
+        self._last_dlt_state = self._dlt_state
+
+        # Go to next state
+        self._dlt_state = state
+        pass
+
+    def _update_exit_condition(self, cause, flag):
+        """"""
+
+        # Update the selected cause
+        self._dlt_exit_cause_dict[cause] = flag
+
+        # Update the exit condition flag doing the or of all flags
+        self._exit_condition = sum(self._dlt_exit_cause_dict.values())
+
+        pass
+
+    def _init_state_manager(self):
+        """"""
+        # Start timers
+        self._global_timer.start()
+        self._wait_timer.start()
 
         # Start from iteration 0
         self._current_loop = 0
@@ -85,7 +115,7 @@ class DummyLoopTest(object):
             self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
 
             # Relay are in on state
-            self._toggle_status = en.RelayStatusEnum.RS_ON
+            self._relays_toggle_status = en.RelayStatusEnum.RS_ON
 
             # Save last state
             self._last_dlt_state = self._dlt_state
@@ -109,7 +139,7 @@ class DummyLoopTest(object):
             self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
 
             # Relay are in off state
-            self._toggle_status = en.RelayStatusEnum.RS_OFF
+            self._relays_toggle_status = en.RelayStatusEnum.RS_OFF
 
             # Increase current loop
             self._current_loop += 1
@@ -142,32 +172,26 @@ class DummyLoopTest(object):
                 # Store the last state
                 self._last_dlt_state = self._dlt_state
 
-            elif self._toggle_status == en.RelayStatusEnum.RS_ON:
-                if self._wait_timer.elapsed_time_s >= float(self._dlt_config_dict["Loop"]["time_on_s"]):
+            elif self._relays_toggle_status == en.RelayStatusEnum.RS_ON:
+                if self._wait_timer.elapsed_time_s() >= float(self._dlt_config_dict["Loop"]["time_on_s"]):
 
-                    # Store the last state
-                    self._last_dlt_state = self._dlt_state
                     # Go to "relay off" state manager
-                    self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_OFF
+                    self._go_to_next_state(en.DummyLoopTestStateEnum.DLT_STATE_OFF)
                 else:
                     pass
 
-            elif self._toggle_status == en.RelayStatusEnum.RS_OFF:
-                if self._wait_timer.elapsed_time_s >= float(self._dlt_config_dict["Loop"]["time_off_s"]):
+            elif self._relays_toggle_status == en.RelayStatusEnum.RS_OFF:
+                if self._wait_timer.elapsed_time_s() >= float(self._dlt_config_dict["Loop"]["time_off_s"]):
 
-                    # Store the last state
-                    self._last_dlt_state = self._dlt_state
                     # Go to "relay off" state manager
-                    self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_ON
+                    self._go_to_next_state(en.DummyLoopTestStateEnum.DLT_STATE_ON)
                 else:
                     pass
             else:
                 pass
         else:
-            # Save last state
-            self._last_dlt_state = self._dlt_state
             # Go to stop state
-            self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_STOP
+            self._go_to_next_state(en.DummyLoopTestStateEnum.DLT_STATE_STOP)
 
         pass
 
@@ -175,7 +199,7 @@ class DummyLoopTest(object):
         """"""
 
         # Put off al relays
-        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF) #TODO ON?
+        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
 
         # Stop Timers
         self._global_timer.stop()
@@ -204,21 +228,22 @@ class DummyLoopTest(object):
     # ------------------------ Public Methods ------------------------ #
     # ---------------------------------------------------------------- #
     def init(self):
+        # Initialize Colorama library
+        cm.init(autoreset=True)
+
         # Parse config file
         self._parse_config_file()
+
+        # Initialize timers
+        self._timers_init()
 
         # Initialize serial relay
         self._serial_relay_init()
 
-        # Initialize Colorama library
-        cm.init(autoreset=True)
-
         # Initialize State Variables
-        self._toggle_status = en.RelayStatusEnum.RS_OFF
         self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
-        self._last_dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT #TODO: DELETE?
         self._dlt_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_INIT
-        self._last_dlt_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_INIT #TODO: DELETE?
+
         self._exit_condition = False
 
         pass
@@ -227,7 +252,6 @@ class DummyLoopTest(object):
         """ """
         # Force Command to start
         self._dlt_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_START
-        self._last_dlt_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_START
 
         print(cm.Fore.CYAN + cm.Style.DIM + "\n----------------------------------------")
         print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Dummy Loop Test ***")
@@ -239,9 +263,9 @@ class DummyLoopTest(object):
             self._dlt_state_machine_manager()
 
             # Evaluate exit condition
-            self._exit_condition = (self._global_timer.elapsed_time_hour >= float(self._dlt_config_dict["Loop"]["time_test_hour"]) or
-                                    (self._current_loop > int(self._dlt_config_dict["Loop"]["n_loop"]) - 1) or
-                                    self._dlt_cmd == en.DummyLoopTestCommandsEnum.DLT_CMD_STOP)
+            self._update_exit_condition('Elapsed Time', (self._global_timer.elapsed_time_min() >= float(self._dlt_config_dict["Loop"]["time_test_min"])))
+            self._update_exit_condition('Max Num of Loops Reached', (self._current_loop > int(self._dlt_config_dict["Loop"]["n_loop"]) - 1))
+            self._update_exit_condition('Stop Command', (self._dlt_cmd == en.DummyLoopTestCommandsEnum.DLT_CMD_STOP))
 
         # Reset state machine variables
         self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
@@ -249,8 +273,8 @@ class DummyLoopTest(object):
 
         print("\n--- Finished ----")
         print("-Tot. loops: {loop}".format(loop=self._current_loop))
-        print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_hour))
-
+        print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_min()))
+        print("\n-Test finished for: {cause}".format(cause=[key for key, value in self._dlt_exit_cause_dict.items() if value]))
         print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Dummy Loop Test ***")
         print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
         pass

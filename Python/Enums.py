@@ -60,7 +60,7 @@ class Enums:
     class MainAppStateEnum:
         MA_STATE_INIT = "init"
         MA_STATE_WAIT_CMD = "wait_cmd"
-        MA_STATE_RUN_DUMMY_LOOP = "run_loop"
+        MA_STATE_RUN_LOOP = "run_loop"
         MA_STATE_RUN_DEBUG = "run_debug"
         MA_STATE_STOP = "stop"
         MA_STATE_HELP = "help"
@@ -68,6 +68,7 @@ class Enums:
 
     class MainAppCommandsEnum:
         # State machine Commands
+        MA_CMD_RUN_SMART_LOOP = "loop"
         MA_CMD_RUN_DUMMY_LOOP = "dummy_loop"
         MA_CMD_RUN_DEBUG = "debug"
         MA_CMD_STOP = "stop"

@@ -40,7 +40,7 @@ class DebugTest(object):
 
     def _parse_config_file(self):
         """"""
-        self._config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())
+        self._config_dict = XmlDictConfig(ElementTree.parse('DBG_Config.xml').getroot())
 
         pass
 
