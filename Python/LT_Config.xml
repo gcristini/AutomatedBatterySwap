@@ -8,7 +8,7 @@
 
     <SX5>
         <port>5555</port>
-        <ip>192.168.1.7</ip>
+        <ip>192.168.1.6</ip>
         <supercap_sample_time_ms>10</supercap_sample_time_ms>
         <supercap_th_high_mv>2500</supercap_th_high_mv>
         <supercap_th_low_mv>2400</supercap_th_low_mv>

@@ -18,10 +18,12 @@ class TimerStatusEnum:
 
 
 class Timer(object):
+
     def __init__(self):
         self._start_time = None
         self._timer_status = None
         self._elapsed_time_s = None
+        pass
 
     def start(self):
         """Start a new timer"""
