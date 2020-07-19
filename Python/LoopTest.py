@@ -7,6 +7,7 @@ from SX5_Manager import SX5_Manager
 import colorama as cm
 import sys
 import adb_shell.exceptions
+import csv
 
 
 class LoopTest(object):
@@ -28,6 +29,7 @@ class LoopTest(object):
         self._lt_state_machine_fun_dict = {
             en.LoopTestStateEnum.LT_STATE_INIT: self._init_state_manager,
             en.LoopTestStateEnum.LT_STATE_ON: self._on_state_manager,
+            en.LoopTestStateEnum.LT_STATE_UPDATE_CSV: self._update_csv_manager,
             en.LoopTestStateEnum.LT_STATE_OFF: self._off_state_manager,
             en.LoopTestStateEnum.LT_STATE_STOP: self._stop_state_manager,
         }
@@ -35,9 +37,9 @@ class LoopTest(object):
         self._lt_state = None  # en.LoopTestStateEnum
         self._last_lt_state = None  # en.LoopTestStateEnum
         self._lt_cmd = None  # en.LoopTestCommandsEnum
-
+        self._loop_result = None
         self._exit_condition = None  # bool
-        self._relays_toggle_status = None  # en.RelayStatusEnum
+
         self._current_loop: int
         self._supercap_voltage_mV = {
             'Start': int,
@@ -52,11 +54,27 @@ class LoopTest(object):
             'Device Disconnected': False
         }
 
+        self._csv_log_dict = {
+            'Iteration': None,
+            'Discharge Time [s]': None,
+            'Charge Time [s]': None,
+            'Total Time [s]': None,
+            'Start Voltage (Discharge) [mV]': None,
+            'Stop Voltage (Discharge) [mV]': None,
+            'Start Voltage (Charge) [mV]': None,
+            'Stop Voltage (Charge) [mV]': None,
+            'Result': None
+        }
+
+        self._csv_writer = None
+        self._csv_file = None
+
         pass
 
     # ---------------------------------------------------------------- #
     # ----------------------- Private Methods ------------------------ #
     # ---------------------------------------------------------------- #
+
     def _parse_config_file(self):
         """"""
         self._lt_config_dict = XmlDictConfig(ElementTree.parse('LT_Config.xml').getroot())
@@ -70,7 +88,6 @@ class LoopTest(object):
         self._serial_relay.init()
         self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
 
-        self._relays_toggle_status = en.RelayStatusEnum.RS_ON
         pass
 
     def _timers_init(self):
@@ -125,6 +142,11 @@ class LoopTest(object):
             self._timers_dict['GlobalTimer'].start()
             self._timers_dict['SupercapSampleTimer'].start()
 
+            # Init Log file and write headers of dictionary
+            self._csv_file = open(self._lt_config_dict['Log']['filename'], 'w')
+            self._csv_writer = csv.writer(self._csv_file)
+            self._csv_writer.writerow(self._csv_log_dict.keys())
+
             # Store the last state
             self._store_last_state()
         else:
@@ -149,7 +171,11 @@ class LoopTest(object):
 
                 # Device not respond
                 except adb_shell.exceptions.TcpTimeoutException:
+                    # Device disconnected, test failed
+                    self._loop_result = "Failed"
                     self._update_exit_condition('Device Disconnected', True)
+                    # Go to update csv state and then to stop
+                    self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
         return
 
     def _on_state_manager(self):
@@ -168,7 +194,6 @@ class LoopTest(object):
 
                         # Relays on
                         self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
-                        self._relays_toggle_status = en.RelayStatusEnum.RS_ON
 
                         # Start discharge timer
                         self._timers_dict['ChargeTimer'].start()
@@ -202,19 +227,26 @@ class LoopTest(object):
                             print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
                             print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 
-                            # Go to relay off state
-                            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
+                            # A discharge-charge loop has been completed: Pass!
+                            self._loop_result = "Passed"
+
+                            # Go to update csv state
+                            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
 
                     # Reset timer
                     self._timers_dict['SupercapSampleTimer'].reset()
 
                 # Device not respond
                 except adb_shell.exceptions.TcpTimeoutException:
+                    # Device disconnected, test failed
+                    self._loop_result = "Failed"
+                    self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
+                    print (self._supercap_voltage_mV['Current'])
                     self._update_exit_condition('Device Disconnected', True)
 
         else:
-            # Go to stop state
-            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
+            # Go to update csv state and then to stop state
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
 
         return
 
@@ -237,9 +269,6 @@ class LoopTest(object):
 
                         # Put all relay at off state
                         self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
-
-                        # Relay are in off state
-                        self._relays_toggle_status = en.RelayStatusEnum.RS_OFF
 
                         # Start discharge timer
                         self._timers_dict['DischargeTimer'].start()
@@ -270,20 +299,75 @@ class LoopTest(object):
                             print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
                             print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 
-                            # Go to relay on state
-                            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_ON)
+                            # Go to update csv state
+                            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
 
                     # Reset supercap sample timer
                     self._timers_dict['SupercapSampleTimer'].reset()
 
                 # Device not respond
                 except adb_shell.exceptions.TcpTimeoutException:
+                    # Device disconnected, test failed
+                    self._loop_result = "Failed"
+                    self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
                     self._update_exit_condition('Device Disconnected', True)
         else:
+            # Go to update csv state and then to stop state
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
+
+        return
+
+    def _update_csv_manager(self):
+        """ Update tge CSV log file """
+        # Update Result field
+        self._csv_log_dict['Result'] = self._loop_result
+
+        if (self._lt_state == en.LoopTestStateEnum.LT_STATE_UPDATE_CSV and
+                self._last_lt_state == en.LoopTestStateEnum.LT_STATE_OFF):
+            # Populate csv dict
+            self._csv_log_dict['Iteration'] = self._current_loop
+            self._csv_log_dict['Discharge Time [s]'] = self._timers_dict['DischargeTimer'].elapsed_time_s(digits=2)
+            self._csv_log_dict['Start Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Start']
+            self._csv_log_dict['Stop Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Stop']
+
+            if self._loop_result == "Failed":
+                # Update csv log file
+                self._csv_writer.writerow(self._csv_log_dict.values())
+
+            # Go to relay on state
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_ON)
+
+        elif (self._lt_state == en.LoopTestStateEnum.LT_STATE_UPDATE_CSV and
+                self._last_lt_state == en.LoopTestStateEnum.LT_STATE_ON):
+            # Populate csv dict
+            self._csv_log_dict['Charge Time [s]'] = self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)
+            self._csv_log_dict['Total Time [s]'] = self._csv_log_dict['Charge Time [s]'] + self._csv_log_dict['Discharge Time [s]']
+            self._csv_log_dict['Start Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Start']
+            self._csv_log_dict['Stop Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Stop']
+
+            # Update csv log file
+            self._csv_writer.writerow(self._csv_log_dict.values())
+
+            # Clear csv dictionary
+            for item in self._csv_log_dict:
+                 self._csv_log_dict[item] = None
+
+            # Go to relay off state
+            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
+
+        elif (self._lt_state == en.LoopTestStateEnum.LT_STATE_UPDATE_CSV and
+              self._last_lt_state == en.LoopTestStateEnum.LT_STATE_INIT):
+
+            # Update csv log file
+            self._csv_writer.writerow(self._csv_log_dict.values())
+        else:
+            pass
+
+        if self._exit_condition:
             # Go to stop state
             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
-        return
+        pass
 
     def _stop_state_manager(self):
         """"""
@@ -299,6 +383,9 @@ class LoopTest(object):
 
         # Close serial relay port
         self._serial_relay.close()
+
+        # Close csv file
+        self._csv_file.close()
 
         # Store last state
         self._last_lt_state = self._lt_state

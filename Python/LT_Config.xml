@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Body -->
 <GlobalParams>
     <Serial>
@@ -10,13 +10,18 @@
         <port>5555</port>
         <ip>192.168.1.6</ip>
         <supercap_sample_time_ms>10</supercap_sample_time_ms>
-        <supercap_th_high_mv>2500</supercap_th_high_mv>
-        <supercap_th_low_mv>2400</supercap_th_low_mv>
+        <supercap_th_high_mv>2000</supercap_th_high_mv>
+        <supercap_th_low_mv>1950</supercap_th_low_mv>
     </SX5>
 
     <Loop>
         <n_loop>2</n_loop>
         <time_test_min>100</time_test_min>
     </Loop>
+
+    <Log>
+        <path></path>
+        <filename>Log.csv</filename>
+    </Log>
 
 </GlobalParams>

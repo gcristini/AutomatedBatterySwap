@@ -40,7 +40,12 @@ class SX5_Manager(object):
 
     def _adb_tcp_connect(self):
         """"""
-        self._sx5_device.connect(auth_timeout_s=0.1)
+        try:
+            self._sx5_device.connect(auth_timeout_s=0.1)
+            print("- SX5 Connected")
+        except:
+            print("Timeout expired: check if device is on and if the IP is correct")
+            raise
         pass
 
 
@@ -67,8 +72,6 @@ class SX5_Manager(object):
             subprocess.run("adb tcpip {port}".format(port=int(self._sx5_config_dict['SX5']['port'])))
             self._adb_init()
             self._adb_tcp_connect()
-
-        print("- SX5 Connected")
 
         pass
 

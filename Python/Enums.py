@@ -11,7 +11,7 @@ class Enums:
         LT_STATE_INIT = "init"
         LT_STATE_ON = "on"
         LT_STATE_OFF = "off"
-        LT_STATE_SUPERCAP_MONITOR = "supercap_monitor"
+        LT_STATE_UPDATE_CSV = "update_csv"
         LT_STATE_STOP = "stop"
 
     class LoopTestCommandsEnum:
