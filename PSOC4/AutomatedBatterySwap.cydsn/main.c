@@ -41,9 +41,7 @@ int main(void)
 {
     /* Initialization */
     init();
-
-    //UartPC_UartPutString("Welcome\n");
-
+            
     /* Main Loop */
     forever
     {
@@ -53,7 +51,13 @@ int main(void)
 
 void init(void)
 {
+    /* User Led On */
+    pin_UserLed_Write(PIN_HIGH);
+
+    /* Start Uart PC*/
     UartPC_Start();
+    
+    return;    
 }
 
 void parseCommand(char *command)
@@ -90,7 +94,7 @@ void parseCommand(char *command)
         pin_SDA_Write(SDA_ON);
         pin_SCL_Write(SCL_ON);
         pin_Detect_Write(DETECT_ON);
-        pin_NTC_Write(PACKP_ON);
+        pin_NTC_Write(NTC_ON);
         UartPC_UartPutString("All set on");
     }
     /* PINS OFF */
