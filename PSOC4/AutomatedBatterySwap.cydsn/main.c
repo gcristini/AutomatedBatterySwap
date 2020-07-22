@@ -93,8 +93,9 @@ void parseCommand(char *command)
         pin_PackP_Write(PACKP_ON);
         pin_SDA_Write(SDA_ON);
         pin_SCL_Write(SCL_ON);
-        pin_Detect_Write(DETECT_ON);
         pin_NTC_Write(NTC_ON);
+        CyDelay(10);
+        pin_Detect_Write(DETECT_ON);
         UartPC_UartPutString("All set on");
     }
     /* PINS OFF */
@@ -128,8 +129,9 @@ void parseCommand(char *command)
         pin_PackP_Write(PACKP_OFF);
         pin_SDA_Write(SDA_OFF);
         pin_SCL_Write(SCL_OFF);
-        pin_Detect_Write(DETECT_OFF);
         pin_NTC_Write(NTC_OFF);
+        pin_Detect_Write(DETECT_OFF);
+        
         UartPC_UartPutString("All set off");
     }
     else    

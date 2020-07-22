@@ -128,7 +128,7 @@ class DebugTest(object):
     def init(self):
         """"""
         # Initialize Colorama library
-        cm.init(autoreset=True)
+        cm.init(autoreset=False)
 
         # Parse config file
         self._parse_config_file()
