@@ -54,7 +54,7 @@ class Timer(object):
 
     def elapsed_time_hour(self, digits=None):
         """"""
-        if digits:
+        if digits is not None:
             elapsed_time_hour = round(self.elapsed_time_min()/60, digits)
         else:
             elapsed_time_hour = self.elapsed_time_min()/ 60
@@ -62,7 +62,7 @@ class Timer(object):
 
     def elapsed_time_min(self, digits=None):
         """"""
-        if digits:
+        if digits is not None:
             elapsed_time_min = round(self.elapsed_time_s()/60, digits)
         else:
             elapsed_time_min = self.elapsed_time_s()/60
@@ -75,7 +75,7 @@ class Timer(object):
         else:
             pass
 
-        if digits:
+        if digits is not None:
             elapsed_time_s = round(self._elapsed_time_s, digits)
         else:
             elapsed_time_s = self._elapsed_time_s
@@ -83,7 +83,7 @@ class Timer(object):
 
     def elapsed_time_ms(self, digits=None):
         """"""
-        if digits:
+        if digits is not None:
             elapsed_time_ms = round((self.elapsed_time_s())*1000, digits)
         else:
             elapsed_time_ms = (self.elapsed_time_s())*1000
@@ -91,7 +91,7 @@ class Timer(object):
 
     def elapsed_time_us(self, digits=None):
         """"""
-        if digits:
+        if digits is not None:
             elapsed_time_us = round(self.elapsed_time_ms()*1000, digits)
         else:
             elapsed_time_us = self.elapsed_time_ms()*1000

@@ -8,6 +8,7 @@ import colorama as cm
 import sys
 import adb_shell.exceptions
 import csv
+import time
 
 
 class LoopTest(object):
@@ -47,22 +48,25 @@ class LoopTest(object):
             'Current': int
         }
 
+        self._capok_flag = bool
+
         self._lt_exit_cause_dict = {
             'Elapsed Time': False,
             'Max Num of Loops Reached': False,
             'Stop Command': False,
-            'Device Disconnected': False
+            'Device Disconnected': False,
+            'Charge Timeout': False
         }
 
         self._csv_log_dict = {
-            'Iteration': None,
-            'Discharge Time [s]': None,
-            'Charge Time [s]': None,
-            'Total Time [s]': None,
-            'Start Voltage (Discharge) [mV]': None,
-            'Stop Voltage (Discharge) [mV]': None,
-            'Start Voltage (Charge) [mV]': None,
-            'Stop Voltage (Charge) [mV]': None,
+            'Iteration': int,
+            'Discharge Time [s]': int,
+            'Charge Time [s]': int,
+            'Total Time [s]': int,
+            'Start Voltage (Discharge) [mV]': int,
+            'Stop Voltage (Discharge) [mV]': int,
+            'Start Voltage (Charge) [mV]': int,
+            'Stop Voltage (Charge) [mV]': int,
             'Result': None
         }
 
@@ -143,7 +147,9 @@ class LoopTest(object):
             self._timers_dict['SupercapSampleTimer'].start()
 
             # Init Log file and write headers of dictionary
-            self._csv_file = open(self._lt_config_dict['Log']['filename'], 'w')
+            self._csv_file = open("{name}_{date}{ext}".format(name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),
+                                                              date=time.strftime("%d%m_%H:%M"),
+                                                              ext=".csv"), 'w')
             self._csv_writer = csv.writer(self._csv_file)
             self._csv_writer.writerow(self._csv_log_dict.keys())
 
@@ -153,21 +159,35 @@ class LoopTest(object):
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(
                     self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 try:
-                    # Read supercap voltage
+                    # Read supercap voltage and cap ok flag
                     self._sx5.read_supercap_voltage_mV()
+                    self._sx5.read_capok_flag()
+
                     self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
+                    self._capok_flag = self._sx5.capok_flag
 
                     sys.stdout.write("\033[K")  # Clear to the end of line
                     print("Waiting for supercap fully charged before start loop.... Voltage: {voltage}mV".format(
                         voltage=self._supercap_voltage_mV['Current']),
                         end="\r")
 
-                    if self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"]):
+                    if ((self._capok_flag is True) and \
+                            (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
+                    #
+                    # if ((self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"])) and
+                    #     (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
+
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print("Supercap fully charged ({voltage}mV): Start Loop!\n".format(voltage=self._supercap_voltage_mV['Current']))
+                        print("Supercap fully charged @{voltage}mV: Start Loop!\n".format(voltage=self._supercap_voltage_mV['Current']))
 
                         # Go to relay off state
                         self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
+                    elif self._timers_dict['GlobalTimer'].elapsed_time_min() > float(self._lt_config_dict['SX5']['charge_timeout_min']):
+                        sys.stdout.write("\033[K")  # Clear to the end of line
+                        print("Charge timeout reached")
+
+                        self._update_exit_condition('Charge Timeout', True)
+                        self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
                 # Device not respond
                 except adb_shell.exceptions.TcpTimeoutException:
@@ -186,7 +206,10 @@ class LoopTest(object):
                 try:
                     # Read supercap voltage
                     self._sx5.read_supercap_voltage_mV()
+                    self._sx5.read_capok_flag()
+
                     self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
+                    self._capok_flag = self._sx5.capok_flag
 
                     # On the transition to this state...
                     if (self._lt_state == en.LoopTestStateEnum.LT_STATE_ON and
@@ -209,8 +232,11 @@ class LoopTest(object):
                                                                                   end="\r")
 
                         # Check if the high threshold has been reached
-                        if self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"]):
+                        if ((self._sx5.capok_flag is True) and \
+                                (self._timers_dict['ChargeTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
 
+                        # if ((self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"])) and
+                        #         (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
                             # Increase current loop
                             self._current_loop += 1
 
@@ -223,7 +249,7 @@ class LoopTest(object):
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
                             print("- Charge:")
-                            print("\t• time: {time}s".format(time=self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)))
+                            print("\t• time: {time}s".format(time=self._timers_dict['ChargeTimer'].elapsed_time_s(digits=0)))
                             print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
                             print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 
@@ -232,6 +258,12 @@ class LoopTest(object):
 
                             # Go to update csv state
                             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
+
+                        elif self._timers_dict['ChargeTimer'].elapsed_time_min() > float(self._lt_config_dict['SX5']['charge_timeout_min']):
+                            sys.stdout.write("\033[K")  # Clear to the end of line
+                            print("Charge timeout reached")
+                            self._update_exit_condition('Charge Timeout', True)
+                            self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
                     # Reset timer
                     self._timers_dict['SupercapSampleTimer'].reset()
@@ -295,7 +327,7 @@ class LoopTest(object):
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
                             print("- Discharge:")
-                            print("\t• time: {time}s".format(time=self._timers_dict['DischargeTimer'].elapsed_time_s(digits=2)))
+                            print("\t• time: {time}s".format(time=self._timers_dict['DischargeTimer'].elapsed_time_s(digits=0)))
                             print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
                             print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 

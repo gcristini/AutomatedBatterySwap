@@ -15,7 +15,7 @@ class SerialRelay(object):
                                     baudrate=self._baudrate)
         self._serial.serial_init()
 
-        print("- relays connected")
+        print("- Relays connected")
 
         pass
 
