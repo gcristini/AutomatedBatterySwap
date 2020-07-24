@@ -2,7 +2,7 @@
 <!-- Body -->
 <GlobalParams>
     <Serial>
-        <com>COM21</com>
+        <com>COM14</com>
         <baudarate>115200</baudarate>
     </Serial>
 </GlobalParams>

@@ -28,14 +28,14 @@ class DebugTest(object):
     @staticmethod
     def _print_help():
         """"""
-        print(cm.Fore.YELLOW + cm.Style.DIM + "\n----------------------------------------")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "--- Debug Test: Show Usage ---")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "-{relay}_{state}")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "\trelay: [packp, sda, scl, detect, ntc, all]")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "\tstate: [on, off]")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "-exit: exit from debug mode")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "-help: this help")
-        print(cm.Fore.YELLOW + cm.Style.DIM + "----------------------------------------\n")
+        print(cm.Fore.RED + cm.Style.DIM + "\n----------------------------------------")
+        print(cm.Fore.RED + cm.Style.DIM + "--- Debug Test: Show Usage ---")
+        print(cm.Fore.RED + cm.Style.DIM + "-{relay}_{state}")
+        print(cm.Fore.RED + cm.Style.DIM + "\trelay: [packp, sda, scl, detect, ntc, all]")
+        print(cm.Fore.RED + cm.Style.DIM + "\tstate: [on, off]")
+        print(cm.Fore.RED + cm.Style.DIM + "-exit: exit from debug mode")
+        print(cm.Fore.RED + cm.Style.DIM + "-help: this help")
+        print(cm.Fore.RED + cm.Style.DIM + "----------------------------------------\n")
         pass
 
     def _parse_config_file(self):
@@ -73,7 +73,8 @@ class DebugTest(object):
     def _wait_cmd_state_manager(self):
         """"""
         # Wait for command
-        cmd = input(cm.Fore.RED + cm.Style.DIM + "- Please enter a command: ")
+        print(cm.Fore.RED + cm.Style.DIM + "- Please enter a command: ", end="")
+        cmd = input()
 
         if cmd in en.DebugTestCommandsEnum.values():
             if cmd == en.MainAppCommandsEnum.MA_CMD_EXIT:

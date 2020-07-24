@@ -59,19 +59,21 @@ class LoopTest(object):
         }
 
         self._csv_log_dict = {
-            'Iteration': int,
-            'Discharge Time [s]': int,
-            'Charge Time [s]': int,
-            'Total Time [s]': int,
-            'Start Voltage (Discharge) [mV]': int,
-            'Stop Voltage (Discharge) [mV]': int,
-            'Start Voltage (Charge) [mV]': int,
-            'Stop Voltage (Charge) [mV]': int,
-            'Result': None
+            "filename": None,
+            "file": None,
+            "csv_writer": None,
+            "log_data": {
+                'Iteration': int,
+                'Discharge Time [s]': int,
+                'Charge Time [s]': int,
+                'Total Time [s]': int,
+                'Start Voltage (Discharge) [mV]': int,
+                'Stop Voltage (Discharge) [mV]': int,
+                'Start Voltage (Charge) [mV]': int,
+                'Stop Voltage (Charge) [mV]': int,
+                'Result': None
+            }
         }
-
-        self._csv_writer = None
-        self._csv_file = None
 
         pass
 
@@ -139,19 +141,22 @@ class LoopTest(object):
         if (self._lt_state == en.LoopTestStateEnum.LT_STATE_INIT and
                 self._last_lt_state != en.LoopTestStateEnum.LT_STATE_INIT):
 
-            # Start from iteration 0
-            self._current_loop = 0
+            # Start from iteration 1
+            self._current_loop = 1
 
             # Start global and supercap timers
             self._timers_dict['GlobalTimer'].start()
             self._timers_dict['SupercapSampleTimer'].start()
 
             # Init Log file and write headers of dictionary
-            self._csv_file = open("{name}_{date}{ext}".format(name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),
-                                                              date=time.strftime("%d%m_%H:%M"),
-                                                              ext=".csv"), 'w')
-            self._csv_writer = csv.writer(self._csv_file)
-            self._csv_writer.writerow(self._csv_log_dict.keys())
+            self._csv_log_dict['filename'] = "{name}_{date}{ext}".format(name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),
+                                                                         date=time.strftime("%d%m_%H%M"),
+                                                                         ext=".csv")
+            self._csv_log_dict['file'] = open(self._csv_log_dict['filename'], 'w')
+            #self._csv_file = open(self._lt_config_dict['Log']['csv_filename'], 'w')
+            self._csv_log_dict['csv_writer'] = csv.writer(self._csv_log_dict['file'])
+            self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict["log_data"].keys())
+            self._csv_log_dict['file'].close()
 
             # Store the last state
             self._store_last_state()
@@ -297,7 +302,8 @@ class LoopTest(object):
                     if (self._lt_state == en.LoopTestStateEnum.LT_STATE_OFF and
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_OFF):
 
-                        print("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
+                        print("\n--- Loop {iter}/{max_iter} ---".format(iter=self._current_loop,
+                                                                        max_iter=self._lt_config_dict["Loop"]["n_loop"]))
 
                         # Put all relay at off state
                         self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
@@ -351,20 +357,23 @@ class LoopTest(object):
 
     def _update_csv_manager(self):
         """ Update tge CSV log file """
+        self._csv_log_dict['file'] = open(self._csv_log_dict['filename'], 'a')
+        self._csv_log_dict['csv_writer'] = csv.writer(self._csv_log_dict['file'])
+
         # Update Result field
-        self._csv_log_dict['Result'] = self._loop_result
+        self._csv_log_dict['log_data']['Result'] = self._loop_result
 
         if (self._lt_state == en.LoopTestStateEnum.LT_STATE_UPDATE_CSV and
                 self._last_lt_state == en.LoopTestStateEnum.LT_STATE_OFF):
             # Populate csv dict
-            self._csv_log_dict['Iteration'] = self._current_loop
-            self._csv_log_dict['Discharge Time [s]'] = self._timers_dict['DischargeTimer'].elapsed_time_s(digits=2)
-            self._csv_log_dict['Start Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Start']
-            self._csv_log_dict['Stop Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Stop']
+            self._csv_log_dict['log_data']['Iteration'] = self._current_loop
+            self._csv_log_dict['log_data']['Discharge Time [s]'] = self._timers_dict['DischargeTimer'].elapsed_time_s(digits=2)
+            self._csv_log_dict['log_data']['Start Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Start']
+            self._csv_log_dict['log_data']['Stop Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Stop']
 
             if self._loop_result == "Failed":
                 # Update csv log file
-                self._csv_writer.writerow(self._csv_log_dict.values())
+                self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict['log_data'].values())
 
             # Go to relay on state
             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_ON)
@@ -372,17 +381,18 @@ class LoopTest(object):
         elif (self._lt_state == en.LoopTestStateEnum.LT_STATE_UPDATE_CSV and
                 self._last_lt_state == en.LoopTestStateEnum.LT_STATE_ON):
             # Populate csv dict
-            self._csv_log_dict['Charge Time [s]'] = self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)
-            self._csv_log_dict['Total Time [s]'] = self._csv_log_dict['Charge Time [s]'] + self._csv_log_dict['Discharge Time [s]']
-            self._csv_log_dict['Start Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Start']
-            self._csv_log_dict['Stop Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Stop']
+            self._csv_log_dict['log_data']['Charge Time [s]'] = self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)
+            self._csv_log_dict['log_data']['Total Time [s]'] = self._csv_log_dict['log_data']['Charge Time [s]'] + \
+                                                               self._csv_log_dict['log_data']['Discharge Time [s]']
+            self._csv_log_dict['log_data']['Start Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Start']
+            self._csv_log_dict['log_data']['Stop Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Stop']
 
             # Update csv log file
-            self._csv_writer.writerow(self._csv_log_dict.values())
+            self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict['log_data'].values())
 
             # Clear csv dictionary
-            for item in self._csv_log_dict:
-                 self._csv_log_dict[item] = None
+            for item in self._csv_log_dict['log_data']:
+                self._csv_log_dict['log_data'][item] = None
 
             # Go to relay off state
             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
@@ -391,13 +401,16 @@ class LoopTest(object):
               self._last_lt_state == en.LoopTestStateEnum.LT_STATE_INIT):
 
             # Update csv log file
-            self._csv_writer.writerow(self._csv_log_dict.values())
+            self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict['log_data'].values())
         else:
             pass
 
         if self._exit_condition:
             # Go to stop state
             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
+
+        # Close file
+        self._csv_log_dict['file'].close()
 
         pass
 
@@ -417,7 +430,7 @@ class LoopTest(object):
         self._serial_relay.close()
 
         # Close csv file
-        self._csv_file.close()
+        self._csv_log_dict['file'].close()
 
         # Store last state
         self._last_lt_state = self._lt_state
@@ -473,7 +486,7 @@ class LoopTest(object):
 
             # Update exit condition
             self._update_exit_condition('Elapsed Time', (self._timers_dict['GlobalTimer'].elapsed_time_min() >= float(self._lt_config_dict["Loop"]["time_test_min"])))
-            self._update_exit_condition('Max Num of Loops Reached', (self._current_loop > int(self._lt_config_dict["Loop"]["n_loop"]) - 1))
+            self._update_exit_condition('Max Num of Loops Reached', (self._current_loop > int(self._lt_config_dict["Loop"]["n_loop"])))
             self._update_exit_condition('Stop Command', (self._lt_cmd == en.LoopTestCommandsEnum.LT_CMD_STOP))
 
         # Reset state machine variables

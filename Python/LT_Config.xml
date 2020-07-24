@@ -2,22 +2,22 @@
 <!-- Body -->
 <GlobalParams>
     <Serial>
-        <com>COM23</com>
+        <com>COM14</com>
         <baudarate>115200</baudarate>
     </Serial>
 
     <SX5>
         <device>466eda16</device>
         <port>5555</port>
-        <ip>192.168.1.8</ip>
+        <ip>192.168.1.119</ip>
         <supercap_sample_time_ms>100</supercap_sample_time_ms>
-        <supercap_th_high_mv>2590</supercap_th_high_mv>
-        <supercap_th_low_mv>2000</supercap_th_low_mv>
+        <!--> <supercap_th_high_mv>2590</supercap_th_high_mv> -->
+        <supercap_th_low_mv>2500</supercap_th_low_mv>
         <charge_timeout_min>5</charge_timeout_min>
     </SX5>
 
     <Loop>
-        <n_loop>10</n_loop>
+        <n_loop>3</n_loop>
         <time_test_min>100</time_test_min>
     </Loop>
 

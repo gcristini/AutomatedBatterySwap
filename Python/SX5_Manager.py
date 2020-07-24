@@ -63,6 +63,7 @@ class SX5_Manager(object):
             print("No Device Found")
             raise ADB_Error
         else:
+            sys.stdout.write("\033[K")
             self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
                                             port=int(self._sx5_config_dict['SX5']['port']),
                                             default_transport_timeout_s=9.)
