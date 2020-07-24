@@ -33,7 +33,7 @@ class SX5_Manager(object):
     # ---------------------------------------------------------------- #
     def _parse_config_file(self):
         """"""
-        self._sx5_config_dict = XmlDictConfig(ElementTree.parse('LT_Config.xml').getroot())
+        self._sx5_config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())['LoopTest']
 
         pass
 
