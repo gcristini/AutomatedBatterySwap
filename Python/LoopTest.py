@@ -83,7 +83,8 @@ class LoopTest(object):
 
     def _parse_config_file(self):
         """"""
-        self._lt_config_dict = XmlDictConfig(ElementTree.parse('LT_Config.xml').getroot())
+        self._lt_config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())['Global']
+        self._lt_config_dict.update(XmlDictConfig(ElementTree.parse('Config.xml').getroot())['LoopTest'])
 
         pass
 
@@ -172,7 +173,7 @@ class LoopTest(object):
                     self._capok_flag = self._sx5.capok_flag
 
                     sys.stdout.write("\033[K")  # Clear to the end of line
-                    print("Waiting for supercap fully charged before start loop.... Voltage: {voltage}mV".format(
+                    print(cm.Fore.CYAN + cm.Style.DIM + "Waiting for supercap fully charged before start loop.... Voltage: {voltage}mV".format(
                         voltage=self._supercap_voltage_mV['Current']),
                         end="\r")
 
@@ -183,13 +184,13 @@ class LoopTest(object):
                     #     (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
 
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print("Supercap fully charged @{voltage}mV: Start Loop!\n".format(voltage=self._supercap_voltage_mV['Current']))
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Supercap fully charged @{voltage}mV: Start Loop!".format(voltage=self._supercap_voltage_mV['Current']))
 
                         # Go to relay off state
                         self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
                     elif self._timers_dict['GlobalTimer'].elapsed_time_min() > float(self._lt_config_dict['SX5']['charge_timeout_min']):
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print("Charge timeout reached")
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Charge timeout reached")
 
                         self._update_exit_condition('Charge Timeout', True)
                         self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
@@ -233,8 +234,8 @@ class LoopTest(object):
                         self._store_last_state()
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print("Charging.... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
-                                                                                  end="\r")
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Charging.... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
+                                                                                                                end="\r")
 
                         # Check if the high threshold has been reached
                         if ((self._sx5.capok_flag is True) and \
@@ -253,10 +254,10 @@ class LoopTest(object):
 
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
-                            print("- Charge:")
-                            print("\t• time: {time}s".format(time=self._timers_dict['ChargeTimer'].elapsed_time_s(digits=0)))
-                            print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
-                            print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "- Charge:")
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• time: {time}s".format(time=self._timers_dict['ChargeTimer'].elapsed_time_s(digits=0)))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 
                             # A discharge-charge loop has been completed: Pass!
                             self._loop_result = "Passed"
@@ -266,7 +267,7 @@ class LoopTest(object):
 
                         elif self._timers_dict['ChargeTimer'].elapsed_time_min() > float(self._lt_config_dict['SX5']['charge_timeout_min']):
                             sys.stdout.write("\033[K")  # Clear to the end of line
-                            print("Charge timeout reached")
+                            print(cm.Fore.CYAN + cm.Style.DIM + "Charge timeout reached")
                             self._update_exit_condition('Charge Timeout', True)
                             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_STOP)
 
@@ -302,7 +303,7 @@ class LoopTest(object):
                     if (self._lt_state == en.LoopTestStateEnum.LT_STATE_OFF and
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_OFF):
 
-                        print("\n--- Loop {iter}/{max_iter} ---".format(iter=self._current_loop,
+                        print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Loop {iter}/{max_iter} ---".format(iter=self._current_loop,
                                                                         max_iter=self._lt_config_dict["Loop"]["n_loop"]))
 
                         # Put all relay at off state
@@ -318,7 +319,7 @@ class LoopTest(object):
                         self._store_last_state()
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print("Discharging... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Discharging... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
                                                                                     end="\r")
 
                         # Check if the low threshold has been reached
@@ -332,10 +333,10 @@ class LoopTest(object):
 
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
-                            print("- Discharge:")
-                            print("\t• time: {time}s".format(time=self._timers_dict['DischargeTimer'].elapsed_time_s(digits=0)))
-                            print("\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
-                            print("\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "- Discharge:")
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• time: {time}s".format(time=self._timers_dict['DischargeTimer'].elapsed_time_s(digits=0)))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
 
                             # Go to update csv state
                             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
@@ -450,6 +451,7 @@ class LoopTest(object):
     # ---------------------------------------------------------------- #
     def init(self):
         """ Initialize Loop Test """
+
         # Initialize Colorama library
         cm.init(autoreset=True)
 
@@ -493,10 +495,10 @@ class LoopTest(object):
         self._lt_state = en.LoopTestStateEnum.LT_STATE_INIT
         self._last_lt_state = en.LoopTestStateEnum.LT_STATE_INIT
 
-        print("\n--- Finished ----")
-        print("-Tot. loops: {loop}".format(loop=self._current_loop))
-        print("-Elapsed Time: {time} min".format(time=self._timers_dict['GlobalTimer'].elapsed_time_min(digits=2)))
-        print ("\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]))
+        print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Finished ----")
+        print(cm.Fore.CYAN + cm.Style.DIM + "-Tot. loops: {loop}".format(loop=self._current_loop))
+        print(cm.Fore.CYAN + cm.Style.DIM + "-Elapsed Time: {time} min".format(time=self._timers_dict['GlobalTimer'].elapsed_time_min(digits=2)))
+        print(cm.Fore.CYAN + cm.Style.DIM + "\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]))
         print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Loop Test ***")
         print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
         pass

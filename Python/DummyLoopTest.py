@@ -5,6 +5,7 @@ from xml.etree import ElementTree
 from Enums import Enums as en
 import colorama as cm
 
+
 class DummyLoopTest(object):
 
     # ****************************** #
@@ -47,7 +48,8 @@ class DummyLoopTest(object):
     # ---------------------------------------------------------------- #
     def _parse_config_file(self):
         """"""
-        self._dlt_config_dict = XmlDictConfig(ElementTree.parse('DLT_Config.xml').getroot())
+        self._dlt_config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())['Global']
+        self._dlt_config_dict.update(XmlDictConfig(ElementTree.parse('Config.xml').getroot())['DummyLoopTest'])
 
         pass
 
@@ -109,7 +111,7 @@ class DummyLoopTest(object):
     def _on_state_manager(self):
         """ Relay On state manager """
         if not self._exit_condition:
-            print("\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
+            print(cm.Fore.BLUE + cm.Style.DIM + "\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
 
             # Put all relay at ON state
             self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
@@ -253,8 +255,8 @@ class DummyLoopTest(object):
         # Force Command to start
         self._dlt_cmd = en.DummyLoopTestCommandsEnum.DLT_CMD_START
 
-        print(cm.Fore.CYAN + cm.Style.DIM + "\n----------------------------------------")
-        print(cm.Fore.CYAN + cm.Style.DIM + "*** Run Dummy Loop Test ***")
+        print(cm.Fore.BLUE + cm.Style.DIM + "\n----------------------------------------")
+        print(cm.Fore.BLUE + cm.Style.DIM + "*** Run Dummy Loop Test ***")
 
         while not (self._dlt_state == en.DummyLoopTestStateEnum.DLT_STATE_STOP and
                    self._last_dlt_state == en.DummyLoopTestStateEnum.DLT_STATE_STOP):
@@ -271,12 +273,12 @@ class DummyLoopTest(object):
         self._dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
         self._last_dlt_state = en.DummyLoopTestStateEnum.DLT_STATE_INIT
 
-        print("\n--- Finished ----")
-        print("-Tot. loops: {loop}".format(loop=self._current_loop))
-        print("-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_min()))
-        print("\n-Test finished for: {cause}".format(cause=[key for key, value in self._dlt_exit_cause_dict.items() if value]))
-        print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Dummy Loop Test ***")
-        print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
+        print(cm.Fore.BLUE + cm.Style.DIM + "\n--- Finished ----")
+        print(cm.Fore.BLUE + cm.Style.DIM + "-Tot. loops: {loop}".format(loop=self._current_loop))
+        print(cm.Fore.BLUE + cm.Style.DIM + "-Elapsed Time: {time} min".format(time=self._global_timer.elapsed_time_min()))
+        print(cm.Fore.BLUE + cm.Style.DIM + "\n-Test finished for: {cause}".format(cause=[key for key, value in self._dlt_exit_cause_dict.items() if value]))
+        print(cm.Fore.BLUE + cm.Style.DIM + "\n*** Exit Dummy Loop Test ***")
+        print(cm.Fore.BLUE + cm.Style.DIM + "----------------------------------------\n")
         pass
 
     def stop(self):
