@@ -26,7 +26,8 @@
 /* **********************************************************************/
 /* ***                Definition of local macros                      ***/
 /* **********************************************************************/
-#define COMMAND_SEPARATOR "_"
+#define CMD_RELAYS_SEPARATOR    "_"
+#define CMD_STATUS_SEPARATOR    " "
 
 
 /* **********************************************************************/
@@ -39,7 +40,8 @@ typedef enum
     EN_RELAY_FUN_SDA        = 2,
     EN_RELAY_FUN_DETECT     = 3,
     EN_RELAY_FUN_NTC        = 4,
-    EN_RELAY_FUN_MAX_ENUM   = 5
+    EN_RELAY_FUN_ALL        = 5,
+    EN_RELAY_FUN_MAX_ENUM   = 6
 }EN_RELAY_FUNCTION_ENUM_TYPE;
 
 typedef struct
@@ -67,6 +69,7 @@ void    CMD_v_SclRelayFun      (uint8 *pu8_PinState);
 void    CMD_v_SdaRelayFun      (uint8 *pu8_PinState);
 void    CMD_v_DetectRelayFun   (uint8 *pu8_PinState);
 void    CMD_v_NtcRelayFun      (uint8 *pu8_PinState);
+void    CMD_v_AllRelayFun      (uint8 *pu8_PinState);
 
 /* **********************************************************************/
 /* ***             Definition of local functions                      ***/
@@ -83,13 +86,15 @@ void    CMD_v_NtcRelayFun      (uint8 *pu8_PinState);
 /* **********************************************************************************/
 void CMD_v_PackpRelayFun(uint8 *pu8_PinState)
 {   
-    if (!strcmp(pu8_PinState, "on"))
+    if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_PackP_Write(PACKP_ON);
+        UartPC_UartPutString("PACKP_ON\r\n");
     }
-    else if(!strcmp(pu8_PinState, "off"))
+    else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_PackP_Write(PACKP_OFF);
+        UartPC_UartPutString("PACKP_OFF\r\n");
     }
     else
     {
@@ -111,13 +116,15 @@ void CMD_v_PackpRelayFun(uint8 *pu8_PinState)
 /* **********************************************************************************/
 void CMD_v_SclRelayFun(uint8 *pu8_PinState)
 {
-    if (!strcmp(pu8_PinState, "on"))
+    if (!strcmp((const char*)pu8_PinState, "on"))
     {
-        pin_SCL_Write(PACKP_ON);
+        pin_SCL_Write(SCL_ON);
+        UartPC_UartPutString("SCL_ON\r\n");
     }
-    else if(!strcmp(pu8_PinState, "off"))
+    else if(!strcmp((const char*)pu8_PinState, "off"))
     {
-        pin_SCL_Write(PACKP_OFF);
+        pin_SCL_Write(SCL_OFF);
+        UartPC_UartPutString("SCL_OFF\r\n");
     }
     else
     {
@@ -139,13 +146,15 @@ void CMD_v_SclRelayFun(uint8 *pu8_PinState)
 /* **********************************************************************************/
 void CMD_v_SdaRelayFun(uint8 *pu8_PinState)
 {
-    if (!strcmp(pu8_PinState, "on"))
+    if (!strcmp((const char*)pu8_PinState, "on"))
     {
-        pin_SDA_Write(PACKP_ON);
+        pin_SDA_Write(SDA_ON);
+        UartPC_UartPutString("SDA_ON\r\n");
     }
-    else if(!strcmp(pu8_PinState, "off"))
+    else if(!strcmp((const char*)pu8_PinState, "off"))
     {
-        pin_SDS_Write(PACKP_OFF);
+        pin_SDA_Write(SDA_OFF);
+        UartPC_UartPutString("SDA_OFF\r\n");
     }
     else
     {
@@ -167,13 +176,15 @@ void CMD_v_SdaRelayFun(uint8 *pu8_PinState)
 /* **********************************************************************************/
 void CMD_v_DetectRelayFun(uint8 *pu8_PinState)
 {
-    if (!strcmp(pu8_PinState, "on"))
+    if (!strcmp((const char*)pu8_PinState, "on"))
     {
-        pin_Detect_Write(PACKP_ON);
+        pin_Detect_Write(DETECT_ON);
+        UartPC_UartPutString("DETECT_ON\r\n");
     }
-    else if(!strcmp(pu8_PinState, "off"))
+    else if(!strcmp((const char*)pu8_PinState, "off"))
     {
-        pin_Detect_Write(PACKP_OFF);
+        pin_Detect_Write(DETECT_OFF);
+        UartPC_UartPutString("DETECT_OFF\r\n");
     }
     else
     {
@@ -195,13 +206,55 @@ void CMD_v_DetectRelayFun(uint8 *pu8_PinState)
 /* **********************************************************************************/
 void CMD_v_NtcRelayFun(uint8 *pu8_PinState)
 {
-    if (!strcmp(pu8_PinState, "on"))
+    if (!strcmp((const char*)pu8_PinState, "on"))
     {
-        pin_NTC_Write(PACKP_ON);
+        pin_NTC_Write(NTC_ON);
+        UartPC_UartPutString("NTC_ON\r\n");
     }
-    else if(!strcmp(pu8_PinState, "off"))
+    else if(!strcmp((const char*)pu8_PinState, "off"))
     {
-        pin_NTC_Write(PACKP_OFF);
+        pin_NTC_Write(NTC_OFF);
+        UartPC_UartPutString("NTC_OFF\r\n");
+    }
+    else
+    {
+        /* MISRA */
+    }    
+    
+    return;
+}
+
+/* *********************************************************************************/ /**
+   \fn      	void CMD_v_AllRelayFun(uint8 *pu8_PinState)
+   \brief   	\n
+            	Scope: Local
+   \return  	void
+   \author		\arg Gabriele Cristini
+   \date		\arg Creation:  July 24.20
+				\arg Last Edit: July 24.20
+ */
+/* **********************************************************************************/
+void CMD_v_AllRelayFun(uint8 *pu8_PinState)
+{
+    if (!strcmp((const char*)pu8_PinState, "on"))
+    {
+        pin_PackP_Write(PACKP_ON);
+        pin_SCL_Write(SCL_ON);
+        pin_SDA_Write(SDA_ON);
+        pin_Detect_Write(DETECT_ON);
+        pin_NTC_Write(NTC_ON);
+        
+        UartPC_UartPutString("ALL_ON\r\n");
+    }
+    else if(!strcmp((const char*)pu8_PinState, "off"))
+    {
+        pin_PackP_Write(PACKP_OFF);
+        pin_SCL_Write(SCL_OFF);
+        pin_SDA_Write(SDA_OFF);
+        pin_Detect_Write(DETECT_OFF);
+        pin_NTC_Write(NTC_OFF);
+        
+        UartPC_UartPutString("ALL_OFF\r\n");
     }
     else
     {
@@ -237,6 +290,8 @@ void CMD_v_Init(void)
     st_parserFunction[EN_RELAY_FUN_DETECT].pv_function  = CMD_v_DetectRelayFun;
     st_parserFunction[EN_RELAY_FUN_NTC].pu8_header      = (uint8*)"ntc";
     st_parserFunction[EN_RELAY_FUN_NTC].pv_function     = CMD_v_NtcRelayFun;
+    st_parserFunction[EN_RELAY_FUN_ALL].pu8_header      = (uint8*)"all";
+    st_parserFunction[EN_RELAY_FUN_ALL].pv_function     = CMD_v_AllRelayFun;
 
     return;
 }
@@ -260,24 +315,25 @@ void CMD_v_ParseCommand(uint8* pu8_command)
     EN_RELAY_FUNCTION_ENUM_TYPE en_index;
 
     /* Extract the Relay Status */
-    pu8_relayStatus = (uint8*)strtok((char*)pu8_command, COMMAND_SEPARATOR);
-    
-    /* Extract relay to command */
+    (void)strtok((char*)pu8_command, (char*)CMD_STATUS_SEPARATOR);
+    pu8_relayStatus = (uint8*)strtok(NULL, (char*)CMD_STATUS_SEPARATOR);
+              
     if(pu8_relayStatus != NULL)
     {  
+        /* Extract the relay(s) to command */ 
+        pu8_relay = (uint8*)strtok((char*)pu8_command, (char*)CMD_RELAYS_SEPARATOR);
+        
+        /* Search for relative function and execute */ 
         do
         {
-            pu8_relay = (uint8*)strtok(NULL, COMMAND_SEPARATOR);
-            
             for (en_index=0; en_index < EN_RELAY_FUN_MAX_ENUM; en_index++)
-            {
-                
+            {                
                 if (!strcmp((const char*)st_parserFunction[en_index].pu8_header, (const char*)pu8_relay))
                 {
                     st_parserFunction[en_index].pv_function(pu8_relayStatus);   
-                }
-                
+                }                
             }
+            pu8_relay = (uint8*)strtok(NULL, CMD_RELAYS_SEPARATOR);
 
         }
         while (pu8_relay != NULL);

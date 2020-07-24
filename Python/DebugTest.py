@@ -92,7 +92,7 @@ class DebugTest(object):
                 print(cm.Fore.RED + cm.Style.DIM + "--- Wrong command: use a valid command!")
                 self._print_help()
 
-        elif cmd in en.RelayCommandsEnum.values():
+        elif cmd in en.DebugRelayCommandsEnum.values():
             # Drive relay
             self._serial_relay.drive_relay(cmd)
 

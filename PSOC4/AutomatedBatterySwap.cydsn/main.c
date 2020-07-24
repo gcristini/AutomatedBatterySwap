@@ -18,6 +18,7 @@
 /* **********************************************************************/
 #include "project.h"
 #include "CommandManager.h"
+#include "Globals.h"
 
 /* **********************************************************************/
 /* ***                Definition of local macros                      ***/
@@ -95,7 +96,7 @@ void MAIN_v_PollUart(void)
 void MAIN_v_Init(void)
 {
     /* User Led On */
-    pin_UserLed_Write(1);
+    pin_UserLed_Write(PIN_HIGH);
     
     /* Initialize Command Manager Module */
     CMD_v_Init();

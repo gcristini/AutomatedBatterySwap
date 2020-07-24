@@ -9,6 +9,7 @@ import sys
 import adb_shell.exceptions
 import csv
 import time
+import random
 
 
 class LoopTest(object):
@@ -93,7 +94,7 @@ class LoopTest(object):
         self._serial_relay = SerialRelay(port=self._lt_config_dict["Serial"]["com"],
                                          baudrate=self._lt_config_dict["Serial"]["baudarate"])
         self._serial_relay.init()
-        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
         pass
 
@@ -204,6 +205,25 @@ class LoopTest(object):
                     self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
         return
 
+    @staticmethod
+    def _generate_random_relay_command(relay_status=None):
+        relays_list = en.RelaysEnum.values()
+        random.shuffle(relays_list)
+
+        relay_cmd = ""
+
+        # Append all relay in the list
+        for relay in relays_list:
+            relay_cmd += relay + "_"
+
+        # Delete last character
+        relay_cmd = relay_cmd[:-1]
+
+        # Append the relay status
+        relay_cmd += " " + relay_status
+        print (relay_cmd)
+        return relay_cmd
+
     def _on_state_manager(self):
         """ Relay On State Manager """
         if not self._exit_condition:
@@ -222,7 +242,8 @@ class LoopTest(object):
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_ON):
 
                         # Relays on
-                        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+                        #self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON)
+                        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
                         # Start discharge timer
                         self._timers_dict['ChargeTimer'].start()
@@ -307,7 +328,7 @@ class LoopTest(object):
                                                                         max_iter=self._lt_config_dict["Loop"]["n_loop"]))
 
                         # Put all relay at off state
-                        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
+                        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_OFF))
 
                         # Start discharge timer
                         self._timers_dict['DischargeTimer'].start()
@@ -418,7 +439,7 @@ class LoopTest(object):
     def _stop_state_manager(self):
         """"""
         # Put all relays on
-        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
         # Stop all timers
         for timer in list(self._timers_dict):

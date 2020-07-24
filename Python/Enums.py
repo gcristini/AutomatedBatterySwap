@@ -19,6 +19,22 @@ class Enums:
         LT_CMD_START = "start"
         LT_CMD_STOP = "stop"
 
+    class RelaysEnum:
+        # Relay commands
+        RELAY_PACK_P = "packp"
+        RELAY_SCL = "scl"
+        RELAY_SDA = "sda"
+        RELAY_DETECT = "detect"
+        RELAY_NTC = "ntc"
+
+        @classmethod
+        def vars(cls):
+            return [name for name, value in vars(cls).items() if name.isupper()]
+
+        @classmethod
+        def values(cls):
+            return [value for name, value in vars(cls).items() if name.isupper()]
+
     # ------------------------------ #
     # ------ DummyLoopTest.py ------ #
     # ------------------------------ #
@@ -45,6 +61,29 @@ class Enums:
     class DebugTestCommandsEnum:
         DT_CMD_EXIT = "exit"
         DT_CMD_HELP = "help"
+
+        @classmethod
+        def vars(cls):
+            return [name for name, value in vars(cls).items() if name.isupper()]
+
+        @classmethod
+        def values(cls):
+            return [value for name, value in vars(cls).items() if name.isupper()]
+
+    class DebugRelayCommandsEnum:
+        # Relay commands
+        RC_PACK_P_ON = "packp on"
+        RC_PACK_P_OFF = "packp off"
+        RC_SCL_ON = "scl on"
+        RC_SCL_OFF = "scl off"
+        RC_SDA_ON = "sda on"
+        RC_SDA_OFF = "sda off"
+        RC_DETECT_ON = "detect on"
+        RC_DETECT_OFF = "detect off"
+        RC_NTC_ON = "ntc on"
+        RC_NTC_OFF = "ntc off"
+        RC_ALL_ON = "all on"
+        RC_ALL_OFF = "all off"
 
         @classmethod
         def vars(cls):
@@ -83,34 +122,11 @@ class Enums:
         def values(cls):
             return [value for name, value in vars(cls).items() if name.isupper()]
 
-    class RelayCommandsEnum:
-        # Relay commands
-        RC_PACK_P_ON = "packp_on"
-        RC_PACK_P_OFF = "packp_off"
-        RC_SDA_ON = "sda_on"
-        RC_SDA_OFF = "sda_off"
-        RC_SCL_ON = "scl_on"
-        RC_SCL_OFF = "scl_off"
-        RC_DETECT_ON = "detect_on"
-        RC_DETECT_OFF = "detect_off"
-        RC_NTC_ON = "ntc_on"
-        RC_NTC_OFF = "ntc_off"
-        RC_ALL_ON = "all_on"
-        RC_ALL_OFF = "all_off"
-
-        @classmethod
-        def vars(cls):
-            return [name for name, value in vars(cls).items() if name.isupper()]
-
-        @classmethod
-        def values(cls):
-            return [value for name, value in vars(cls).items() if name.isupper()]
-
 
 if __name__ == "__main__":
-    test=Enums.MainAppCommandsEnum
-    print (type(test.vars()))
-    print (test.vars())
-    print (test.values())
+    test = Enums.MainAppCommandsEnum
+    print(type(test.vars()))
+    print(test.vars())
+    print(test.values())
 
     print ("exit" in test.values())
