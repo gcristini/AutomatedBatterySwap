@@ -41,7 +41,7 @@ class SX5_Manager(object):
         """"""
         count = 0
         res = -1
-        num_of_try = 30
+        num_of_try = 60
 
         # Start Timer
         timer = Timer()
@@ -49,7 +49,7 @@ class SX5_Manager(object):
 
         while (count < num_of_try):
             if timer.elapsed_time_s(2) >= 1:
-                print("- Waiting for device " + "."*count, end='\r')
+                print("- Waiting for SX5 device " + "."*count, end='\r')
                 res = subprocess.run("adb devices", text=True, capture_output=True).stdout.find(self._sx5_config_dict['SX5']['device'])
                 if (res != -1):
                     timer.stop()

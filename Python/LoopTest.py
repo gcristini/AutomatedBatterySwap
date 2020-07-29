@@ -11,6 +11,7 @@ import csv
 import time
 import random
 from TektronixManager import TektronixManager
+from CustomThread import CustomThread
 
 
 # noinspection PyTypeChecker
@@ -29,6 +30,7 @@ class LoopTest(object):
         }
         self._sx5: SX5_Manager
         self._osc: TektronixManager
+        self._osc_thread: CustomThread
 
         # State Machine
         self._lt_state_machine_fun_dict = {
@@ -87,6 +89,12 @@ class LoopTest(object):
     # ----------------------- Private Methods ------------------------ #
     # ---------------------------------------------------------------- #
 
+    def _osc_save_image_runnable(self):
+        # Wait a second and save screen
+        time.sleep(1)
+        self._osc.save_screen()
+        pass
+
     def _parse_config_file(self):
         """"""
         self._lt_config_dict = XmlDictConfig(ElementTree.parse('Config.xml').getroot())['Global']
@@ -94,9 +102,12 @@ class LoopTest(object):
 
         pass
 
-    def _oscillocope_init(self):
+    def _oscilloscope_init(self):
         """"""
-        self._osc = TektronixManager(resource_name=self._lt_config_dict['Oscilloscope']['resource_name'])
+        self._osc = TektronixManager(resource_name=self._lt_config_dict['Oscilloscope']['resource_name'],
+                                     images_dir="{name}_{date}".format(name=self._lt_config_dict['Oscilloscope']['save_folder'],
+                                                                       date=time.strftime("%d%m_%H%M")))
+
         self._osc.init()
         pass
 
@@ -152,6 +163,8 @@ class LoopTest(object):
 
     @staticmethod
     def _generate_random_relay_command(relay_status=None):
+        """ Generate the command to control relay in a casual order """
+        # Take the list from enumeration and shuffle it
         relays_list = en.RelaysEnum.values()
         random.shuffle(relays_list)
 
@@ -166,7 +179,6 @@ class LoopTest(object):
 
         # Append the relay status
         relay_cmd += " " + relay_status
-        print(relay_cmd)
 
         return relay_cmd
 
@@ -256,13 +268,13 @@ class LoopTest(object):
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_ON):
 
                         # Relays on
-                        if bool(self._lt_config_dict['SX5']['random_relay']) is True:
+                        if self._lt_config_dict['SX5']['random_relay'].upper() == "TRUE":
                             relay_cmd = self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON)
                         else:
                             relay_cmd = "{relay} {status}".format(relay="packp_scl_sda_detect_ntc",
                                                                   status=en.RelayStatusEnum.RS_ON)
                         # Store the relays command and drive relays
-                        self._csv_log_dict['log_data']['Pinout sequence (Charge)'] = relay_cmd
+                        self._csv_log_dict['log_data']['Pinout sequence (Charge)'] = relay_cmd.strip(" on")
                         self._serial_relay.drive_relay(cmd=relay_cmd)
 
                         # Start discharge timer
@@ -273,7 +285,8 @@ class LoopTest(object):
 
                         # Store image on oscilloscope
                         self._osc.image_name = "Loop_{num}".format(num=self._current_loop)
-                        self._osc.save_screen()
+                        self._osc_thread = CustomThread(runnable=self._osc_save_image_runnable).start()
+                        #self._osc.save_screen()
 
                         # Store last state
                         self._store_last_state()
@@ -351,13 +364,13 @@ class LoopTest(object):
                                                                                                       max_iter=self._lt_config_dict["Loop"]["n_loop"]))
 
                         # Put all relay at off state
-                        if bool(self._lt_config_dict['SX5']['random_relay']) is True:
+                        if self._lt_config_dict['SX5']['random_relay'].upper() == "TRUE":
                             relay_cmd = self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_OFF)
                         else:
                             relay_cmd = "{relay} {status}".format(relay="packp_scl_sda_detect_ntc",
-                                                                  status=en.RelayStatusEnum.RC_ALL_OFF)
+                                                                  status=en.RelayStatusEnum.RS_OFF)
                         # Store relays command and drive relays
-                        self._csv_log_dict['log_data']['Pinout sequence (Discharge)'] = relay_cmd
+                        self._csv_log_dict['log_data']['Pinout sequence (Discharge)'] = relay_cmd.strip((" off"))
                         self._serial_relay.drive_relay(cmd=relay_cmd)
 
                         # Start discharge timer
@@ -434,8 +447,8 @@ class LoopTest(object):
                 self._last_lt_state == en.LoopTestStateEnum.LT_STATE_ON):
             # Populate csv dict
             self._csv_log_dict['log_data']['Charge Time [s]'] = self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)
-            self._csv_log_dict['log_data']['Total Time [s]'] = self._csv_log_dict['log_data']['Charge Time [s]'] + \
-                                                               self._csv_log_dict['log_data']['Discharge Time [s]']
+            self._csv_log_dict['log_data']['Total Time [s]'] = round(self._csv_log_dict['log_data']['Charge Time [s]'] + \
+                                                                     self._csv_log_dict['log_data']['Discharge Time [s]'], ndigits=2)
             self._csv_log_dict['log_data']['Start Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Start']
             self._csv_log_dict['log_data']['Stop Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Stop']
 
@@ -517,7 +530,7 @@ class LoopTest(object):
         self._serial_relay_init()
 
         # Initialize oscilloscope
-        self._oscillocope_init()
+        self._oscilloscope_init()
 
         # Initialize SX5
         self._sx5_init()
@@ -542,7 +555,7 @@ class LoopTest(object):
             self._lt_state_machine_manager()
 
             # Update exit condition
-            self._update_exit_condition('Elapsed Time', (self._timers_dict['GlobalTimer'].elapsed_time_min() >= float(self._lt_config_dict["Loop"]["time_test_min"])))
+            #self._update_exit_condition('Elapsed Time', (self._timers_dict['GlobalTimer'].elapsed_time_min() >= float(self._lt_config_dict["Loop"]["time_test_min"])))
             self._update_exit_condition('Max Num of Loops Reached', (self._current_loop > int(self._lt_config_dict["Loop"]["n_loop"])))
             self._update_exit_condition('Stop Command', (self._lt_cmd == en.LoopTestCommandsEnum.LT_CMD_STOP))
 
@@ -565,6 +578,6 @@ class LoopTest(object):
 
 
 if __name__ == '__main__':
-    test=LoopTest()
+    test = LoopTest()
     test.init()
     test.run()
