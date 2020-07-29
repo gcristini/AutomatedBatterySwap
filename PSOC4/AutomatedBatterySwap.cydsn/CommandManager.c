@@ -89,12 +89,16 @@ void CMD_v_PackpRelayFun(uint8 *pu8_PinState)
     if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_PackP_Write(PACKP_ON);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("PACKP_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_PackP_Write(PACKP_OFF);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("PACKP_OFF\r\n");
+        #endif
     }
     else
     {
@@ -119,12 +123,17 @@ void CMD_v_SclRelayFun(uint8 *pu8_PinState)
     if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_SCL_Write(SCL_ON);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("SCL_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_SCL_Write(SCL_OFF);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("SCL_OFF\r\n");
+        #endif
+        
     }
     else
     {
@@ -149,12 +158,16 @@ void CMD_v_SdaRelayFun(uint8 *pu8_PinState)
     if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_SDA_Write(SDA_ON);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("SDA_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_SDA_Write(SDA_OFF);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("SDA_OFF\r\n");
+        #endif
     }
     else
     {
@@ -179,12 +192,16 @@ void CMD_v_DetectRelayFun(uint8 *pu8_PinState)
     if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_Detect_Write(DETECT_ON);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("DETECT_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_Detect_Write(DETECT_OFF);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("DETECT_OFF\r\n");
+        #endif
     }
     else
     {
@@ -209,12 +226,16 @@ void CMD_v_NtcRelayFun(uint8 *pu8_PinState)
     if (!strcmp((const char*)pu8_PinState, "on"))
     {
         pin_NTC_Write(NTC_ON);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("NTC_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
         pin_NTC_Write(NTC_OFF);
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("NTC_OFF\r\n");
+        #endif
     }
     else
     {
@@ -243,8 +264,9 @@ void CMD_v_AllRelayFun(uint8 *pu8_PinState)
         pin_SDA_Write(SDA_ON);
         pin_Detect_Write(DETECT_ON);
         pin_NTC_Write(NTC_ON);
-        
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("ALL_ON\r\n");
+        #endif
     }
     else if(!strcmp((const char*)pu8_PinState, "off"))
     {
@@ -253,8 +275,9 @@ void CMD_v_AllRelayFun(uint8 *pu8_PinState)
         pin_SDA_Write(SDA_OFF);
         pin_Detect_Write(DETECT_OFF);
         pin_NTC_Write(NTC_OFF);
-        
+        #ifdef PRINT_DEBUG
         UartPC_UartPutString("ALL_OFF\r\n");
+        #endif
     }
     else
     {

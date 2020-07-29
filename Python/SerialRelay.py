@@ -1,5 +1,6 @@
 from CustomSerial import CustomSerial
-
+from serial import SerialException
+import sys
 
 class SerialRelay(object):
     def __init__(self, port=None, baudrate=None):
@@ -11,12 +12,17 @@ class SerialRelay(object):
 
     def init(self):
         """"""
-        self._serial = CustomSerial(port=self._port,
-                                    baudrate=self._baudrate)
-        self._serial.serial_init()
-
-        print("- Relays connected")
-
+        try:
+            self._serial = CustomSerial(port=self._port,
+                                        baudrate=self._baudrate)
+        except SerialException:
+            print("- {port} not found. Available ports: \n  {list}".format(port=self._port,
+                                                                           list=CustomSerial.list_available_serial(100)))
+            input(" Press a key to exit...")
+            sys.exit()
+        else:
+            self._serial.serial_init()
+            print("- Relays connected")
         pass
 
     def drive_relay(self, cmd):

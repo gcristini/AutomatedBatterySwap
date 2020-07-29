@@ -10,8 +10,10 @@ import adb_shell.exceptions
 import csv
 import time
 import random
+from TektronixManager import TektronixManager
 
 
+# noinspection PyTypeChecker
 class LoopTest(object):
     """"""
     def __init__(self):
@@ -26,12 +28,13 @@ class LoopTest(object):
             'DischargeTimer': Timer
         }
         self._sx5: SX5_Manager
+        self._osc: TektronixManager
 
         # State Machine
         self._lt_state_machine_fun_dict = {
             en.LoopTestStateEnum.LT_STATE_INIT: self._init_state_manager,
             en.LoopTestStateEnum.LT_STATE_ON: self._on_state_manager,
-            en.LoopTestStateEnum.LT_STATE_UPDATE_CSV: self._update_csv_manager,
+            en.LoopTestStateEnum.LT_STATE_UPDATE_CSV: self._update_csv_state_manager,
             en.LoopTestStateEnum.LT_STATE_OFF: self._off_state_manager,
             en.LoopTestStateEnum.LT_STATE_STOP: self._stop_state_manager,
         }
@@ -70,8 +73,10 @@ class LoopTest(object):
                 'Total Time [s]': int,
                 'Start Voltage (Discharge) [mV]': int,
                 'Stop Voltage (Discharge) [mV]': int,
+                'Pinout sequence (Discharge)': str,
                 'Start Voltage (Charge) [mV]': int,
                 'Stop Voltage (Charge) [mV]': int,
+                'Pinout sequence (Charge)': str,
                 'Result': None
             }
         }
@@ -89,12 +94,19 @@ class LoopTest(object):
 
         pass
 
+    def _oscillocope_init(self):
+        """"""
+        self._osc = TektronixManager(resource_name=self._lt_config_dict['Oscilloscope']['resource_name'])
+        self._osc.init()
+        pass
+
     def _serial_relay_init(self):
         """ Initialize all relays to ON state """
         self._serial_relay = SerialRelay(port=self._lt_config_dict["Serial"]["com"],
                                          baudrate=self._lt_config_dict["Serial"]["baudarate"])
         self._serial_relay.init()
-        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
+        self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
+        #self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
         pass
 
@@ -138,6 +150,26 @@ class LoopTest(object):
 
         pass
 
+    @staticmethod
+    def _generate_random_relay_command(relay_status=None):
+        relays_list = en.RelaysEnum.values()
+        random.shuffle(relays_list)
+
+        relay_cmd = ""
+
+        # Append all relay in the list
+        for relay in relays_list:
+            relay_cmd += relay + "_"
+
+        # Delete last character
+        relay_cmd = relay_cmd[:-1]
+
+        # Append the relay status
+        relay_cmd += " " + relay_status
+        print(relay_cmd)
+
+        return relay_cmd
+
     def _init_state_manager(self):
         """ Init State Manager """
         if (self._lt_state == en.LoopTestStateEnum.LT_STATE_INIT and
@@ -154,7 +186,8 @@ class LoopTest(object):
             self._csv_log_dict['filename'] = "{name}_{date}{ext}".format(name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),
                                                                          date=time.strftime("%d%m_%H%M"),
                                                                          ext=".csv")
-            self._csv_log_dict['file'] = open(self._csv_log_dict['filename'], 'w')
+
+            self._csv_log_dict['file'] = open(file=self._csv_log_dict['filename'], mode='w',  newline='')
             #self._csv_file = open(self._lt_config_dict['Log']['csv_filename'], 'w')
             self._csv_log_dict['csv_writer'] = csv.writer(self._csv_log_dict['file'])
             self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict["log_data"].keys())
@@ -205,25 +238,6 @@ class LoopTest(object):
                     self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
         return
 
-    @staticmethod
-    def _generate_random_relay_command(relay_status=None):
-        relays_list = en.RelaysEnum.values()
-        random.shuffle(relays_list)
-
-        relay_cmd = ""
-
-        # Append all relay in the list
-        for relay in relays_list:
-            relay_cmd += relay + "_"
-
-        # Delete last character
-        relay_cmd = relay_cmd[:-1]
-
-        # Append the relay status
-        relay_cmd += " " + relay_status
-        print (relay_cmd)
-        return relay_cmd
-
     def _on_state_manager(self):
         """ Relay On State Manager """
         if not self._exit_condition:
@@ -242,8 +256,14 @@ class LoopTest(object):
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_ON):
 
                         # Relays on
-                        #self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON)
-                        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
+                        if bool(self._lt_config_dict['SX5']['random_relay']) is True:
+                            relay_cmd = self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON)
+                        else:
+                            relay_cmd = "{relay} {status}".format(relay="packp_scl_sda_detect_ntc",
+                                                                  status=en.RelayStatusEnum.RS_ON)
+                        # Store the relays command and drive relays
+                        self._csv_log_dict['log_data']['Pinout sequence (Charge)'] = relay_cmd
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
 
                         # Start discharge timer
                         self._timers_dict['ChargeTimer'].start()
@@ -251,15 +271,18 @@ class LoopTest(object):
                         # Store the current supercap voltage as start voltage
                         self._supercap_voltage_mV['Start'] = self._supercap_voltage_mV['Current']
 
+                        # Store image on oscilloscope
+                        self._osc.image_name = "Loop_{num}".format(num=self._current_loop)
+                        self._osc.save_screen()
+
                         # Store last state
                         self._store_last_state()
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
                         print(cm.Fore.CYAN + cm.Style.DIM + "Charging.... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
                                                                                                                 end="\r")
-
                         # Check if the high threshold has been reached
-                        if ((self._sx5.capok_flag is True) and \
+                        if ((self._sx5.capok_flag is True) and
                                 (self._timers_dict['ChargeTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
 
                         # if ((self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"])) and
@@ -300,7 +323,7 @@ class LoopTest(object):
                     # Device disconnected, test failed
                     self._loop_result = "Failed"
                     self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
-                    print (self._supercap_voltage_mV['Current'])
+                    print(self._supercap_voltage_mV['Current'])
                     self._update_exit_condition('Device Disconnected', True)
 
         else:
@@ -325,10 +348,17 @@ class LoopTest(object):
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_OFF):
 
                         print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Loop {iter}/{max_iter} ---".format(iter=self._current_loop,
-                                                                        max_iter=self._lt_config_dict["Loop"]["n_loop"]))
+                                                                                                      max_iter=self._lt_config_dict["Loop"]["n_loop"]))
 
                         # Put all relay at off state
-                        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_OFF))
+                        if bool(self._lt_config_dict['SX5']['random_relay']) is True:
+                            relay_cmd = self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_OFF)
+                        else:
+                            relay_cmd = "{relay} {status}".format(relay="packp_scl_sda_detect_ntc",
+                                                                  status=en.RelayStatusEnum.RC_ALL_OFF)
+                        # Store relays command and drive relays
+                        self._csv_log_dict['log_data']['Pinout sequence (Discharge)'] = relay_cmd
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
 
                         # Start discharge timer
                         self._timers_dict['DischargeTimer'].start()
@@ -341,7 +371,7 @@ class LoopTest(object):
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
                         print(cm.Fore.CYAN + cm.Style.DIM + "Discharging... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
-                                                                                    end="\r")
+                                                                                                                  end="\r")
 
                         # Check if the low threshold has been reached
                         if self._supercap_voltage_mV['Current'] <= int(self._lt_config_dict["SX5"]["supercap_th_low_mv"]):
@@ -377,9 +407,9 @@ class LoopTest(object):
 
         return
 
-    def _update_csv_manager(self):
+    def _update_csv_state_manager(self):
         """ Update tge CSV log file """
-        self._csv_log_dict['file'] = open(self._csv_log_dict['filename'], 'a')
+        self._csv_log_dict['file'] = open(file=self._csv_log_dict['filename'], mode='a',  newline='')
         self._csv_log_dict['csv_writer'] = csv.writer(self._csv_log_dict['file'])
 
         # Update Result field
@@ -439,7 +469,8 @@ class LoopTest(object):
     def _stop_state_manager(self):
         """"""
         # Put all relays on
-        self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
+        self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
+        #self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
         # Stop all timers
         for timer in list(self._timers_dict):
@@ -484,6 +515,9 @@ class LoopTest(object):
 
         # Initialize Relays On
         self._serial_relay_init()
+
+        # Initialize oscilloscope
+        self._oscillocope_init()
 
         # Initialize SX5
         self._sx5_init()

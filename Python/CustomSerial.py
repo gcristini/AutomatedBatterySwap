@@ -1,6 +1,7 @@
 # Created by gcristini at 19/10/2018
 
 import serial
+from serial import SerialException
 
 
 class CustomSerial(serial.Serial):
@@ -34,6 +35,21 @@ class CustomSerial(serial.Serial):
         self.close()
         return
 
+    @staticmethod
+    def list_available_serial(max_num):
+        serial_list = []
+        port=""
+
+        for num in range(1, max_num):
+            port="COM{num}".format(num=num)
+            try:
+                serial.Serial(port=port)
+            except SerialException:
+                pass
+            else:
+                serial_list.append(port)
+        return serial_list
+
     @property
     def bytes_available_rx(self):
         """ Check available bytes of data """
@@ -42,6 +58,8 @@ class CustomSerial(serial.Serial):
 
 
 if __name__ == '__main__':
+    print (CustomSerial.list_available_serial(100))
+
     test_serial = CustomSerial(port="COM16", baudrate=115200)
     test_serial.serial_init()
 
