@@ -1,17 +1,18 @@
-from SerialRelay import SerialRelay
-from Timer import *
-from ParseXml import XmlDictConfig
+import colorama as cm
+from Libraries.SerialRelay import SerialRelay
+from Libraries.Timer import *
+from Libraries.ParseXml import XmlDictConfig
 from xml.etree import ElementTree
-from Enums import Enums as en
-from SX5_Manager import SX5_Manager
+from Libraries.Enums import Enums as en
+from LoopTest.SX5_Manager import SX5_Manager
 import colorama as cm
 import sys
 import adb_shell.exceptions
 import csv
 import time
 import random
-from TektronixManager import TektronixManager
-from CustomThread import CustomThread
+from LoopTest.TektronixManager import TektronixManager
+from Libraries.CustomThread import CustomThread
 
 
 # noinspection PyTypeChecker

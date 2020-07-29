@@ -1,4 +1,4 @@
-from CustomSerial import CustomSerial
+from Libraries.CustomSerial import CustomSerial
 from serial import SerialException
 import sys
 

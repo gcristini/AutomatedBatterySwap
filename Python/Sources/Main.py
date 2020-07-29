@@ -1,9 +1,9 @@
-from DummyLoopTest import DummyLoopTest
-from LoopTest import LoopTest
-from DebugTest import DebugTest
-from Enums import Enums as en
+from DummyLoopTest.DummyLoopTest import DummyLoopTest
+from LoopTest.LoopTest import LoopTest
+from DebugTest.DebugTest import DebugTest
+from Libraries.Enums import Enums as en
 import colorama as cm
-from CustomThread import CustomThread
+from Libraries.CustomThread import CustomThread
 
 
 class Main(object):

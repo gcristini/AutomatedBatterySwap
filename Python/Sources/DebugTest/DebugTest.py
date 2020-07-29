@@ -1,8 +1,8 @@
-from Enums import Enums as en
-import colorama as cm
-from SerialRelay import SerialRelay
-from ParseXml import XmlDictConfig
+from Libraries.Enums import Enums as en
+from Libraries.SerialRelay import SerialRelay
+from Libraries.ParseXml import XmlDictConfig
 from xml.etree import ElementTree
+import colorama as cm
 
 
 class DebugTest(object):

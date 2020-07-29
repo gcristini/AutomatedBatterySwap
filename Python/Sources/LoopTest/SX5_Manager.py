@@ -1,10 +1,9 @@
-import os
 import subprocess
-import signal
-from ParseXml import XmlDictConfig
+
+from Libraries.ParseXml import XmlDictConfig
 from xml.etree import ElementTree
 from adb_shell.adb_device import AdbDeviceTcp
-from Timer import Timer
+from Libraries.Timer import Timer
 import sys
 
 class ADB_Error(Exception):

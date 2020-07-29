@@ -1,8 +1,10 @@
-from SerialRelay import SerialRelay
-from Timer import *
-from ParseXml import XmlDictConfig
+
+from Libraries.SerialRelay import SerialRelay
+from Libraries.Timer import *
+from Libraries.ParseXml import XmlDictConfig
+from Libraries.Enums import Enums as en
+
 from xml.etree import ElementTree
-from Enums import Enums as en
 import colorama as cm
 
 
@@ -58,7 +60,7 @@ class DummyLoopTest(object):
         self._serial_relay = SerialRelay(port=self._dlt_config_dict["Serial"]["com"],
                                          baudrate=self._dlt_config_dict["Serial"]["baudarate"])
         self._serial_relay.init()
-        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+        self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
 
         self._relays_toggle_status = en.RelayStatusEnum.RS_ON
 
@@ -114,7 +116,7 @@ class DummyLoopTest(object):
             print(cm.Fore.BLUE + cm.Style.DIM + "\n--- Iteration n°{iter} ---".format(iter=self._current_loop))
 
             # Put all relay at ON state
-            self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+            self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
 
             # Relay are in on state
             self._relays_toggle_status = en.RelayStatusEnum.RS_ON
@@ -138,7 +140,7 @@ class DummyLoopTest(object):
         if not self._exit_condition:
 
             # Put all relay at off state
-            self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_OFF)
+            self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_OFF)
 
             # Relay are in off state
             self._relays_toggle_status = en.RelayStatusEnum.RS_OFF
@@ -201,7 +203,7 @@ class DummyLoopTest(object):
         """"""
 
         # Put off al relays
-        self._serial_relay.drive_relay(cmd=en.RelayCommandsEnum.RC_ALL_ON)
+        self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
 
         # Stop Timers
         self._global_timer.stop()
