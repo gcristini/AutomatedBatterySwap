@@ -5,7 +5,7 @@
     <!-- Global parameters. Valid for all tests -->
     <Global>
         <Serial>
-            <com>COM14</com>
+            <com>COM19</com>
             <baudarate>115200</baudarate>
         </Serial>
     </Global>
@@ -15,7 +15,7 @@
         <SX5>
             <device>466eda16</device>
             <port>5555</port>
-            <ip>10.139.128.157</ip>
+            <ip>10.139.128.68</ip>
             <supercap_sample_time_ms>100</supercap_sample_time_ms>
             <!--> <supercap_th_high_mv>2590</supercap_th_high_mv> -->
             <supercap_th_low_mv>2100</supercap_th_low_mv>
@@ -24,7 +24,7 @@
         </SX5>
 
         <Oscilloscope>
-            <resource_name>USB0::0x0699::0x0413::C013693::INSTR</resource_name>
+            <resource_name>USB0::0x0699::0x03A4::C040407::INSTR</resource_name>
             <save_folder>Test</save_folder>
         </Oscilloscope>
 

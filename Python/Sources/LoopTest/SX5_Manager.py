@@ -3,6 +3,7 @@ import subprocess
 from Libraries.ParseXml import XmlDictConfig
 from xml.etree import ElementTree
 from adb_shell.adb_device import AdbDeviceTcp
+from adb_shell import exceptions
 from Libraries.Timer import Timer
 import sys
 
@@ -18,9 +19,16 @@ class SX5_Manager(object):
     def __init__(self):
         """ Constructor"""
         self._sx5_shell_values = {
-            'SupercapVoltage_mV': int,
-            'CapokFlag': bool
+            'SupercapVoltage_mV': {
+                'command': 'cat /sys/bus/platform/devices/vendor:supercap/voltage',
+                'value:': str
+            },
+            'CapokFlag': {
+                'command': 'cat /sys/bus/platform/devices/vendor:supercap/capok',
+                'value': str
+            }
         }
+
 
         self._sx5_config_dict = dict
         self._sx5_device = AdbDeviceTcp
@@ -106,22 +114,46 @@ class SX5_Manager(object):
             self._adb_tcp_connect()
         pass
 
-    def read_supercap_voltage_mV(self):
+    def read_shell(self, value: str):
         """"""
-        self._sx5_shell_values['SupercapVoltage_mV'] = int(self._sx5_device.shell("cat /sys/bus/platform/devices/vendor:supercap/voltage").strip(" mV\n"))
-        pass
+        if value in self._sx5_shell_values.keys():
+            max_attempt = 10
+            attempt_count = 0
+            while attempt_count < max_attempt:
+                try:
+                    self._sx5_shell_values[value]['value'] = self._sx5_device.shell(self._sx5_shell_values[value]['command'])
+                except:
+                    try:
+                        self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
+                                                        port=int(self._sx5_config_dict['SX5']['port']),
+                                                        default_transport_timeout_s=9.)
+                    except:
+                        pass
+                    try:
+                        self._sx5_device.connect(auth_timeout_s=0.2)
+                    except:
+                        pass
 
-    def read_capok_flag(self):
-        self._sx5_shell_values['CapokFlag'] = bool(int(self._sx5_device.shell(" cat /sys/bus/platform/devices/vendor:supercap/capok").strip("\n")))
-        pass
+                    attempt_count += 1
+                else:
+                    break
+
+            if attempt_count >= max_attempt:
+                raise exceptions.TcpTimeoutException
+            pass
+        return
+
+    # def read_capok_flag(self):
+    #     self._sx5_shell_values['CapokFlag'] = bool(int(self._sx5_device.shell(" cat /sys/bus/platform/devices/vendor:supercap/capok").strip("\n")))
+    #     pass
 
     @property
     def supercap_voltage_mV(self):
-        return self._sx5_shell_values['SupercapVoltage_mV']
+        return int(self._sx5_shell_values['SupercapVoltage_mV']['value'].strip(" mV\n"))
 
     @property
     def capok_flag(self):
-        return self._sx5_shell_values['CapokFlag']
+        return bool(int(self._sx5_shell_values['CapokFlag']['value'].strip("\n")))
 
 
 if __name__ == "__main__":
@@ -136,11 +168,16 @@ if __name__ == "__main__":
     generalTimer = Timer()
     generalTimer.start()
     counter = 0
-    while generalTimer.elapsed_time_s(1) < 10:
-        test.read_supercap_voltage_mV()
-        counter +=1
 
-    print ("commands per seconds:" + str(counter/10))
+    test.read_shell('SupercapVoltage_mV')
+
+    test.read_shell('CapokFlag')
+
+    print (test.supercap_voltage_mV)
+    print (test.capok_flag)
+
+
+
 
 
 

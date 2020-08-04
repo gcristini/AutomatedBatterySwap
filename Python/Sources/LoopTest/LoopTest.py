@@ -15,7 +15,6 @@ from LoopTest.TektronixManager import TektronixManager
 from Libraries.CustomThread import CustomThread
 
 
-# noinspection PyTypeChecker
 class LoopTest(object):
     """"""
     def __init__(self):
@@ -108,7 +107,6 @@ class LoopTest(object):
         self._osc = TektronixManager(resource_name=self._lt_config_dict['Oscilloscope']['resource_name'],
                                      images_dir="{name}_{date}".format(name=self._lt_config_dict['Oscilloscope']['save_folder'],
                                                                        date=time.strftime("%d%m_%H%M")))
-
         self._osc.init()
         pass
 
@@ -213,8 +211,8 @@ class LoopTest(object):
                     self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 try:
                     # Read supercap voltage and cap ok flag
-                    self._sx5.read_supercap_voltage_mV()
-                    self._sx5.read_capok_flag()
+                    self._sx5.read_shell(value='SupercapVoltage_mV')
+                    self._sx5.read_shell(value='CapokFlag')
 
                     self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
                     self._capok_flag = self._sx5.capok_flag
@@ -258,8 +256,8 @@ class LoopTest(object):
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 try:
                     # Read supercap voltage
-                    self._sx5.read_supercap_voltage_mV()
-                    self._sx5.read_capok_flag()
+                    self._sx5.read_shell(value='SupercapVoltage_mV')
+                    self._sx5.read_shell(value='CapokFlag')
 
                     self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
                     self._capok_flag = self._sx5.capok_flag
@@ -276,6 +274,11 @@ class LoopTest(object):
                                                                   status=en.RelayStatusEnum.RS_ON)
                         # Store the relays command and drive relays
                         self._csv_log_dict['log_data']['Pinout sequence (Charge)'] = relay_cmd.strip(" on")
+
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
+                        time.sleep(0.01)
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
+                        time.sleep(0.01)
                         self._serial_relay.drive_relay(cmd=relay_cmd)
 
                         # Start discharge timer
@@ -287,7 +290,7 @@ class LoopTest(object):
                         # Store image on oscilloscope
                         self._osc.image_name = "Loop_{num}".format(num=self._current_loop)
                         self._osc_thread = CustomThread(runnable=self._osc_save_image_runnable).start()
-                        #self._osc.save_screen()
+
 
                         # Store last state
                         self._store_last_state()
@@ -337,7 +340,7 @@ class LoopTest(object):
                     # Device disconnected, test failed
                     self._loop_result = "Failed"
                     self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
-                    print(self._supercap_voltage_mV['Current'])
+                    #print(self._supercap_voltage_mV['Current'])
                     self._update_exit_condition('Device Disconnected', True)
 
         else:
@@ -354,7 +357,7 @@ class LoopTest(object):
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 # Read supercap voltage
                 try:
-                    self._sx5.read_supercap_voltage_mV()
+                    self._sx5.read_shell(value='SupercapVoltage_mV')
                     self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
 
                     # On the transition to this state...
@@ -373,6 +376,11 @@ class LoopTest(object):
                         # Store relays command and drive relays
                         self._csv_log_dict['log_data']['Pinout sequence (Discharge)'] = relay_cmd.strip((" off"))
                         self._serial_relay.drive_relay(cmd=relay_cmd)
+                        time.sleep(0.01)
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
+                        time.sleep(0.01)
+                        self._serial_relay.drive_relay(cmd=relay_cmd)
+
 
                         # Start discharge timer
                         self._timers_dict['DischargeTimer'].start()
@@ -483,7 +491,7 @@ class LoopTest(object):
     def _stop_state_manager(self):
         """"""
         # Put all relays on
-        self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
+        #self._serial_relay.drive_relay(cmd=en.DebugRelayCommandsEnum.RC_ALL_ON)
         #self._serial_relay.drive_relay(cmd=self._generate_random_relay_command(relay_status=en.RelayStatusEnum.RS_ON))
 
         # Stop all timers
@@ -565,7 +573,7 @@ class LoopTest(object):
         self._last_lt_state = en.LoopTestStateEnum.LT_STATE_INIT
 
         print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Finished ----")
-        print(cm.Fore.CYAN + cm.Style.DIM + "-Tot. loops: {loop}".format(loop=self._current_loop))
+        print(cm.Fore.CYAN + cm.Style.DIM + "-Tot. loops: {loop}".format(loop=self._current_loop-1))
         print(cm.Fore.CYAN + cm.Style.DIM + "-Elapsed Time: {time} min".format(time=self._timers_dict['GlobalTimer'].elapsed_time_min(digits=2)))
         print(cm.Fore.CYAN + cm.Style.DIM + "\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]))
         print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Loop Test ***")

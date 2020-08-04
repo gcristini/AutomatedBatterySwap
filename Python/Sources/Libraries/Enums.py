@@ -5,6 +5,14 @@ class Enums:
         RS_OFF = "off"
 
     # ------------------------------ #
+    # ----- TektronixManager.py ---- #
+    # ------------------------------ #
+    class TektronixManagerStateEnum:
+        TM_STATE_INIT = "init"
+        TM_STATE_OPEN = "open"
+        TM_STATE_CLOSE = "close"
+
+    # ------------------------------ #
     # -------- LoopTest.py --------- #
     # ------------------------------ #
     class LoopTestStateEnum:
