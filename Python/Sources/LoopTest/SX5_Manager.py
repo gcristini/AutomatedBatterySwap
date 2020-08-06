@@ -18,7 +18,7 @@ class SX5_Manager(object):
     # ************************************************* #
     def __init__(self):
         """ Constructor"""
-        self._sx5_shell_values = {
+        self._sx5_shell_values_dict = {
             'SupercapVoltage_mV': {
                 'command': 'cat /sys/bus/platform/devices/vendor:supercap/voltage',
                 'value:': str
@@ -26,7 +26,16 @@ class SX5_Manager(object):
             'CapokFlag': {
                 'command': 'cat /sys/bus/platform/devices/vendor:supercap/capok',
                 'value': str
+            },
+            'BatteryCharge_%': {
+                'command': 'cat sys/class/power_supply/bq27750-0/capacity',
+                'value': str
+            },
+            'BatteryVoltage_uV': {
+                'command': 'cat sys/class/power_supply/bq27750-0/voltage_now',
+                'value': str
             }
+
         }
 
 
@@ -116,12 +125,12 @@ class SX5_Manager(object):
 
     def read_shell(self, value: str):
         """"""
-        if value in self._sx5_shell_values.keys():
+        if value in self._sx5_shell_values_dict.keys():
             max_attempt = 10
             attempt_count = 0
             while attempt_count < max_attempt:
                 try:
-                    self._sx5_shell_values[value]['value'] = self._sx5_device.shell(self._sx5_shell_values[value]['command'])
+                    self._sx5_shell_values_dict[value]['value'] = self._sx5_device.shell(self._sx5_shell_values_dict[value]['command'])
                 except:
                     try:
                         self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
@@ -143,17 +152,30 @@ class SX5_Manager(object):
             pass
         return
 
-    # def read_capok_flag(self):
-    #     self._sx5_shell_values['CapokFlag'] = bool(int(self._sx5_device.shell(" cat /sys/bus/platform/devices/vendor:supercap/capok").strip("\n")))
-    #     pass
+    def update_all_shell_values(self):
+        for value in self._sx5_shell_values_dict.keys():
+            self.read_shell(value)
+        return
 
     @property
     def supercap_voltage_mV(self):
-        return int(self._sx5_shell_values['SupercapVoltage_mV']['value'].strip(" mV\n"))
+        return int(self._sx5_shell_values_dict['SupercapVoltage_mV']['value'].strip(" mV\n"))
 
     @property
     def capok_flag(self):
-        return bool(int(self._sx5_shell_values['CapokFlag']['value'].strip("\n")))
+        return bool(int(self._sx5_shell_values_dict['CapokFlag']['value'].strip("\n")))
+
+    @property
+    def battery_charge_pct(self):
+        return int(self._sx5_shell_values_dict['BatteryCharge_%']['value'].strip("\n"))
+
+    @property
+    def battery_voltage_uV(self):
+        return int(self._sx5_shell_values_dict['BatteryVoltage_uV']['value'].strip(" mV\n"))
+
+    @property
+    def battery_voltage_mV(self):
+        return self.battery_voltage_uV / 1000
 
 
 if __name__ == "__main__":
@@ -172,6 +194,8 @@ if __name__ == "__main__":
     test.read_shell('SupercapVoltage_mV')
 
     test.read_shell('CapokFlag')
+
+    test.read_shell('BatteryCharge_%')
 
     print (test.supercap_voltage_mV)
     print (test.capok_flag)

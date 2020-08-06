@@ -48,13 +48,25 @@ class LoopTest(object):
         self._exit_condition = None  # bool
 
         self._current_loop: int
-        self._supercap_voltage_mV = {
-            'Start': int,
-            'Stop': int,
-            'Current': int
-        }
 
-        self._capok_flag = bool
+        self._sx5_shell_values_dict = {
+            'SupercapVoltage_mV': {
+                'Start': int,
+                'Stop': int,
+                'Current': int
+            },
+            'CapokFlag': bool,
+            'BatteryCharge_%': {
+                'Start': int,
+                'Stop': int,
+                'Current': int
+            },
+            'BatteryVoltage_mV': {
+                'Start': int,
+                'Stop': int,
+                'Current': int
+            }
+        }
 
         self._lt_exit_cause_dict = {
             'Elapsed Time': False,
@@ -73,11 +85,19 @@ class LoopTest(object):
                 'Discharge Time [s]': int,
                 'Charge Time [s]': int,
                 'Total Time [s]': int,
-                'Start Voltage (Discharge) [mV]': int,
-                'Stop Voltage (Discharge) [mV]': int,
+                'Start Supercap Voltage (Discharge) [mV]': int,
+                'Stop Supercap Voltage (Discharge) [mV]': int,
+                'Start Battery Voltage (Discharge) [mV]': int,
+                'Stop Battery Voltage (Discharge) [mV]': int,
+                'Start Battery Charge (Discharge) [%]': int,
+                'Stop Battery Charge (Discharge) [%]': int,
                 'Pinout sequence (Discharge)': str,
-                'Start Voltage (Charge) [mV]': int,
-                'Stop Voltage (Charge) [mV]': int,
+                'Start Supercap Voltage (Charge) [mV]': int,
+                'Stop Supercap Voltage (Charge) [mV]': int,
+                'Start Battery Voltage (Charge) [mV]': int,
+                'Stop Battery Voltage (Charge) [mV]': int,
+                'Start Battery Charge (Charge) [%]': int,
+                'Stop Battery Charge (Charge) [%]': int,
                 'Pinout sequence (Charge)': str,
                 'Result': None
             }
@@ -181,6 +201,18 @@ class LoopTest(object):
 
         return relay_cmd
 
+    def _update_sx5_shell_value_dict(self):
+        # Read all shell values
+        self._sx5.update_all_shell_values()
+
+        # Update shell value dictionary
+        self._sx5_shell_values_dict['SupercapVoltage_mV']['Current'] = self._sx5.supercap_voltage_mV
+        self._sx5_shell_values_dict['CapokFlag'] = self._sx5.capok_flag
+        self._sx5_shell_values_dict['BatteryCharge_%']['Current'] = self._sx5.battery_charge_pct
+        self._sx5_shell_values_dict['BatteryVoltage_mV']['Current'] = self._sx5.battery_voltage_mV
+
+        return
+
     def _init_state_manager(self):
         """ Init State Manager """
         if (self._lt_state == en.LoopTestStateEnum.LT_STATE_INIT and
@@ -210,26 +242,22 @@ class LoopTest(object):
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(
                     self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 try:
-                    # Read supercap voltage and cap ok flag
-                    self._sx5.read_shell(value='SupercapVoltage_mV')
-                    self._sx5.read_shell(value='CapokFlag')
-
-                    self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
-                    self._capok_flag = self._sx5.capok_flag
+                    # Update all shell values
+                    self._update_sx5_shell_value_dict()
 
                     sys.stdout.write("\033[K")  # Clear to the end of line
                     print(cm.Fore.CYAN + cm.Style.DIM + "Waiting for supercap fully charged before start loop.... Voltage: {voltage}mV".format(
-                        voltage=self._supercap_voltage_mV['Current']),
+                        voltage=self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']),
                         end="\r")
 
-                    if ((self._capok_flag is True) and \
+                    if ((self._sx5_shell_values_dict['CapokFlag'] is True) and \
                             (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
                     #
                     # if ((self._supercap_voltage_mV['Current'] >= int(self._lt_config_dict["SX5"]["supercap_th_high_mv"])) and
                     #     (self._timers_dict['GlobalTimer'].elapsed_time_min() <= float(self._lt_config_dict['SX5']['charge_timeout_min']))):
 
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print(cm.Fore.CYAN + cm.Style.DIM + "Supercap fully charged @{voltage}mV: Start Loop!".format(voltage=self._supercap_voltage_mV['Current']))
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Supercap fully charged @{voltage}mV: Start Loop!".format(voltage=self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']))
 
                         # Go to relay off state
                         self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_OFF)
@@ -255,12 +283,8 @@ class LoopTest(object):
             # If sample time is elapsed
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 try:
-                    # Read supercap voltage
-                    self._sx5.read_shell(value='SupercapVoltage_mV')
-                    self._sx5.read_shell(value='CapokFlag')
-
-                    self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
-                    self._capok_flag = self._sx5.capok_flag
+                    # Update all shell values
+                    self._update_sx5_shell_value_dict()
 
                     # On the transition to this state...
                     if (self._lt_state == en.LoopTestStateEnum.LT_STATE_ON and
@@ -285,7 +309,9 @@ class LoopTest(object):
                         self._timers_dict['ChargeTimer'].start()
 
                         # Store the current supercap voltage as start voltage
-                        self._supercap_voltage_mV['Start'] = self._supercap_voltage_mV['Current']
+                        self._sx5_shell_values_dict['SupercapVoltage_mV']['Start'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                        self._sx5_shell_values_dict['BatteryCharge_%']['Start'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                        self._sx5_shell_values_dict['BatteryVoltage_mV']['Start'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
 
                         # Store image on oscilloscope
                         self._osc.image_name = "Loop_{num}".format(num=self._current_loop)
@@ -296,7 +322,7 @@ class LoopTest(object):
                         self._store_last_state()
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print(cm.Fore.CYAN + cm.Style.DIM + "Charging.... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Charging.... supercap voltage: {voltage}mV".format(voltage=self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']),
                                                                                                                 end="\r")
                         # Check if the high threshold has been reached
                         if ((self._sx5.capok_flag is True) and
@@ -311,14 +337,16 @@ class LoopTest(object):
                             self._timers_dict['ChargeTimer'].stop()
 
                             # Store the current supercap voltage as stop voltage
-                            self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
+                            self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                            self._sx5_shell_values_dict['BatteryCharge_%']['Stop'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                            self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
 
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
                             print(cm.Fore.CYAN + cm.Style.DIM + "- Charge:")
                             print(cm.Fore.CYAN + cm.Style.DIM + "\t• time: {time}s".format(time=self._timers_dict['ChargeTimer'].elapsed_time_s(digits=0)))
-                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
-                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._sx5_shell_values_dict['SupercapVoltage_mV']['Start']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop']))
 
                             # A discharge-charge loop has been completed: Pass!
                             self._loop_result = "Passed"
@@ -339,7 +367,9 @@ class LoopTest(object):
                 except adb_shell.exceptions.TcpTimeoutException:
                     # Device disconnected, test failed
                     self._loop_result = "Failed"
-                    self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
+                    self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                    self._sx5_shell_values_dict['BatteryCharge_%']['Stop'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                    self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
                     #print(self._supercap_voltage_mV['Current'])
                     self._update_exit_condition('Device Disconnected', True)
 
@@ -357,15 +387,17 @@ class LoopTest(object):
             if self._timers_dict['SupercapSampleTimer'].elapsed_time_ms() >= int(self._lt_config_dict["SX5"]["supercap_sample_time_ms"]):
                 # Read supercap voltage
                 try:
-                    self._sx5.read_shell(value='SupercapVoltage_mV')
-                    self._supercap_voltage_mV['Current'] = self._sx5.supercap_voltage_mV
+                    # Update all shell values
+                    self._update_sx5_shell_value_dict()
 
                     # On the transition to this state...
                     if (self._lt_state == en.LoopTestStateEnum.LT_STATE_OFF and
                             self._last_lt_state != en.LoopTestStateEnum.LT_STATE_OFF):
 
-                        print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Loop {iter}/{max_iter} ---".format(iter=self._current_loop,
-                                                                                                      max_iter=self._lt_config_dict["Loop"]["n_loop"]))
+                        print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Loop {iter}/{max_iter} (battery charge {charge}%) ---"
+                              .format(iter=self._current_loop,
+                                      max_iter=self._lt_config_dict["Loop"]["n_loop"],
+                                      charge=self._sx5_shell_values_dict['BatteryCharge_%']['Current']))
 
                         # Put all relay at off state
                         if self._lt_config_dict['SX5']['random_relay'].upper() == "TRUE":
@@ -386,30 +418,34 @@ class LoopTest(object):
                         self._timers_dict['DischargeTimer'].start()
 
                         # Store the current supercap voltage as start voltage
-                        self._supercap_voltage_mV['Start'] = self._supercap_voltage_mV['Current']
+                        self._sx5_shell_values_dict['SupercapVoltage_mV']['Start'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                        self._sx5_shell_values_dict['BatteryCharge_%']['Start'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                        self._sx5_shell_values_dict['BatteryVoltage_mV']['Start'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
 
                         # Store last state
                         self._store_last_state()
                     else:
                         sys.stdout.write("\033[K")  # Clear to the end of line
-                        print(cm.Fore.CYAN + cm.Style.DIM + "Discharging... supercap voltage: {voltage}mV".format(voltage=self._supercap_voltage_mV['Current']),
+                        print(cm.Fore.CYAN + cm.Style.DIM + "Discharging... supercap voltage: {voltage}mV".format(voltage=self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']),
                                                                                                                   end="\r")
 
                         # Check if the low threshold has been reached
-                        if self._supercap_voltage_mV['Current'] <= int(self._lt_config_dict["SX5"]["supercap_th_low_mv"]):
+                        if self._sx5_shell_values_dict['SupercapVoltage_mV']['Current'] <= int(self._lt_config_dict["SX5"]["supercap_th_low_mv"]):
 
                             # Stop discharge timer
                             self._timers_dict['DischargeTimer'].stop()
 
                             # Store the current supercap voltage as stop voltage
-                            self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
+                            self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                            self._sx5_shell_values_dict['BatteryCharge_%']['Stop'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                            self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
 
                             # Print Discharge time
                             sys.stdout.write("\033[K")  # Clear to the end of line
                             print(cm.Fore.CYAN + cm.Style.DIM + "- Discharge:")
                             print(cm.Fore.CYAN + cm.Style.DIM + "\t• time: {time}s".format(time=self._timers_dict['DischargeTimer'].elapsed_time_s(digits=0)))
-                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._supercap_voltage_mV['Start']))
-                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._supercap_voltage_mV['Stop']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• start voltage: {start}mV".format(start=self._sx5_shell_values_dict['SupercapVoltage_mV']['Start']))
+                            print(cm.Fore.CYAN + cm.Style.DIM + "\t• stop voltage: {stop}mV".format(stop=self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop']))
 
                             # Go to update csv state
                             self._go_to_next_state(en.LoopTestStateEnum.LT_STATE_UPDATE_CSV)
@@ -421,7 +457,9 @@ class LoopTest(object):
                 except adb_shell.exceptions.TcpTimeoutException:
                     # Device disconnected, test failed
                     self._loop_result = "Failed"
-                    self._supercap_voltage_mV['Stop'] = self._supercap_voltage_mV['Current']
+                    self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Current']
+                    self._sx5_shell_values_dict['BatteryCharge_%']['Stop'] = self._sx5_shell_values_dict['BatteryCharge_%']['Current']
+                    self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Current']
                     self._update_exit_condition('Device Disconnected', True)
         else:
             # Go to update csv state and then to stop state
@@ -442,8 +480,12 @@ class LoopTest(object):
             # Populate csv dict
             self._csv_log_dict['log_data']['Iteration'] = self._current_loop
             self._csv_log_dict['log_data']['Discharge Time [s]'] = self._timers_dict['DischargeTimer'].elapsed_time_s(digits=2)
-            self._csv_log_dict['log_data']['Start Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Start']
-            self._csv_log_dict['log_data']['Stop Voltage (Discharge) [mV]'] = self._supercap_voltage_mV['Stop']
+            self._csv_log_dict['log_data']['Start Supercap Voltage (Discharge) [mV]'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Start']
+            self._csv_log_dict['log_data']['Stop Supercap Voltage (Discharge) [mV]'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop']
+            self._csv_log_dict['log_data']['Start Battery Voltage (Discharge) [mV]'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Start']
+            self._csv_log_dict['log_data']['Stop Battery Voltage (Discharge) [mV]'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop']
+            self._csv_log_dict['log_data']['Start Battery Charge (Discharge) [%]'] = self._sx5_shell_values_dict['BatteryCharge_%']['Start']
+            self._csv_log_dict['log_data']['Stop Battery Charge (Discharge) [%]'] = self._sx5_shell_values_dict['BatteryCharge_%']['Stop']
 
             if self._loop_result == "Failed":
                 # Update csv log file
@@ -458,8 +500,12 @@ class LoopTest(object):
             self._csv_log_dict['log_data']['Charge Time [s]'] = self._timers_dict['ChargeTimer'].elapsed_time_s(digits=2)
             self._csv_log_dict['log_data']['Total Time [s]'] = round(self._csv_log_dict['log_data']['Charge Time [s]'] + \
                                                                      self._csv_log_dict['log_data']['Discharge Time [s]'], ndigits=2)
-            self._csv_log_dict['log_data']['Start Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Start']
-            self._csv_log_dict['log_data']['Stop Voltage (Charge) [mV]'] = self._supercap_voltage_mV['Stop']
+            self._csv_log_dict['log_data']['Start Supercap Voltage (Charge) [mV]'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Start']
+            self._csv_log_dict['log_data']['Stop Supercap Voltage (Charge) [mV]'] = self._sx5_shell_values_dict['SupercapVoltage_mV']['Stop']
+            self._csv_log_dict['log_data']['Start Battery Voltage (Charge) [mV]'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Start']
+            self._csv_log_dict['log_data']['Stop Battery Voltage (Charge) [mV]'] = self._sx5_shell_values_dict['BatteryVoltage_mV']['Stop']
+            self._csv_log_dict['log_data']['Start Battery Charge (Charge) [%]'] = self._sx5_shell_values_dict['BatteryCharge_%']['Start']
+            self._csv_log_dict['log_data']['Stop Battery Charge (Charge) [%]'] = self._sx5_shell_values_dict['BatteryCharge_%']['Stop']
 
             # Update csv log file
             self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict['log_data'].values())
