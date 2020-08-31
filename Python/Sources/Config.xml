@@ -5,7 +5,7 @@
     <!-- Global parameters. Valid for all tests -->
     <Global>
         <Serial>
-            <com>COM19</com>
+            <com>COM23</com>
             <baudarate>115200</baudarate>
         </Serial>
     </Global>
@@ -13,9 +13,9 @@
     <!-- Loop Test only parameters -->
     <LoopTest>
         <SX5>
-            <device>466eda16</device>
+            <device>d7856895</device>
             <port>5555</port>
-            <ip>10.139.128.68</ip>
+            <ip>10.139.128.118</ip>
             <supercap_sample_time_ms>100</supercap_sample_time_ms>
             <!--> <supercap_th_high_mv>2590</supercap_th_high_mv> -->
             <supercap_th_low_mv>2100</supercap_th_low_mv>

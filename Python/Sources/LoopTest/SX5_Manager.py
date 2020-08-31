@@ -39,8 +39,8 @@ class SX5_Manager(object):
         }
 
 
-        self._sx5_config_dict = dict
-        self._sx5_device = AdbDeviceTcp
+        self._sx5_config_dict: dict
+        self._sx5_device: AdbDeviceTcp
 
         pass
 
@@ -123,39 +123,66 @@ class SX5_Manager(object):
             self._adb_tcp_connect()
         pass
 
-    def read_shell(self, value: str):
-        """"""
-        if value in self._sx5_shell_values_dict.keys():
-            max_attempt = 10
-            attempt_count = 0
-            while attempt_count < max_attempt:
+    def _read_shell(self, cmd: str):
+        """"""       
+        max_attempt = 10
+        attempt_count = 0
+        stdout = ""
+
+        while attempt_count < max_attempt:
+            try:
+                stdout = self._sx5_device.shell(cmd)
+            except:
                 try:
-                    self._sx5_shell_values_dict[value]['value'] = self._sx5_device.shell(self._sx5_shell_values_dict[value]['command'])
+                    self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
+                                                    port=int(self._sx5_config_dict['SX5']['port']),
+                                                    default_transport_timeout_s=9.)
                 except:
-                    try:
-                        self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
-                                                        port=int(self._sx5_config_dict['SX5']['port']),
-                                                        default_transport_timeout_s=9.)
-                    except:
-                        pass
-                    try:
-                        self._sx5_device.connect(auth_timeout_s=0.2)
-                    except:
-                        pass
+                    pass
+                try:
+                    self._sx5_device.connect(auth_timeout_s=0.2)
+                except:
+                    pass
 
-                    attempt_count += 1
-                else:
-                    break
+                attempt_count += 1
+            else:
+                break
 
-            if attempt_count >= max_attempt:
-                raise exceptions.TcpTimeoutException
-            pass
+        if attempt_count >= max_attempt:
+            raise exceptions.TcpTimeoutException
+        pass
+
+        return stdout
+
+    def read_sx5_value(self, value: str):
+        """ """
+        if value in self._sx5_shell_values_dict.keys():
+            self._sx5_shell_values_dict[value]['value'] = self._read_shell(self._sx5_shell_values_dict[value]['command'])
         return
 
-    def update_all_shell_values(self):
-        for value in self._sx5_shell_values_dict.keys():
-            self.read_shell(value)
+    def update_all_sx5_values(self):
+        """ """
+        # Variables
+        concat_cmd = ""
+        stdout = ""
+
+        for key in self._sx5_shell_values_dict:
+            concat_cmd += self._sx5_shell_values_dict[key]['command'] + " && "
+        
+        # Delete last "&&"
+        concat_cmd = concat_cmd[: -3]
+
+        # Read output from adb shell
+        stdout = self._read_shell(concat_cmd)
+
+        keys_list=list(self._sx5_shell_values_dict.keys())
+        stdout_splitted = stdout.split("\n")[: -1]
+        
+        # Add each element of stdout to the proper value of shel dictionary
+        for index, item in enumerate(stdout_splitted):
+            self._sx5_shell_values_dict[keys_list[index]]["value"] = stdout_splitted[index]            
         return
+        
 
     @property
     def supercap_voltage_mV(self):
@@ -180,25 +207,16 @@ class SX5_Manager(object):
 
 if __name__ == "__main__":
     import time
-    from Timer import Timer
+    from Sources.Libraries.Timer import Timer
     test = SX5_Manager()
     test.init()
 
-    ct = Timer()
-    ct.start()
-
-    generalTimer = Timer()
-    generalTimer.start()
-    counter = 0
-
-    test.read_shell('SupercapVoltage_mV')
-
-    test.read_shell('CapokFlag')
-
-    test.read_shell('BatteryCharge_%')
+    test.update_all_sx5_values()
 
     print (test.supercap_voltage_mV)
     print (test.capok_flag)
+    print (test.battery_charge_pct)
+    print (test.battery_voltage_mV)
 
 
 

@@ -203,7 +203,7 @@ class LoopTest(object):
 
     def _update_sx5_shell_value_dict(self):
         # Read all shell values
-        self._sx5.update_all_shell_values()
+        self._sx5.update_all_sx5_values()
 
         # Update shell value dictionary
         self._sx5_shell_values_dict['SupercapVoltage_mV']['Current'] = self._sx5.supercap_voltage_mV
