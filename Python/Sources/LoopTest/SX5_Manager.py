@@ -21,21 +21,20 @@ class SX5_Manager(object):
         self._sx5_shell_values_dict = {
             'SupercapVoltage_mV': {
                 'command': 'cat /sys/bus/platform/devices/vendor:supercap/voltage',
-                'value:': str
+                'value:': ""
             },
             'CapokFlag': {
                 'command': 'cat /sys/bus/platform/devices/vendor:supercap/capok',
-                'value': str
+                'value': ""
             },
             'BatteryCharge_%': {
                 'command': 'cat sys/class/power_supply/bq27750-0/capacity',
-                'value': str
+                'value': ""
             },
             'BatteryVoltage_uV': {
                 'command': 'cat sys/class/power_supply/bq27750-0/voltage_now',
-                'value': str
+                'value': ""
             }
-
         }
 
 
@@ -133,6 +132,7 @@ class SX5_Manager(object):
             try:
                 stdout = self._sx5_device.shell(cmd)
             except:
+                # Try to establish a new connection if no response...
                 try:
                     self._sx5_device = AdbDeviceTcp(host=self._sx5_config_dict['SX5']['ip'],
                                                     port=int(self._sx5_config_dict['SX5']['port']),
