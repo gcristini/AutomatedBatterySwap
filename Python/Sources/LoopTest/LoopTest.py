@@ -13,6 +13,7 @@ import time
 import random
 from LoopTest.TektronixManager import TektronixManager
 from Libraries.CustomThread import CustomThread
+import os
 
 
 class LoopTest(object):
@@ -81,7 +82,7 @@ class LoopTest(object):
         }
 
         self._csv_log_dict = {
-            "filename": None,
+            "filename": "",
             "file": None,
             "csv_writer": None,
             "log_data": {
@@ -105,6 +106,11 @@ class LoopTest(object):
                 'Pinout sequence (Charge)': str,
                 'Result': None
             }
+        }
+
+        self._txt_log_dict = {
+            "filename": "",
+            "file": None            
         }
 
         pass
@@ -244,16 +250,32 @@ class LoopTest(object):
                 # Start read sx5 shell
                 self._thread_dict['sx5_read'].start()
 
+                # Create storage folder
+                date = time.strftime("%d%m_%H%M")
+                os.mkdir(date)
+
                 # Init Log file and write headers of dictionary
-                self._csv_log_dict['filename'] = "{name}_{date}{ext}".format(name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),
-                                                                            date=time.strftime("%d%m_%H%M"),
-                                                                            ext=".csv")
+                self._csv_log_dict['filename'] = "{date}\{name}{ext}".format(date=date,
+                                                                             name=self._lt_config_dict['Log']['csv_filename'].strip(".csv"),                                                                             
+                                                                             ext=".csv")
 
                 self._csv_log_dict['file'] = open(file=self._csv_log_dict['filename'], mode='w',  newline='')
-                #self._csv_file = open(self._lt_config_dict['Log']['csv_filename'], 'w')
                 self._csv_log_dict['csv_writer'] = csv.writer(self._csv_log_dict['file'])
                 self._csv_log_dict['csv_writer'].writerow(self._csv_log_dict["log_data"].keys())
                 self._csv_log_dict['file'].close()
+
+                # Init txt log and write used cfg params
+                self._txt_log_dict['filename'] = "{date}\{name}{ext}".format(date=date,
+                                                                            name="result",                                                                             
+                                                                            ext=".log")
+                self._txt_log_dict['file'] = open(file=self._txt_log_dict['filename'], mode='w')
+                self._txt_log_dict['file'].write("--- Used config parameters ---\n")
+                self._txt_log_dict['file'].write(f"read_sample_time_ms= {self._lt_config_dict['SX5']['read_sample_time_ms']} ms\n")
+                self._txt_log_dict['file'].write(f"n_loop= {self._lt_config_dict['Loop']['n_loop']}\n")
+                self._txt_log_dict['file'].write(f"supercap_th_low_mv= {self._lt_config_dict['SX5']['supercap_th_low_mv']}\n")
+                self._txt_log_dict['file'].write("\n\n")
+                self._txt_log_dict['file'].close()
+                
 
                 # Store the last state
                 self._store_last_state()
@@ -601,13 +623,25 @@ class LoopTest(object):
         # Stop time machine timer
         ex_timer.stop()
 
-        print(cm.Fore.CYAN + cm.Style.DIM + "\n--- Finished ----")
-        print(cm.Fore.CYAN + cm.Style.DIM + "-Tot. loops: {loop}".format(loop=self._current_loop-1))
-        print(cm.Fore.CYAN + cm.Style.DIM + "-Elapsed Time: {time} min".format(time=self._timers_dict['GlobalTimer'].elapsed_time_min(digits=2)))
-        print(cm.Fore.CYAN + cm.Style.DIM + "\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]))
+        # Update shell and txt log file
+        final_result_text = ("\n--- Finished ----", 
+                             "-Tot. loops: {loop}".format(loop=self._current_loop-1),
+                             "-Elapsed Time: {time} min".format(time=self._timers_dict['GlobalTimer'].elapsed_time_min(digits=2)),
+                             "\n-Test finished for: {cause}".format(cause=[key for key, value in self._lt_exit_cause_dict.items() if value]),
+                             )
+
+        with open(file=self._txt_log_dict['filename'], mode='a') as file:
+            for line in final_result_text: 
+                # Print on shell           
+                print(cm.Fore.CYAN + cm.Style.DIM + line)
+
+                # Update txt log file
+                file.write(f"{line}\n") #TODO check
+      
+        pass
+
         print(cm.Fore.CYAN + cm.Style.DIM + "\n*** Exit Loop Test ***")
         print(cm.Fore.CYAN + cm.Style.DIM + "----------------------------------------\n")
-        pass
 
     def stop(self):
         """ """

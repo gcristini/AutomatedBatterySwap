@@ -5,7 +5,7 @@
     <!-- Global parameters. Valid for all tests -->
     <Global>
         <Serial>
-            <com>COM23</com>
+            <com>COM19</com>
             <baudarate>115200</baudarate>
         </Serial>
     </Global>
@@ -13,9 +13,9 @@
     <!-- Loop Test only parameters -->
     <LoopTest>
         <SX5>
-            <device>d7856895</device>
+            <device>466eda16</device>
             <port>5555</port>
-            <ip>10.139.128.118</ip>
+            <ip>10.139.128.36</ip>
             <read_sample_time_ms>100</read_sample_time_ms>
             <!--> <supercap_th_high_mv>2590</supercap_th_high_mv> -->
             <supercap_th_low_mv>2100</supercap_th_low_mv>
@@ -30,11 +30,9 @@
 
         <Loop>
             <n_loop>600</n_loop>
-            <!--<time_test_min>10000</time_test_min>-->
         </Loop>
 
         <Log>
-            <path></path>
             <csv_filename>Log.csv</csv_filename>
         </Log>
     </LoopTest>
